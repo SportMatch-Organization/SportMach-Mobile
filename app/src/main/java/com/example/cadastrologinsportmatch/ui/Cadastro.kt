@@ -111,7 +111,6 @@ fun Cadastro(onCadastro: (CreateUserDto) -> Unit) {
             Text(generoError!!,
                 color = Color.Red
             )
-
         TextField(
             value = telefone,
             onValueChange = { telefone = it },
@@ -318,7 +317,7 @@ fun Cadastro(onCadastro: (CreateUserDto) -> Unit) {
                         senha,
                         endereco,
                         perfil.lowercase(),
-                        esportesSelecionados
+                        esportesSelecionados.toString()
                     )
                     onCadastro(user)
                 }
