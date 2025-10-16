@@ -14,11 +14,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.cadastrologinsportmatch.model.CreateUserDto
-import com.example.cadastrologinsportmatch.model.LoginUserDto
-import com.example.cadastrologinsportmatch.ui.Cadastro
 import com.example.cadastrologinsportmatch.ui.Login
 import com.example.cadastrologinsportmatch.ui.Home
+import com.example.cadastrologinsportmatch.ui.cadastro.Cadastro1
+import com.example.cadastrologinsportmatch.ui.cadastro.Cadastro2
 import com.example.cadastrologinsportmatch.ui.theme.CadastroLoginSportMatchTheme
 
 class MainActivity : ComponentActivity() {
@@ -53,22 +52,27 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
         composable("login") {
             Login(
                 onLogin = { loginDto ->
-                    navController.navigate("home") {
-                        popUpTo("login") { inclusive = true }
-                    }
+                    navController.navigate("home")
                 },
                 onNavigateToCadastro = {
-                    navController.navigate("cadastro")
+                    navController.navigate("cadastro1")
                 }
             )
         }
 
-        composable("cadastro") {
-            Cadastro { userDto ->
-                navController.navigate("login") {
-                    popUpTo("cadastro") { inclusive = true }
+        composable("cadastro1") {
+            Cadastro1 (
+                onCadastro = { userDto ->
+                    navController.navigate("cadastro1")
+                },
+                onNavigateToCadastro2 = {
+                    navController.navigate("cadastro2")
                 }
-            }
+            )
+        }
+
+        composable("cadastro2"){
+            Cadastro2()
         }
         composable("home") {
             Home()

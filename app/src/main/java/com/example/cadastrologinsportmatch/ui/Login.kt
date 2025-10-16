@@ -25,9 +25,10 @@ import com.example.cadastrologinsportmatch.model.LoginUserDto
 
 
 @Composable
-fun Login(onLogin: (LoginUserDto) -> Unit,
-onNavigateToCadastro: () -> Unit
-){
+fun Login(
+    onLogin: (LoginUserDto) -> Unit,
+    onNavigateToCadastro: () -> Unit
+    ){
     var email by remember {mutableStateOf("")}
     var senha by remember {mutableStateOf("")}
     var emailError by remember {mutableStateOf<String?>(null)}
@@ -126,7 +127,8 @@ onNavigateToCadastro: () -> Unit
             text = "Clique aqui para se cadastrar",
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.clickable{
-                onNavigateToCadastro()//direcionar para a tela de cadastro
+                //direcionar para a tela de cadastro
+                onNavigateToCadastro()
             }
         )
     }
