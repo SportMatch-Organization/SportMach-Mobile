@@ -33,9 +33,10 @@ import com.example.cadastrologinsportmatch.ui.theme.Orange
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Cadastro2(){
+fun Cadastro2(onNavigateToCadastro3: () -> Unit){
+
     // Dropdown de Perfil
-    val perfis = listOf("Organizador", "Atleta", "Locador de espaço", "Patrocinador")
+    val perfis = listOf("Organizador", "Atleta", "Locador", "Patrocinador")
     var perfil by remember { mutableStateOf(perfis[0]) }
     var perfilExpanded by remember { mutableStateOf(false) }
 
@@ -126,7 +127,7 @@ fun Cadastro2(){
 
         Button(
             onClick = {
-
+                onNavigateToCadastro3()
             },
             modifier = Modifier
                 .fillMaxWidth(),
@@ -146,5 +147,5 @@ fun Cadastro2(){
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun Cadastro2Preview(){
-    Cadastro2()
+    Cadastro2({})
 }

@@ -18,6 +18,10 @@ import com.example.cadastrologinsportmatch.ui.Login
 import com.example.cadastrologinsportmatch.ui.Home
 import com.example.cadastrologinsportmatch.ui.cadastro.Cadastro1
 import com.example.cadastrologinsportmatch.ui.cadastro.Cadastro2
+import com.example.cadastrologinsportmatch.ui.cadastro.Cadastro3
+import com.example.cadastrologinsportmatch.ui.cadastro.Cadastro4
+import com.example.cadastrologinsportmatch.ui.cadastro.Cadastro5
+import com.example.cadastrologinsportmatch.ui.cadastro.Cadastro6
 import com.example.cadastrologinsportmatch.ui.theme.CadastroLoginSportMatchTheme
 
 class MainActivity : ComponentActivity() {
@@ -72,8 +76,45 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
         }
 
         composable("cadastro2"){
-            Cadastro2()
+            Cadastro2(
+                onNavigateToCadastro3 = {
+                    navController.navigate("cadastro3")
+                }
+            )
         }
+
+        composable("cadastro3"){
+            Cadastro3(
+                onNavigateToCadastro4 = {
+                    navController.navigate("cadastro4")
+                }
+            )
+        }
+
+        composable("cadastro4"){
+            Cadastro4(
+                onNavigateToCadastro5 = {
+                    navController.navigate("cadastro5")
+                }
+            )
+        }
+
+        composable("cadastro5"){
+            Cadastro5(
+                onNavigateToCadastro6 = {
+                    navController.navigate("cadastro6")
+                }
+            )
+        }
+
+        composable("cadastro6"){
+            Cadastro6(
+                onNavigateToLogin = {
+                    navController.navigate("login")
+                }
+            )
+        }
+
         composable("home") {
             Home()
         }
