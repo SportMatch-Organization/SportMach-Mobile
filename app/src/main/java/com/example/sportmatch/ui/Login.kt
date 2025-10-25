@@ -1,4 +1,4 @@
-package com.example.cadastrologinsportmatch.ui
+package com.example.sportmatch.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,7 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import com.example.cadastrologinsportmatch.model.LoginUserDto
+import com.example.sportmatch.model.LoginUserDto
 
 
 @Composable

@@ -1,4 +1,4 @@
-package com.example.cadastrologinsportmatch
+package com.example.sportmatch
 
 import org.junit.Test
 

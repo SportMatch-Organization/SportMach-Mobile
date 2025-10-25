@@ -1,4 +1,4 @@
-package com.example.cadastrologinsportmatch
+package com.example.sportmatch
 
 
 import android.os.Bundle
@@ -14,15 +14,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.cadastrologinsportmatch.ui.Login
-import com.example.cadastrologinsportmatch.ui.Home
-import com.example.cadastrologinsportmatch.ui.cadastro.Cadastro1
-import com.example.cadastrologinsportmatch.ui.cadastro.Cadastro2
-import com.example.cadastrologinsportmatch.ui.cadastro.Cadastro3
-import com.example.cadastrologinsportmatch.ui.cadastro.Cadastro4
-import com.example.cadastrologinsportmatch.ui.cadastro.Cadastro5
-import com.example.cadastrologinsportmatch.ui.cadastro.Cadastro6
-import com.example.cadastrologinsportmatch.ui.theme.CadastroLoginSportMatchTheme
+import com.example.sportmatch.ui.Login
+import com.example.sportmatch.ui.Home
+import com.example.sportmatch.ui.cadastro.Cadastro1
+import com.example.sportmatch.ui.cadastro.Cadastro2
+import com.example.sportmatch.ui.cadastro.Cadastro3
+import com.example.sportmatch.ui.cadastro.Cadastro4
+import com.example.sportmatch.ui.cadastro.Cadastro5
+import com.example.sportmatch.ui.cadastro.Cadastro6
+import com.example.sportmatch.ui.theme.CadastroLoginSportMatchTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

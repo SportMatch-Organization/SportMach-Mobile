@@ -1,6 +1,5 @@
-package com.example.cadastrologinsportmatch.ui.cadastro
+package com.example.sportmatch.ui.cadastro
 
-import androidx.compose.foundation.clickable
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -10,11 +9,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.example.cadastrologinsportmatch.model.CreateUserDto
-import com.example.cadastrologinsportmatch.ui.theme.Orange
-import java.time.format.TextStyle
+import com.example.sportmatch.model.CreateUserDto
+import com.example.sportmatch.ui.theme.Orange
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
