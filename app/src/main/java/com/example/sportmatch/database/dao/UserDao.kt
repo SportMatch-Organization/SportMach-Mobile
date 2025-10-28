@@ -8,5 +8,5 @@ import com.example.sportmatch.database.entities.User
 interface UserDao {
 
     @Insert
-    fun insert(user: User)
+    suspend fun insert(user: User) //indica que essa função pode demorar e deve ser executada em segundo plano
 }

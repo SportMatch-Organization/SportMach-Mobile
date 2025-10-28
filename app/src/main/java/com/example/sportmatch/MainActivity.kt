@@ -23,6 +23,7 @@ import com.example.sportmatch.ui.cadastro.Cadastro4
 import com.example.sportmatch.ui.cadastro.Cadastro5
 import com.example.sportmatch.ui.cadastro.Cadastro6
 import com.example.sportmatch.ui.theme.CadastroLoginSportMatchTheme
+import com.google.firebase.Firebase
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +35,6 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    // Passe o innerPadding para o container da sua tela
                     AppNavHost(
                         navController = navController,
                         modifier = Modifier.padding(innerPadding)

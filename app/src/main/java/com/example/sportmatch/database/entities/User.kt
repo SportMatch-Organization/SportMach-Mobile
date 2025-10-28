@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 import com.example.sportmatch.model.enumTypes.user.GeneroEnum
 import com.example.sportmatch.model.enumTypes.user.PerfilEnum
 import java.time.LocalDate
+import java.util.Date
 
 @Entity
 data class User(
@@ -18,6 +19,6 @@ data class User(
     val email: String,
     val senha: String,
     val endereco: String,
-    @ColumnInfo(name = "dt_nascimento") val dataNascimento: LocalDate,
+    @ColumnInfo(name = "dt_nascimento") val dataNascimento: Date,
     val perfil: PerfilEnum
 )

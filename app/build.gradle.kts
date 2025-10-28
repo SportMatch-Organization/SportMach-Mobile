@@ -18,7 +18,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.cadastrologinsportmatch"
+        applicationId = "com.example.sportmatch"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
@@ -42,9 +42,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
-    }
-    buildFeatures {
-        compose = true
     }
 }
 
@@ -78,6 +75,7 @@ dependencies {
     val room_version = "2.8.3"
 
     implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
 
     // If this project uses any Kotlin source, use Kotlin Symbol Processing (KSP)
     // See Add the KSP plugin to your project
