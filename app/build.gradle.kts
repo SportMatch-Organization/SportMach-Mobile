@@ -83,4 +83,7 @@ dependencies {
 
     implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
     implementation("com.google.firebase:firebase-auth")
+
+    implementation("androidx.compose.material:material-icons-extended-android:1.6.8")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.32.0")
 }

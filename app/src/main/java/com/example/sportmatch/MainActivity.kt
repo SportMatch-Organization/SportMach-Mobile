@@ -14,7 +14,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.sportmatch.ui.Login
+import com.example.cadastrologinsportmatch.ui.Login
 import com.example.sportmatch.ui.Home
 import com.example.sportmatch.ui.cadastro.Cadastro1
 import com.example.sportmatch.ui.cadastro.Cadastro2
@@ -55,11 +55,16 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
     ) {
         composable("login") {
             Login(
-                onLogin = { loginDto ->
-                    navController.navigate("home")
+                onLoginSuccess = {
+                    navController.navigate("home") {
+                        popUpTo("login") { inclusive = true }
+                    }
                 },
                 onNavigateToCadastro = {
                     navController.navigate("cadastro1")
+                },
+                onNavigateBack = {
+                    navController.popBackStack()
                 }
             )
         }
