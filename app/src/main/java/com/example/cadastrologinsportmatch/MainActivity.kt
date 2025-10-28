@@ -13,6 +13,7 @@ import com.example.cadastrologinsportmatch.ui.Cadastro
 import com.example.cadastrologinsportmatch.ui.Home
 import com.example.cadastrologinsportmatch.ui.Login
 import com.example.cadastrologinsportmatch.ui.PerfilUsuario
+import com.example.cadastrologinsportmatch.ui.Pesquisar
 import com.example.cadastrologinsportmatch.ui.theme.CadastroLoginSportMatchTheme
 import com.google.firebase.FirebaseApp
 
@@ -40,7 +41,7 @@ fun AppNavHost(navController: NavHostController) {
         composable("login") {
             Login(
                 onLoginSuccess = {
-                    navController.navigate("home") {
+                    navController.navigate("pesquisar") {
                         popUpTo("login") { inclusive = true }
                     }
                 },
@@ -78,8 +79,12 @@ fun AppNavHost(navController: NavHostController) {
                 }
             )
         }
+        composable("pesquisar") {
+            Pesquisar(navController = navController) // Chama a nova tela
+        }
         composable("home") {
             Home()
         }
     }
 }
+
