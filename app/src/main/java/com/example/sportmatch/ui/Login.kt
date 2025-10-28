@@ -1,215 +1,286 @@
-package com.example.sportmatch.ui
 
+package com.example.cadastrologinsportmatch.ui
+
+import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.example.sportmatch.model.LoginUserDto
+import androidx.compose.ui.unit.sp
+import com.google.firebase.auth.FirebaseAuth
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.statusBars
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Login(
-    onLogin: (LoginUserDto) -> Unit,
-    onNavigateToCadastro: () -> Unit
-    ){
-    var email by remember {mutableStateOf("")}
-    var senha by remember {mutableStateOf("")}
-    var emailError by remember {mutableStateOf<String?>(null)}
-    var senhaError by remember {mutableStateOf<String?>(null)}
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ){
-        Text(
-            text = "SportMatch",
-            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier.padding(bottom = 32.dp)
-        )
-       TextField(
-           value = email,
-           onValueChange = {email = it},
-           label = {Text("E-mail")},
-           modifier = Modifier
-               .fillMaxWidth()
-               .padding(bottom = 16.dp)
-       )
-           if (emailError!= null){
-               Text(
-                   text = emailError!!,
-                   color = Color.Red,
-                   style = MaterialTheme.typography.bodySmall,
-                   modifier = Modifier
-                       .align(Alignment.Start)
-                       .padding(start = 8.dp, top = 4.dp)
-               )
-       }
-       TextField(
-           value = senha,
-           onValueChange = {senha = it},
-           label = {Text("Senha")},
-           visualTransformation = PasswordVisualTransformation(),
-           modifier = Modifier
-               .fillMaxWidth()
-               .padding(bottom = 24.dp)
-       )
-           if (senhaError!= null) {
-               Text(
-                   text = senhaError!!,
-                   color = Color.Red,
-                   style = MaterialTheme.typography.bodySmall,
-                   modifier = Modifier
-                       .align(Alignment.Start)
-                       .padding(start = 8.dp, top = 4.dp)
-               )
-           }
-        Button(
-            onClick = {
-                var valid = true
-                if (email.isBlank()){
-                    emailError = "Digite o e-mail para fazer login"
-                    valid = false
-                }else if(
-                    !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
-                ){
-                    emailError = "Formato de e-mail inválido!"
-                    valid = false
-                }else{
-                    emailError = null
-                }
-                if (senha.isBlank()){
-                    senhaError = "A senha é obrigatóia"
-                    valid = false
-                }else if (senha.length<8){
-                    senhaError = "A senha deve ter pelo menos 8 caracteres"
-                    valid = false
-                }else if (senha.length>12){
-                    senhaError = "A senha deve ter no máximo 12 caracteres"
-                    valid = false
-                }else if (!senha.contains(Regex("[!@#\$%^&*(),.?\":{}|<>]"))) {
-                    senhaError = "A senha deve conter pelo menos um caractere especial"
-                    valid = false
-                } else{
-                    senhaError = null
-                }
-                if(valid){
-                    val loginDto = LoginUserDto(email = email, senha = senha)
-                    onLogin(loginDto)
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp)
-        ){
-            Text(text = "Entrar")
-        }
-        Text(
-            text = "Clique aqui para se cadastrar",
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.clickable{
-                //direcionar para a tela de cadastro
-                onNavigateToCadastro()
-            }
-        )
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*package com.example.cadastrologinsportmatch.ui
-
-
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.unit.dp
-import com.example.cadastrologinsportmatch.model.LoginUserDto
-
-@Composable
-fun Login(onLogin: (LoginUserDto) -> Unit) {
+    onLoginSuccess: () -> Unit,
+    onNavigateToCadastro: () -> Unit,
+    onNavigateBack: () -> Unit
+) {
     var email by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
+    var emailError by remember { mutableStateOf<String?>(null) }
+    var senhaError by remember { mutableStateOf<String?>(null) }
+    var passwordVisible by remember { mutableStateOf(false) }
+    var rememberMe by remember { mutableStateOf(false) }
+    var isLoading by remember { mutableStateOf(false) }
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(16.dp),
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text("Login", style = MaterialTheme.typography.titleLarge)
+    val auth = FirebaseAuth.getInstance()
+    val context = LocalContext.current
+    val laranjaColor = Color(0xFFF97316)
 
-        Spacer(modifier = Modifier.height(16.dp))
+    val systemUiController = rememberSystemUiController()
+    SideEffect {
 
-        TextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("E-mail") },
-            modifier = Modifier.fillMaxWidth()
+        systemUiController.setStatusBarColor(
+            color = Color.Transparent,
+            darkIcons = false
         )
+    }
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        TextField(
-            value = senha,
-            onValueChange = { senha = it },
-            label = { Text("Senha") },
-            visualTransformation = PasswordVisualTransformation(),
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = { onLogin(LoginUserDto(email, senha)) },
-            modifier = Modifier.fillMaxWidth()
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { },
+                navigationIcon = {
+                    IconButton(onClick = onNavigateBack) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Voltar",
+                            tint = Color.White
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = laranjaColor,
+                    titleContentColor = Color.White,
+                    navigationIconContentColor = Color.White
+                ),
+                windowInsets = WindowInsets.statusBars
+            )
+        },
+        contentWindowInsets = WindowInsets(0.dp, 0.dp, 0.dp, 0.dp)
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(horizontal = 24.dp)
         ) {
-            Text("Entrar")
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = "Acesse",
+                style = MaterialTheme.typography.headlineLarge,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
+            )
+            Text(
+                text = "Com E-mail e senha para entrar",
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.Gray
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            Text(
+                text = "Email",
+                style = MaterialTheme.typography.labelMedium,
+                modifier = Modifier.padding(bottom = 4.dp)
+            )
+            TextField(
+                value = email,
+                onValueChange = {
+                    email = it
+                    emailError = null
+                },
+                placeholder = { Text("Digite seu email", color = Color.Gray) },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(8.dp),
+                colors = TextFieldDefaults.colors(
+                    unfocusedContainerColor = Color(0xFFF3F4F6),
+                    focusedContainerColor = Color(0xFFF3F4F6),
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    errorIndicatorColor = Color.Transparent,
+                    errorContainerColor = Color(0xFFF3F4F6)
+                ),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                isError = emailError != null
+            )
+            if (emailError != null) {
+                Text(
+                    text = emailError!!,
+                    color = Color.Red,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = "Senha",
+                style = MaterialTheme.typography.labelMedium,
+                modifier = Modifier.padding(bottom = 4.dp)
+            )
+            TextField(
+                value = senha,
+                onValueChange = {
+                    senha = it
+                    senhaError = null
+                },
+                placeholder = { Text("Digite sua senha", color = Color.Gray) },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(8.dp),
+                colors = TextFieldDefaults.colors(
+                    unfocusedContainerColor = Color(0xFFF3F4F6),
+                    focusedContainerColor = Color(0xFFF3F4F6),
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    errorIndicatorColor = Color.Transparent,
+                    errorContainerColor = Color(0xFFF3F4F6)
+                ),
+                singleLine = true,
+                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                trailingIcon = {
+                    val image =
+                        if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
+                    val description = if (passwordVisible) "Esconder senha" else "Mostrar senha"
+                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                        Icon(imageVector = image, description)
+                    }
+                },
+                isError = senhaError != null
+            )
+            if (senhaError != null) {
+                Text(
+                    text = senhaError!!,
+                    color = Color.Red,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(
+                        checked = rememberMe,
+                        onCheckedChange = { rememberMe = it },
+                        colors = CheckboxDefaults.colors(
+                            checkedColor = Color(0xFFF97316)
+                        )
+                    )
+                    Text("Lembrar minha senha", style = MaterialTheme.typography.bodySmall)
+                }
+                Text(
+                    text = "Esqueci minha senha",
+                    modifier = Modifier.clickable { /* ainda não será implementado */ },
+                    color = Color.DarkGray,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Button(
+                    onClick = {
+                        emailError = null
+                        senhaError = null
+                        var valid = true
+                        if (email.isBlank()) {
+                            emailError = "E-mail é obrigatório"
+                            valid = false
+                        }
+                        if (senha.isBlank()) {
+                            senhaError = "Senha é obrigatória"
+                            valid = false
+                        }
+                        if (valid) {
+                            isLoading = true
+                            auth.signInWithEmailAndPassword(email.trim(), senha.trim())
+                                .addOnCompleteListener { task ->
+                                    isLoading = false
+                                    if (task.isSuccessful) {
+                                        onLoginSuccess()
+                                    } else {
+                                        val errorMessage =
+                                            task.exception?.message ?: "Erro desconhecido"
+                                        Toast.makeText(
+                                            context,
+                                            "Falha na autenticação: $errorMessage",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                        senhaError = "E-mail ou senha inválidos"
+                                    }
+                                }
+                        }
+                    },
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(50.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = laranjaColor
+                    ),
+                    shape = RoundedCornerShape(8.dp),
+                    enabled = !isLoading
+                ) {
+                    if (isLoading) {
+                        CircularProgressIndicator(
+                            color = Color.White,
+                            modifier = Modifier.size(24.dp),
+                            strokeWidth = 2.dp
+                        )
+                    } else {
+                        Text("Acessar", fontSize = 16.sp)
+                    }
+                }
+                OutlinedButton(
+                    onClick = onNavigateToCadastro,
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(50.dp),
+                    shape = RoundedCornerShape(8.dp),
+                    border = BorderStroke(1.dp, Color.LightGray)
+                ) {
+                    Text(
+                        "Cadastrar",
+                        fontSize = 16.sp,
+                        color = Color.DarkGray,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
         }
     }
 }
-*/
