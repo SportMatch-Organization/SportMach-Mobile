@@ -1,6 +1,7 @@
 package com.example.cadastrologinsportmatch
 
 
+import CampeonatoViewModel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,18 +11,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.cadastrologinsportmatch.ui.Login
 import com.example.cadastrologinsportmatch.ui.Home
-import com.example.cadastrologinsportmatch.ui.cadastro.Cadastro1
-import com.example.cadastrologinsportmatch.ui.cadastro.Cadastro2
-import com.example.cadastrologinsportmatch.ui.cadastro.Cadastro3
-import com.example.cadastrologinsportmatch.ui.cadastro.Cadastro4
-import com.example.cadastrologinsportmatch.ui.cadastro.Cadastro5
-import com.example.cadastrologinsportmatch.ui.cadastro.Cadastro6
+import com.example.cadastrologinsportmatch.ui.screens.cadastro.Cadastro1
+import com.example.cadastrologinsportmatch.ui.screens.cadastro.Cadastro2
+import com.example.cadastrologinsportmatch.ui.screens.cadastro.Cadastro3
+import com.example.cadastrologinsportmatch.ui.screens.cadastro.Cadastro4
+import com.example.cadastrologinsportmatch.ui.screens.cadastro.Cadastro5
+import com.example.cadastrologinsportmatch.ui.screens.cadastro.Cadastro6
+import com.example.cadastrologinsportmatch.ui.screens.competicoes.CadastroCompeticao
 import com.example.cadastrologinsportmatch.ui.theme.CadastroLoginSportMatchTheme
 
 class MainActivity : ComponentActivity() {
@@ -50,7 +53,7 @@ class MainActivity : ComponentActivity() {
 fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
     NavHost(
         navController = navController,
-        startDestination = "login",
+        startDestination = "home",
         modifier = modifier // aplica o padding aqui
     ) {
         composable("login") {
@@ -117,6 +120,15 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
 
         composable("home") {
             Home()
+        }
+
+        composable("cadastro-competicao") {
+                backStackEntry ->
+            val campeonatoViewModel: CampeonatoViewModel = viewModel(backStackEntry)
+            CadastroCompeticao(
+                viewModel = campeonatoViewModel,
+                onNext = { /* ação de continuar */ }
+            )
         }
     }
 }

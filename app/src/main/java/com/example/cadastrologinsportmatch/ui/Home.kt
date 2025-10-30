@@ -14,6 +14,6 @@ fun Home() {
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Text("Bem-vindo ao SportMatch!", style = MaterialTheme.typography.headlineMedium)
+        Text("Bem-vindo ao SportMatch", style = MaterialTheme.typography.headlineMedium)
     }
 }
