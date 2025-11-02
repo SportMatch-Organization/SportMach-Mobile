@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.devtools.ksp")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -12,11 +14,11 @@ android {
         kotlinCompilerExtensionVersion = "1.7.5"
     }
 
-    namespace = "com.example.cadastrologinsportmatch"
+    namespace = "com.example.sportmatch"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.cadastrologinsportmatch"
+        applicationId = "com.example.sportmatch"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
@@ -40,9 +42,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
-    }
-    buildFeatures {
-        compose = true
     }
 }
 
@@ -73,4 +72,19 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.2")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
     implementation("androidx.compose.material:material-icons-extended")
+
+    val room_version = "2.8.3"
+
+    implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+
+    // If this project uses any Kotlin source, use Kotlin Symbol Processing (KSP)
+    // See Add the KSP plugin to your project
+    ksp("androidx.room:room-compiler:$room_version") //alternativa mais rápida que o Kapt
+
+    implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
+    implementation("com.google.firebase:firebase-auth")
+
+    implementation("androidx.compose.material:material-icons-extended-android:1.6.8")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.32.0")
 }
