@@ -1,4 +1,4 @@
-package com.example.sportmatch.ui.cadastro
+package com.example.sportmatch.ui.screens.cadastro
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*

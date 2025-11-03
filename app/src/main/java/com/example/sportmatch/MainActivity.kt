@@ -17,14 +17,13 @@ import androidx.navigation.compose.rememberNavController
 import com.example.sportmatch.ui.screens.competicoes.CadastroCompeticao
 import com.example.sportmatch.ui.Login
 import com.example.sportmatch.ui.Home
-import com.example.sportmatch.ui.cadastro.Cadastro1
-import com.example.sportmatch.ui.cadastro.Cadastro2
-import com.example.sportmatch.ui.cadastro.Cadastro3
-import com.example.sportmatch.ui.cadastro.Cadastro4
-import com.example.sportmatch.ui.cadastro.Cadastro5
-import com.example.sportmatch.ui.cadastro.Cadastro6
+import com.example.sportmatch.ui.screens.cadastro.Cadastro1
+import com.example.sportmatch.ui.screens.cadastro.Cadastro2
+import com.example.sportmatch.ui.screens.cadastro.Cadastro3
+import com.example.sportmatch.ui.screens.cadastro.Cadastro4
+import com.example.sportmatch.ui.screens.cadastro.Cadastro5
+import com.example.sportmatch.ui.screens.cadastro.Cadastro6
 import com.example.sportmatch.ui.theme.SportmatchTheme
-import com.google.firebase.Firebase
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
