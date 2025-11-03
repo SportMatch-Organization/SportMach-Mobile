@@ -1,6 +1,7 @@
 package com.example.cadastrologinsportmatch.ui
 
 import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,12 +13,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.material3.FloatingActionButtonDefaults.elevation
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -31,67 +32,114 @@ import com.example.cadastrologinsportmatch.database.dao.CompeticaoDao
 import com.example.cadastrologinsportmatch.database.entities.Competicao
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.launch
+import com.example.cadastrologinsportmatch.model.ApiSport
+import com.example.cadastrologinsportmatch.network.Api
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import kotlinx.coroutines.CoroutineScope
 
-
+// Cores do Figma
 val laranjaPrincipal = Color(0xFFF97316)
 val verdeTaxa = Color(0xFF04A777)
 val cinzaFundoClaro = Color(0xFFF3F4F6)
 val cinzaTextoSecundario = Color.Gray
+val cinzaChipFundo = Color(0xFFEEEEEE)
+
+
+val listaEsportesLocal = listOf("Esporte", "Todos", "Vôlei", "Basquete", "Futebol")
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Pesquisar(navController: NavHostController) {
 
-
+    // --- Cérebro da Tela ---
     var listaCompeticoes by remember { mutableStateOf(emptyList<Competicao>()) }
+    var listaEsportesDaApi by remember { mutableStateOf(emptyList<ApiSport>()) }
+    var isLoadingApi by remember { mutableStateOf(false) }
     var selectedTabIndex by remember { mutableStateOf(0) }
-    val context = LocalContext.current
-    val scope = rememberCoroutineScope()
+    var filtroEsporteExpanded by remember { mutableStateOf(false) }
 
+    val context = LocalContext.current
+    val sharedPrefs = context.getSharedPreferences("PESQUISAR_PREFS", 0)
+    var esporteSelecionado by remember {
+        mutableStateOf(sharedPrefs.getString("esporteSelecionado", "Esporte") ?: "Esporte")
+    }
+
+    val scope = rememberCoroutineScope()
     val competicaoDao = remember { SportMatchDatabase.getDatabase(context).competicaoDao() }
 
-
-    val systemUiController = rememberSystemUiController()
-    SideEffect {
-        systemUiController.setStatusBarColor(color = Color.Transparent, darkIcons = false)
+    // Carregar esportes da API (fallback para lista local se falhar)
+    LaunchedEffect(Unit) {
+        isLoadingApi = true
+        try {
+            val apiList = Api.retrofitService.getSports()
+            // Usa a lista local 'listaEsportesLocal' para preencher o dropdown
+            listaEsportesDaApi = listaEsportesLocal.mapIndexed { index, name -> ApiSport(index, name) }
+        } catch (e: Exception) {
+            // Se a API falhar, usa a nossa lista local
+            listaEsportesDaApi = listaEsportesLocal.mapIndexed { index, name -> ApiSport(index, name) }
+            Toast.makeText(context, "API falhou, a usar lista local de esportes.", Toast.LENGTH_SHORT).show()
+        }
+        isLoadingApi = false
     }
 
 
-    LaunchedEffect(Unit) {
-        scope.launch {
+    LaunchedEffect(selectedTabIndex) {
+        if (selectedTabIndex == 0) {
             listaCompeticoes = competicaoDao.getTodasCompeticoes()
-
             if (listaCompeticoes.isEmpty()) {
-                adicionarDadosDeTeste(competicaoDao)
-                listaCompeticoes = competicaoDao.getTodasCompeticoes()
+                scope.launch {
+                    adicionarDadosDeTeste(competicaoDao)
+                    listaCompeticoes = competicaoDao.getTodasCompeticoes()
+                }
             }
+        }
+        if (selectedTabIndex == 1) {
+            // TODO: Adicionar lógica para a aba Pessoas (talvez ler do UserDao?)
         }
     }
 
+
+    val competicoesFiltradas = remember(esporteSelecionado, listaCompeticoes) {
+        if (esporteSelecionado == "Todos" || esporteSelecionado == "Esporte") listaCompeticoes
+        else listaCompeticoes.filter {
+            it.esporte.equals(esporteSelecionado, ignoreCase = true)
+        }
+    }
+    val competicoesAbertas = remember(competicoesFiltradas) {
+        competicoesFiltradas.filter { it.status.equals("Abertos", ignoreCase = true) }
+    }
+    val competicoesEmAndamento = remember(competicoesFiltradas) {
+        competicoesFiltradas.filter { it.status.equals("Em andamento", ignoreCase = true) }
+    }
+    val competicoesEncerradas = remember(competicoesFiltradas) {
+        competicoesFiltradas.filter { it.status.equals("Encerrados", ignoreCase = true) }
+    }
+
+
+    val systemUiController = rememberSystemUiController()
+    SideEffect { systemUiController.setStatusBarColor(Color.Transparent, darkIcons = false) }
 
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = { Text("Campeonato A", fontWeight = FontWeight.Bold, color = Color.White) },
                 actions = {
-                    IconButton(onClick = {
-                        Toast.makeText(context, "Busca ainda não implementada", Toast.LENGTH_SHORT).show()
-                    }) {
+                    IconButton(onClick = { }) {
                         Icon(Icons.Default.Search, contentDescription = "Pesquisar", tint = Color.White)
                     }
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = laranjaPrincipal // Cor laranja
+                    containerColor = laranjaPrincipal
                 ),
-
                 windowInsets = WindowInsets.statusBars.only(WindowInsetsSides.Top)
             )
         },
         bottomBar = {
             NavigationBar(containerColor = Color.White) {
+                // (Itens da Barra de Navegação)
                 NavigationBarItem(
                     selected = false,
-                    onClick = { navController.navigate("home") { popUpTo("pesquisar"){ inclusive = true } } },
+                    onClick = { navController.navigate("home") { popUpTo("pesquisar") { inclusive = true } } },
                     icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
                     label = { Text("Home") },
                     colors = NavigationBarItemDefaults.colors(
@@ -101,8 +149,8 @@ fun Pesquisar(navController: NavHostController) {
                     )
                 )
                 NavigationBarItem(
-                    selected = true, // Aba atual
-                    onClick = { /* Já está aqui */ },
+                    selected = true,
+                    onClick = { },
                     icon = { Icon(Icons.Default.Search, contentDescription = "Pesquisar") },
                     label = { Text("Pesquisar") },
                     colors = NavigationBarItemDefaults.colors(
@@ -135,10 +183,8 @@ fun Pesquisar(navController: NavHostController) {
                 )
             }
         },
-
         contentWindowInsets = WindowInsets(0.dp)
     ) { paddingValues ->
-
 
         LazyColumn(
             modifier = Modifier
@@ -148,9 +194,9 @@ fun Pesquisar(navController: NavHostController) {
                 .padding(horizontal = 16.dp)
         ) {
 
-
+            // --- Abas ---
             item {
-                TabRow(
+                PrimaryTabRow(
                     selectedTabIndex = selectedTabIndex,
                     containerColor = cinzaFundoClaro,
                     contentColor = laranjaPrincipal
@@ -174,30 +220,39 @@ fun Pesquisar(navController: NavHostController) {
             }
 
 
-            if (selectedTabIndex == 0) { // Mostra Competições
+            if (selectedTabIndex == 0) {
+
 
                 item {
                     Row(
                         modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        FilterChipWithDropdown(text = "Cidade") {
+                        FilterChipComBotao(text = "Cidade") {
                             Toast.makeText(context, "Filtro Cidade não implementado", Toast.LENGTH_SHORT).show()
                         }
-                        FilterChipWithDropdown(text = "Esporte") {
-                            Toast.makeText(context, "Filtro Esporte não implementado", Toast.LENGTH_SHORT).show()
-                        }
-                        FilterChipWithDropdown(text = "Categoria") {
+
+                        FiltroEsporteDropdown(
+                            listaEsportes = listaEsportesDaApi,
+                            esporteSelecionado = esporteSelecionado,
+                            onEsporteSelecionado = { esporte ->
+                                esporteSelecionado = esporte
+                                sharedPrefs.edit().putString("esporteSelecionado", esporte).apply()
+                                filtroEsporteExpanded = false
+                            },
+                            expanded = filtroEsporteExpanded,
+                            onExpandedChange = { filtroEsporteExpanded = it }
+                        )
+
+                        FilterChipComBotao(text = "Categoria") {
                             Toast.makeText(context, "Filtro Categoria não implementado", Toast.LENGTH_SHORT).show()
                         }
                     }
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 
-                item {
-                    Text("Abertos", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 8.dp))
-                }
-                val competicoesAbertas = listaCompeticoes.filter { it.status.equals("Abertos", ignoreCase = true) }
+                item { Text("Abertos", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 8.dp)) }
                 if (competicoesAbertas.isEmpty()) {
                     item { Text("Nenhuma competição aberta.", modifier = Modifier.padding(bottom = 16.dp), color = cinzaTextoSecundario) }
                 } else {
@@ -206,10 +261,7 @@ fun Pesquisar(navController: NavHostController) {
                     }
                 }
 
-                item {
-                    Text("Em andamento", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 16.dp, bottom = 8.dp))
-                }
-                val competicoesEmAndamento = listaCompeticoes.filter { it.status.equals("Em andamento", ignoreCase = true) }
+                item { Text("Em andamento", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)) }
                 if (competicoesEmAndamento.isEmpty()) {
                     item { Text("Nenhuma competição em andamento.", modifier = Modifier.padding(bottom = 16.dp), color = cinzaTextoSecundario) }
                 } else {
@@ -218,11 +270,7 @@ fun Pesquisar(navController: NavHostController) {
                     }
                 }
 
-
-                item {
-                    Text("Encerrados", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 16.dp, bottom = 8.dp))
-                }
-                val competicoesEncerradas = listaCompeticoes.filter { it.status.equals("Encerrados", ignoreCase = true) }
+                item { Text("Encerrados", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)) }
                 if (competicoesEncerradas.isEmpty()) {
                     item { Text("Nenhuma competição encerrada.", modifier = Modifier.padding(bottom = 16.dp), color = cinzaTextoSecundario) }
                 } else {
@@ -231,58 +279,102 @@ fun Pesquisar(navController: NavHostController) {
                     }
                 }
 
-
-                item { Spacer(modifier = Modifier.height(16.dp)) }
-
             } else {
+
                 item {
                     Text(
-                        "Funcionalidade 'Pessoas' ainda não implementada.",
+                        "Funcionalidade 'Pessoas' (da API /users) ainda não implementada.",
                         modifier = Modifier.padding(16.dp),
                         style = MaterialTheme.typography.bodyLarge,
                         color = cinzaTextoSecundario
                     )
                 }
+
             }
         }
     }
 }
 
 
+@Composable
+fun FilterChipComBotao(text: String, onClick: () -> Unit) {
+    OutlinedButton(
+        onClick = onClick,
+        shape = RoundedCornerShape(50),
+        colors = ButtonDefaults.outlinedButtonColors(
+            containerColor = Color.White,
+            contentColor = Color.DarkGray
+        ),
+        border = BorderStroke(1.dp, Color.LightGray.copy(alpha = 0.5f)),
+        elevation = ButtonDefaults.buttonElevation(defaultElevation = 1.dp),
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp)
+    ) {
+        Text(text, fontSize = 12.sp)
+        Spacer(Modifier.width(4.dp))
+        Icon(
+            imageVector = Icons.Default.ArrowDropDown,
+            contentDescription = "Abrir opções de $text",
+            modifier = Modifier.size(18.dp),
+            tint = laranjaPrincipal
+        )
+    }
+}
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FilterChipWithDropdown(
-    text: String,
-    onClick: () -> Unit
+fun FiltroEsporteDropdown(
+    listaEsportes: List<ApiSport>,
+    esporteSelecionado: String,
+    onEsporteSelecionado: (String) -> Unit,
+    expanded: Boolean,
+    onExpandedChange: (Boolean) -> Unit
 ) {
-    FilterChip(
-        selected = false,
-        onClick = onClick,
-        label = { Text(text, fontSize = 12.sp) },
-        shape = RoundedCornerShape(50),
-        leadingIcon = null,
-        trailingIcon = {
-            Icon(
-                imageVector = Icons.Default.ArrowDropDown,
-                contentDescription = "Abrir opções de $text",
-                modifier = Modifier.size(FilterChipDefaults.IconSize)
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = onExpandedChange
+    ) {
+        OutlinedTextField(
+            value = esporteSelecionado,
+            onValueChange = {},
+            readOnly = true,
+            modifier = Modifier
+                .menuAnchor()
+                .widthIn(min = 120.dp),
+            textStyle = LocalTextStyle.current.copy(fontSize = 12.sp, color = Color.DarkGray),
+            trailingIcon = {
+                ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+            },
+            shape = RoundedCornerShape(50),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = Color.White,
+                unfocusedContainerColor = Color.White,
+                focusedBorderColor = Color.LightGray.copy(alpha = 0.5f),
+                unfocusedBorderColor = Color.LightGray.copy(alpha = 0.5f),
+                focusedTrailingIconColor = laranjaPrincipal,
+                unfocusedTrailingIconColor = laranjaPrincipal,
+                focusedTextColor = Color.DarkGray,
+                unfocusedTextColor = Color.DarkGray
             )
-        },
-        colors = FilterChipDefaults.filterChipColors(
-            containerColor = Color.White,
-            labelColor = Color.DarkGray,
-            iconColor = laranjaPrincipal
-        ),
-        border = FilterChipDefaults.filterChipBorder(
-            borderColor = Color.LightGray.copy(alpha=0.5f),
-            borderWidth = 1.dp
-        ),
-        elevation = FilterChipDefaults.filterChipElevation(
-            elevation = 0.dp,
-            pressedElevation = 0.dp
-        ),
-        enabled = true
-    )
+        )
+
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { onExpandedChange(false) },
+            modifier = Modifier.background(Color.White)
+        ) {
+            listaEsportes.forEach { esporte ->
+                DropdownMenuItem(
+                    text = { Text(esporte.name, fontWeight = FontWeight.Bold) },
+                    onClick = {
+                        onEsporteSelecionado(esporte.name)
+                        onExpandedChange(false)
+                    },
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                )
+            }
+        }
+    }
 }
 
 
@@ -298,92 +390,155 @@ fun CompeticaoCard(competicao: Competicao) {
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
-        Row(modifier = Modifier.padding(8.dp)) {
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(IntrinsicSize.Min)
+        ) {
+
 
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(end = 8.dp)
+                    .padding(12.dp)
+                    .fillMaxHeight(),
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(competicao.titulo, fontWeight = FontWeight.Bold, fontSize = 16.sp, maxLines = 1)
-                Spacer(modifier = Modifier.height(6.dp))
+
+                Column {
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.Top
+                    ) {
+                        Text(
+                            text = competicao.titulo,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp,
+                            color = Color.DarkGray,
+                            modifier = Modifier.weight(1f, fill = false)
+                        )
+                        Spacer(Modifier.width(8.dp))
+                        ChipVisual( // Chip de Vagas
+                            text = "${competicao.vagasPreenchidas}/${competicao.vagasTotais}",
+                            icon = Icons.Filled.Group,
+                            iconTint = Color.DarkGray
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(10.dp))
 
 
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Filled.SportsVolleyball, contentDescription = "Esporte", modifier = Modifier.size(14.dp), tint = laranjaPrincipal)
-                    Spacer(Modifier.width(4.dp))
-                    Text(competicao.esporte, fontSize = 12.sp, color = cinzaTextoSecundario)
-                    Spacer(Modifier.width(8.dp))
-                    Icon(Icons.Filled.People, contentDescription = "Modo", modifier = Modifier.size(14.dp), tint = laranjaPrincipal)
-                    Spacer(Modifier.width(4.dp))
-                    Text(competicao.modo, fontSize = 12.sp, color = cinzaTextoSecundario)
-                    Spacer(Modifier.weight(1f))
-                    Text("R$ %.2f".format(competicao.taxa), fontSize = 13.sp, fontWeight = FontWeight.Bold, color = verdeTaxa)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        ChipVisual(
+                            text = competicao.esporte,
+                            icon = Icons.Filled.SportsVolleyball,
+                            iconTint = laranjaPrincipal
+                        )
+                        Spacer(Modifier.width(8.dp))
+                        ChipVisual(
+                            text = competicao.modo,
+                            icon = Icons.Filled.People,
+                            iconTint = laranjaPrincipal
+                        )
+                        Spacer(Modifier.weight(1f))
+
+
+                        ChipVisual(
+                            text = "R$ %.2f".format(competicao.taxa),
+                            textColor = verdeTaxa,
+                            fontWeight = FontWeight.Bold,
+                            backgroundColor = verdeTaxa.copy(alpha = 0.1f)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(Icons.Default.DateRange, contentDescription = "Data", modifier = Modifier.size(16.dp), tint = cinzaTextoSecundario)
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(competicao.data, fontSize = 12.sp, color = cinzaTextoSecundario)
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Icon(Icons.Default.Schedule, contentDescription = "Horário", modifier = Modifier.size(16.dp), tint = cinzaTextoSecundario)
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(competicao.horario, fontSize = 12.sp, color = cinzaTextoSecundario)
+                    }
+
+                    Spacer(modifier = Modifier.height(6.dp))
+
+                    // Linha 4: Local
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(Icons.Default.LocationOn, contentDescription = "Local", modifier = Modifier.size(16.dp), tint = laranjaPrincipal)
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(competicao.local, fontSize = 12.sp, color = cinzaTextoSecundario, maxLines = 1)
+                    }
                 }
-
-                Spacer(modifier = Modifier.height(6.dp))
-
-                // Linha 2: Data e Horário
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.DateRange, contentDescription = "Data", modifier = Modifier.size(14.dp), tint = cinzaTextoSecundario)
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text("${competicao.data} | ${competicao.horario}", fontSize = 11.sp, color = cinzaTextoSecundario)
-                }
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                // Linha 3: Local
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.LocationOn, contentDescription = "Local", modifier = Modifier.size(14.dp), tint = cinzaTextoSecundario)
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(competicao.local, fontSize = 11.sp, color = cinzaTextoSecundario, maxLines = 1)
-                }
-
-                Spacer(modifier = Modifier.height(8.dp))
 
 
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .clickable { /* TODO: Ação Ver mais */ }
+                        .padding(top = 10.dp)
                 ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Filled.Group, contentDescription = "Vagas", modifier = Modifier.size(14.dp), tint = cinzaTextoSecundario)
-                        Spacer(Modifier.width(4.dp))
-                        Text("${competicao.vagasPreenchidas}/${competicao.vagasTotais}", fontSize = 11.sp, color = cinzaTextoSecundario)
-                    }
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.clickable { /* TODO: Ação Ver mais */ }
-                    ) {
-                        Text("Ver mais", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = laranjaPrincipal)
-                        Icon(Icons.AutoMirrored.Filled.ArrowForwardIos, contentDescription = null, modifier = Modifier.size(12.dp), tint = laranjaPrincipal)
-                    }
+                    Text("Ver mais", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = laranjaPrincipal)
+                    Icon(Icons.AutoMirrored.Filled.ArrowForwardIos, contentDescription = null, modifier = Modifier.size(14.dp), tint = laranjaPrincipal)
                 }
             }
+
 
             Image(
                 painter = painterResource(id = R.drawable.placeholder_volei),
                 contentDescription = competicao.titulo,
                 modifier = Modifier
-                    .size(90.dp)
-                    .clip(RoundedCornerShape(8.dp)),
-                contentScale = ContentScale.Crop
+                    .width(110.dp) // Largura fixa da imagem
+                    .fillMaxHeight() // Ocupa toda a altura da Row
+                    .clip(RoundedCornerShape(topEnd = 12.dp, bottomEnd = 12.dp)),
             )
         }
     }
 }
 
 
-suspend fun adicionarDadosDeTeste(dao: CompeticaoDao) {
 
+@Composable
+fun ChipVisual(
+    text: String,
+    icon: ImageVector? = null,
+    iconTint: Color = Color.DarkGray,
+    textColor: Color = Color.DarkGray,
+    fontWeight: FontWeight = FontWeight.Medium,
+    backgroundColor: Color = cinzaChipFundo
+) {
+    Row(
+        modifier = Modifier
+            .clip(RoundedCornerShape(50))
+            .background(backgroundColor)
+            .padding(horizontal = 8.dp, vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+        if (icon != null) {
+            Icon(icon, contentDescription = null, modifier = Modifier.size(14.dp), tint = iconTint)
+            Spacer(Modifier.width(4.dp))
+        }
+        Text(text, fontSize = 12.sp, color = textColor, fontWeight = fontWeight)
+    }
+}
+
+suspend fun adicionarDadosDeTeste(dao: CompeticaoDao) {
     if (dao.getTodasCompeticoes().isEmpty()) {
         dao.insert(Competicao(titulo="Campeonato Aravôlei", status="Abertos", esporte="Vôlei", modo="Misto", taxa=25.90, data="16/11/2025", horario="15:00 - 17:00", local="Quadra do sagrada familia", vagasPreenchidas=2, vagasTotais=33, imagemUrl="placeholder"))
         dao.insert(Competicao(titulo="Campeonato Amador", status="Abertos", esporte="Vôlei", modo="Misto", taxa=20.00, data="16/11/2025", horario="15:00 - 17:00", local="Quadra do sagrada familia", vagasPreenchidas=5, vagasTotais=20, imagemUrl="placeholder"))
+        dao.insert(Competicao(titulo="Basquete de Rua", status="Abertos", esporte="Basquete", modo="Masculino", taxa=10.00, data="20/11/2025", horario="10:00 - 12:00", local="Parque Central", vagasPreenchidas=3, vagasTotais=10, imagemUrl="placeholder"))
         dao.insert(Competicao(titulo="Campeonato Arriba", status="Em andamento", esporte="Vôlei", modo="Misto", taxa=25.90, data="16/11/2025", horario="13:00 - 17:00", local="Quadra do sagrada familia", vagasPreenchidas=10, vagasTotais=15, imagemUrl="placeholder"))
         dao.insert(Competicao(titulo="Campeonato Arau", status="Encerrados", esporte="Vôlei", modo="Misto", taxa=25.90, data="16/11/2025", horario="15:00 - 17:00", local="Quadra do sagrada familia", vagasPreenchidas=30, vagasTotais=30, imagemUrl="placeholder"))
-        dao.insert(Competicao(titulo="Campeonato Amador Encerrado", status="Encerrados", esporte="Vôlei", modo="Misto", taxa=20.00, data="16/11/2025", horario="15:00 - 17:00", local="Quadra do sagrada familia", vagasPreenchidas=20, vagasTotais=20, imagemUrl="placeholder"))
     }
 }
 
