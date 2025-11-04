@@ -1,4 +1,4 @@
-package com.example.cadastrologinsportmatch.ui.theme
+package com.example.sportmatch.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

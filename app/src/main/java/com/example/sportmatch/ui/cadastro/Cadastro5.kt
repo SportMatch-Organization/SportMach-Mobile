@@ -1,4 +1,4 @@
-package com.example.cadastrologinsportmatch.ui.cadastro
+package com.example.sportmatch.ui.cadastro
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -23,9 +22,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.sportmatch.model.CadastroViewModel
 
 @Composable
-fun Cadastro5(onNavigateToCadastro6: () -> Unit){
+fun Cadastro5(
+    viewModel: CadastroViewModel = viewModel(),
+    onNavigateToCadastro6: () -> Unit
+){
 
     var estado by remember { mutableStateOf("") }
     var cidade by remember { mutableStateOf("") }
@@ -134,6 +138,8 @@ fun Cadastro5(onNavigateToCadastro6: () -> Unit){
         Spacer(modifier = Modifier.height(256.dp))
         Button(
             onClick = {
+                endereco = "$estado, $cidade, $numero, $complemento"
+                viewModel.setEndereco(endereco)
                 onNavigateToCadastro6()
             },
             modifier = Modifier.fillMaxWidth()
@@ -147,5 +153,5 @@ fun Cadastro5(onNavigateToCadastro6: () -> Unit){
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun Cadastro5Preview(){
-    Cadastro5({})
+    Cadastro5(viewModel { CadastroViewModel()}, {})
 }

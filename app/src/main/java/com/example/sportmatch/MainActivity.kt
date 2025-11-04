@@ -1,4 +1,4 @@
-package com.example.cadastrologinsportmatch
+package com.example.sportmatch
 
 
 import android.os.Bundle
@@ -15,14 +15,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.cadastrologinsportmatch.ui.Login
-import com.example.cadastrologinsportmatch.ui.Home
-import com.example.cadastrologinsportmatch.ui.cadastro.Cadastro1
-import com.example.cadastrologinsportmatch.ui.cadastro.Cadastro2
-import com.example.cadastrologinsportmatch.ui.cadastro.Cadastro3
-import com.example.cadastrologinsportmatch.ui.cadastro.Cadastro4
-import com.example.cadastrologinsportmatch.ui.cadastro.Cadastro5
-import com.example.cadastrologinsportmatch.ui.cadastro.Cadastro6
-import com.example.cadastrologinsportmatch.ui.theme.CadastroLoginSportMatchTheme
+import com.example.sportmatch.ui.Home
+import com.example.sportmatch.ui.cadastro.Cadastro1
+import com.example.sportmatch.ui.cadastro.Cadastro2
+import com.example.sportmatch.ui.cadastro.Cadastro3
+import com.example.sportmatch.ui.cadastro.Cadastro4
+import com.example.sportmatch.ui.cadastro.Cadastro5
+import com.example.sportmatch.ui.cadastro.Cadastro6
+import com.example.sportmatch.ui.theme.CadastroLoginSportMatchTheme
+import com.google.firebase.Firebase
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,13 +35,11 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    // Passe o innerPadding para o container da sua tela
                     AppNavHost(
                         navController = navController,
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
-
             }
         }
     }
@@ -55,20 +54,22 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
     ) {
         composable("login") {
             Login(
-                onLogin = { loginDto ->
-                    navController.navigate("home")
+                onLoginSuccess = {
+                    navController.navigate("home") {
+                        popUpTo("login") { inclusive = true }
+                    }
                 },
                 onNavigateToCadastro = {
                     navController.navigate("cadastro1")
+                },
+                onNavigateBack = {
+                    navController.popBackStack()
                 }
             )
         }
 
         composable("cadastro1") {
             Cadastro1 (
-                onCadastro = { userDto ->
-                    navController.navigate("cadastro1")
-                },
                 onNavigateToCadastro2 = {
                     navController.navigate("cadastro2")
                 }

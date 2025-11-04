@@ -1,6 +1,5 @@
-package com.example.cadastrologinsportmatch.ui.cadastro
+package com.example.sportmatch.ui.cadastro
 
-import androidx.compose.foundation.clickable
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -10,27 +9,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.example.cadastrologinsportmatch.model.CreateUserDto
-import com.example.cadastrologinsportmatch.ui.theme.Orange
-import java.time.format.TextStyle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.sportmatch.model.CadastroViewModel
+import com.example.sportmatch.model.CreateUserDto
+import com.example.sportmatch.ui.theme.Orange
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Cadastro1(
-    onCadastro: (CreateUserDto) -> Unit,
+    viewModel: CadastroViewModel = viewModel(),
     onNavigateToCadastro2: () -> Unit
 ) {
-    var nome by remember { mutableStateOf("") }
-    var usuario by remember { mutableStateOf("") } // apelido
-    var cpfCnpj by remember { mutableStateOf("") }
-    var dataNascimento by remember { mutableStateOf("") }
-    var genero by remember { mutableStateOf("") }
-    var telefone by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
+    var repetirEmail by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
-    var endereco by remember { mutableStateOf("") }
+    var repetirSenha by remember { mutableStateOf("") }
 
     var nomeError by remember { mutableStateOf<String?>(null) }
     var usuarioError by remember { mutableStateOf<String?>(null) }
@@ -41,15 +34,6 @@ fun Cadastro1(
     var emailError by remember { mutableStateOf<String?>(null) }
     var senhaError by remember { mutableStateOf<String?>(null) }
     var enderecoError by remember { mutableStateOf<String?>(null) }
-
-    // Dropdown de Perfil
-    val perfis = listOf("Organizador", "Atleta", "Locador de espaço", "Patrocinador")
-    var perfil by remember { mutableStateOf(perfis[0]) }
-    var perfilExpanded by remember { mutableStateOf(false) }
-
-    // Checkbox de esportes
-    var esportesDisponiveis = listOf("Futebol", "Vôlei", "Basquete", "Natação", "Atletismo")
-    var esportesSelecionados by remember { mutableStateOf(listOf<String>()) }
 
     Column (
         modifier = Modifier
@@ -80,8 +64,8 @@ fun Cadastro1(
             .height(16.dp))
 
         TextField(
-            value = nome,
-            onValueChange = { nome = it },
+            value = email,
+            onValueChange = { email = it },
             label = { Text("Digite seu email") },
             modifier = Modifier.fillMaxWidth()
         )
@@ -106,8 +90,8 @@ fun Cadastro1(
             .height(16.dp))
 
         TextField(
-            value = nome,
-            onValueChange = { nome = it },
+            value = repetirEmail,
+            onValueChange = { repetirEmail = it },
             label = { Text("Digite seu email") },
             modifier = Modifier.fillMaxWidth())
         if (nomeError != null)
@@ -127,8 +111,8 @@ fun Cadastro1(
             .height(16.dp))
 
         TextField(
-            value = nome,
-            onValueChange = { nome = it },
+            value = senha,
+            onValueChange = { senha = it },
             label = { Text("Digite sua senha") },
             modifier = Modifier.fillMaxWidth())
         if (nomeError != null)
@@ -147,8 +131,8 @@ fun Cadastro1(
             .height(16.dp))
 
         TextField(
-            value = nome,
-            onValueChange = { nome = it },
+            value = repetirSenha,
+            onValueChange = { repetirSenha = it },
             label = { Text("Digite sua senha") },
             modifier = Modifier.fillMaxWidth())
         if (nomeError != null)
@@ -164,6 +148,8 @@ fun Cadastro1(
 
         Button(
             onClick = {
+                viewModel.setEmail(email)
+                viewModel.setSenha(senha)
                 onNavigateToCadastro2()
             },
             modifier = Modifier
@@ -178,5 +164,5 @@ fun Cadastro1(
 @Preview
 @Composable
 fun Cadastro1Preview() {
-    Cadastro1(onCadastro = {}, onNavigateToCadastro2 = {})
+    Cadastro1(viewModel { CadastroViewModel() }, onNavigateToCadastro2 = {})
 }
