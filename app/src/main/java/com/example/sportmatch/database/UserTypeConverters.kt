@@ -12,8 +12,12 @@ class UserTypeConverters {
     }
 
     @TypeConverter
-    fun toDate(timestamp: Long?): Date? {
+    fun longToDate(timestamp: Long?): Date? {
         return timestamp?.let { Date(it) }
+    }
+
+    fun stringToDate(date: String): Date?{
+        return Date(date.toLong())
     }
 
     @TypeConverter

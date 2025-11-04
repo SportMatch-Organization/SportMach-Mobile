@@ -40,7 +40,6 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
-
             }
         }
     }
@@ -71,9 +70,6 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
 
         composable("cadastro1") {
             Cadastro1 (
-                onCadastro = { userDto ->
-                    navController.navigate("cadastro1")
-                },
                 onNavigateToCadastro2 = {
                     navController.navigate("cadastro2")
                 }

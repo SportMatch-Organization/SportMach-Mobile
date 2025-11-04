@@ -20,9 +20,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.sportmatch.model.CadastroViewModel
 
 @Composable
-fun Cadastro4(onNavigateToCadastro5: () -> Unit){
+fun Cadastro4(
+    viewModel: CadastroViewModel = viewModel(),
+    onNavigateToCadastro5: () -> Unit
+){
 
     var cep by remember { mutableStateOf("") }
 
@@ -57,6 +62,7 @@ fun Cadastro4(onNavigateToCadastro5: () -> Unit){
 
         Button(
             onClick = {
+                viewModel.setCep(cep)
                 onNavigateToCadastro5()
             },
             modifier = Modifier.fillMaxWidth()
@@ -70,5 +76,5 @@ fun Cadastro4(onNavigateToCadastro5: () -> Unit){
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun Cadastro4Preview(){
-    Cadastro4({})
+    Cadastro4(viewModel { CadastroViewModel()}, {})
 }

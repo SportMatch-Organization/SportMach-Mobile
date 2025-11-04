@@ -11,19 +11,27 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import android.widget.Toast
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.sportmatch.database.SportMatchDatabase
+import com.example.sportmatch.database.entities.User
 import com.example.sportmatch.database.service.AuthService // Importa o serviço do Firebase
+import com.example.sportmatch.model.CadastroViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun Cadastro6(
+    viewModel: CadastroViewModel = viewModel(),
     authService: AuthService = remember { AuthService() },
 
-    emailFinal: String = "novo.usuario@teste.com",
+    emailFinal: String = "novo.user@teste.com",
     senhaFinal: String = "senha123456",
 
     onNavigateToLogin: () -> Unit
 ) {
 
     val context = LocalContext.current
+    // utilizar Coroutine (threads paralelas)
+    val scope = rememberCoroutineScope()
     var isCadastroLoading by remember { mutableStateOf(false) }
     var futebol by remember { mutableStateOf("Futebol") }
 
@@ -57,11 +65,19 @@ fun Cadastro6(
                 }
 
                 authService.cadastrarUsuario(emailFinal, senhaFinal) { sucesso, uid, erroMsg ->
-                    isCadastroLoading = false
                     if (sucesso) {
+                        uid?.let { viewModel.setId(uid) }
+                        viewModel.setEsporteInteresse(futebol)
+
+                        scope.launch {
+                            val userDao = SportMatchDatabase.getDatabase(context).userDao()
+                            userDao.insert(viewModel.user)
+                        }
+                        isCadastroLoading = false
                         Toast.makeText(context, "Cadastro OK! UID: $uid", Toast.LENGTH_LONG).show()
                         onNavigateToLogin() // Navega para o Login
                     } else {
+                        isCadastroLoading = false
                         Toast.makeText(context, "Falha no Cadastro: $erroMsg", Toast.LENGTH_LONG).show()
                     }
                 }
@@ -73,6 +89,7 @@ fun Cadastro6(
         }
     }
 }
+
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable

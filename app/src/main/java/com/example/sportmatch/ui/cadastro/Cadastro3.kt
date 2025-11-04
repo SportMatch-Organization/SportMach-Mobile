@@ -1,5 +1,7 @@
 package com.example.sportmatch.ui.cadastro
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Text
@@ -24,17 +27,28 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.sportmatch.database.UserTypeConverters
+import com.example.sportmatch.model.CadastroViewModel
+import com.example.sportmatch.model.enumTypes.user.GeneroEnum
+import java.lang.Exception
+import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Cadastro3(onNavigateToCadastro4: () -> Unit){
+fun Cadastro3(
+    viewModel: CadastroViewModel = viewModel(),
+    onNavigateToCadastro4: () -> Unit
+){
 
-    var generos = listOf("Escolha uma opção","Masculino", "Feminino", "Outro", "Prefiro não responder")
+    var generos = GeneroEnum.entries.map { it.toString()}
     var genero by remember { mutableStateOf(generos[0])}
-    var cpf by remember { mutableStateOf("")}
+    var generoLabel by remember { mutableStateOf("Escolha uma opção") }
+    var cpfCnpj by remember { mutableStateOf("")}
     var telefone by remember { mutableStateOf("") }
     var dataNascimento by remember { mutableStateOf("") }
     var generoExpanded by remember { mutableStateOf(false) }
+    var data2 by remember { mutableStateOf("") }
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -67,6 +81,10 @@ fun Cadastro3(onNavigateToCadastro4: () -> Unit){
                         .TrailingIcon(expanded = generoExpanded)
                 },
                 modifier = Modifier.fillMaxWidth()
+                    .menuAnchor(
+                        type = ExposedDropdownMenuAnchorType.PrimaryEditable,
+                        enabled = true
+                    )
             )
             ExposedDropdownMenu(
                 expanded = generoExpanded,
@@ -90,12 +108,12 @@ fun Cadastro3(onNavigateToCadastro4: () -> Unit){
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text("Cpf")
+        Text("Cpf/Cnpj")
 
         Spacer(modifier = Modifier.height(8.dp))
         TextField(
-            value = cpf,
-            onValueChange = { cpf = it },
+            value = cpfCnpj,
+            onValueChange = { cpfCnpj = it },
             label = {
                 Text("Digite seu Cpf")
             },
@@ -118,19 +136,25 @@ fun Cadastro3(onNavigateToCadastro4: () -> Unit){
 
         Text("Data de nascimento")
         Spacer(modifier = Modifier.height(8.dp))
+
         TextField(
             value = dataNascimento,
             onValueChange = { dataNascimento = it },
             label = {
-                Text("DD/MM/AAAA")
+                Text("AAAA-MM-DD")
             },
             modifier = Modifier.fillMaxWidth()
         )
-
         Spacer(modifier = Modifier.height(256.dp))
 
         Button(
             onClick = {
+                // só passa o valor se não for nulo
+                UserTypeConverters().fromGeneroEnum(genero)?.let { viewModel.setGenero(it) }
+                viewModel.setCpfCnpj(cpfCnpj)
+                viewModel.setTelefone(telefone)
+                // só passa o valor se não for nulo
+                UserTypeConverters().stringToDate(dataNascimento)?.let {viewModel.setDataNascimento(it)}
                 onNavigateToCadastro4()
             },
             modifier = Modifier.fillMaxWidth()
@@ -143,5 +167,5 @@ fun Cadastro3(onNavigateToCadastro4: () -> Unit){
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun Cadastro3Preview(){
-    Cadastro3({})
+    Cadastro3(viewModel {CadastroViewModel()}, {})
 }
