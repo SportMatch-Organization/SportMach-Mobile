@@ -1,5 +1,6 @@
 package com.example.sportmatch.ui.cadastro
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -20,12 +21,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun Cadastro6(
-    viewModel: CadastroViewModel = viewModel(),
+    viewModel: CadastroViewModel,
     authService: AuthService = remember { AuthService() },
-
-    emailFinal: String = "novo.user@teste.com",
-    senhaFinal: String = "senha123456",
-
     onNavigateToLogin: () -> Unit
 ) {
 
@@ -53,18 +50,11 @@ fun Cadastro6(
         }
 
         Spacer(modifier = Modifier.height(512.dp))
-
         Button(
             onClick = {
                 isCadastroLoading = true
 
-                if (emailFinal.isBlank() || senhaFinal.isBlank()) {
-                    Toast.makeText(context, "Erro: E-mail ou senha não encontrados.", Toast.LENGTH_LONG).show()
-                    isCadastroLoading = false
-                    return@Button
-                }
-
-                authService.cadastrarUsuario(emailFinal, senhaFinal) { sucesso, uid, erroMsg ->
+                authService.cadastrarUsuario(viewModel.user.email, viewModel.user.senha) { sucesso, uid, erroMsg ->
                     if (sucesso) {
                         uid?.let { viewModel.setId(uid) }
                         viewModel.setEsporteInteresse(futebol)
@@ -91,8 +81,9 @@ fun Cadastro6(
 }
 
 
+@SuppressLint("ViewModelConstructorInComposable")
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun Cadastro6Preview(){
-    Cadastro6(emailFinal = "", senhaFinal = "", onNavigateToLogin = {})
+    Cadastro6(CadastroViewModel(), onNavigateToLogin = {})
 }

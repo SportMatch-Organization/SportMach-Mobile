@@ -14,14 +14,14 @@ data class User(
     @PrimaryKey val id: String = "",
     val nome: String = "",
     @ColumnInfo(name = "cpf_cnpj") val cpfCnpj: String = "",
-    val genero: GeneroEnum = GeneroEnum.PREFIRO_NÃO_INFORMAR,
+    val genero: String = "",
     val telefone: String = "",
     val usuario: String = "",
     val email: String = "",
     val senha: String = "",
     val cep: String = "",
     val endereco: String = "",
-    @ColumnInfo(name = "dt_nascimento") val dataNascimento: Date = Date(),
-    val perfil: PerfilEnum = PerfilEnum.ORGANIZADOR,
+    @ColumnInfo(name = "dt_nascimento") val dataNascimento: String = "",
+    val perfil: String = "",
     @ColumnInfo(name="esporte_interesse") val esporteIntresse: String = ""
 )

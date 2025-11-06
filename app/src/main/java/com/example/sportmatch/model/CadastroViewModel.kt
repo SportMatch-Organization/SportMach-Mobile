@@ -26,7 +26,7 @@ class CadastroViewModel: ViewModel() {
         user = user.copy(cpfCnpj = cpfCnpj)
     }
 
-    fun setGenero(genero: GeneroEnum){
+    fun setGenero(genero: String){
         user = user.copy(genero = genero)
     }
 
@@ -54,11 +54,11 @@ class CadastroViewModel: ViewModel() {
         user = user.copy(endereco = endereco)
     }
 
-    fun setDataNascimento(dataNascimento: Date){
+    fun setDataNascimento(dataNascimento: String){
         user = user.copy(dataNascimento = dataNascimento)
     }
 
-    fun setPerfil(perfil: PerfilEnum){
+    fun setPerfil(perfil: String){
         user = user.copy(perfil = perfil)
     }
 

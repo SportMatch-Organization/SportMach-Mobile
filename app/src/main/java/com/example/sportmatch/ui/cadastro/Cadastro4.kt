@@ -25,7 +25,7 @@ import com.example.sportmatch.model.CadastroViewModel
 
 @Composable
 fun Cadastro4(
-    viewModel: CadastroViewModel = viewModel(),
+    viewModel: CadastroViewModel,
     onNavigateToCadastro5: () -> Unit
 ){
 
@@ -53,7 +53,7 @@ fun Cadastro4(
             value = cep,
             onValueChange = { cep = it },
             label = {
-                Text("Digite seu Cpf")
+                Text("Digite seu CEP")
             },
             modifier = Modifier.fillMaxWidth()
         )

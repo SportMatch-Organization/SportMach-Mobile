@@ -1,20 +1,24 @@
 package com.example.sportmatch
 
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.cadastrologinsportmatch.ui.Login
+import com.example.sportmatch.model.CadastroViewModel
 import com.example.sportmatch.ui.Home
 import com.example.sportmatch.ui.cadastro.Cadastro1
 import com.example.sportmatch.ui.cadastro.Cadastro2
@@ -45,11 +49,13 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
+    val cadastroViewModel: CadastroViewModel = viewModel()
     NavHost(
         navController = navController,
-        startDestination = "login",
+        startDestination = "cadastro1",
         modifier = modifier // aplica o padding aqui
     ) {
         composable("login") {
@@ -70,6 +76,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
 
         composable("cadastro1") {
             Cadastro1 (
+                viewModel = cadastroViewModel,
                 onNavigateToCadastro2 = {
                     navController.navigate("cadastro2")
                 }
@@ -78,6 +85,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
 
         composable("cadastro2"){
             Cadastro2(
+                viewModel = cadastroViewModel,
                 onNavigateToCadastro3 = {
                     navController.navigate("cadastro3")
                 }
@@ -86,6 +94,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
 
         composable("cadastro3"){
             Cadastro3(
+                viewModel = cadastroViewModel,
                 onNavigateToCadastro4 = {
                     navController.navigate("cadastro4")
                 }
@@ -94,6 +103,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
 
         composable("cadastro4"){
             Cadastro4(
+                viewModel = cadastroViewModel,
                 onNavigateToCadastro5 = {
                     navController.navigate("cadastro5")
                 }
@@ -102,6 +112,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
 
         composable("cadastro5"){
             Cadastro5(
+                viewModel = cadastroViewModel,
                 onNavigateToCadastro6 = {
                     navController.navigate("cadastro6")
                 }
@@ -110,6 +121,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
 
         composable("cadastro6"){
             Cadastro6(
+                viewModel = cadastroViewModel,
                 onNavigateToLogin = {
                     navController.navigate("login")
                 }

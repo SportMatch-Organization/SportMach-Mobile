@@ -17,7 +17,7 @@ import com.example.sportmatch.ui.theme.Orange
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Cadastro1(
-    viewModel: CadastroViewModel = viewModel(),
+    viewModel: CadastroViewModel,
     onNavigateToCadastro2: () -> Unit
 ) {
     var email by remember { mutableStateOf("") }

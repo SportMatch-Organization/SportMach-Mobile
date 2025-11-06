@@ -36,7 +36,7 @@ import com.example.sportmatch.ui.theme.Orange
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Cadastro2(
-    viewModel: CadastroViewModel = viewModel(),
+    viewModel: CadastroViewModel,
     onNavigateToCadastro3: () -> Unit
 ){
 
@@ -141,7 +141,7 @@ fun Cadastro2(
             onClick = {
                 viewModel.setNome(nome)
                 viewModel.setUsuario(usuario)
-                UserTypeConverters().fromPerfilEnum(perfil)?.let { viewModel.setPerfil(it) }
+                viewModel.setPerfil(perfil)
                 onNavigateToCadastro3()
             },
             modifier = Modifier

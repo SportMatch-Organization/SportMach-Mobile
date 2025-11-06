@@ -1,7 +1,9 @@
 package com.example.sportmatch.ui.cadastro
 
+import android.os.Build
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -34,10 +36,11 @@ import com.example.sportmatch.model.enumTypes.user.GeneroEnum
 import java.lang.Exception
 import java.util.Date
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Cadastro3(
-    viewModel: CadastroViewModel = viewModel(),
+    viewModel: CadastroViewModel,
     onNavigateToCadastro4: () -> Unit
 ){
 
@@ -48,7 +51,6 @@ fun Cadastro3(
     var telefone by remember { mutableStateOf("") }
     var dataNascimento by remember { mutableStateOf("") }
     var generoExpanded by remember { mutableStateOf(false) }
-    var data2 by remember { mutableStateOf("") }
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -141,7 +143,7 @@ fun Cadastro3(
             value = dataNascimento,
             onValueChange = { dataNascimento = it },
             label = {
-                Text("AAAA-MM-DD")
+                Text("DD/MM/AAAA")
             },
             modifier = Modifier.fillMaxWidth()
         )
@@ -150,11 +152,13 @@ fun Cadastro3(
         Button(
             onClick = {
                 // só passa o valor se não for nulo
-                UserTypeConverters().fromGeneroEnum(genero)?.let { viewModel.setGenero(it) }
+                viewModel.setGenero(genero)
                 viewModel.setCpfCnpj(cpfCnpj)
                 viewModel.setTelefone(telefone)
                 // só passa o valor se não for nulo
-                UserTypeConverters().stringToDate(dataNascimento)?.let {viewModel.setDataNascimento(it)}
+                if (UserTypeConverters().stringToLocalDate(dataNascimento) != null){
+                    viewModel.setDataNascimento(dataNascimento)
+                }
                 onNavigateToCadastro4()
             },
             modifier = Modifier.fillMaxWidth()

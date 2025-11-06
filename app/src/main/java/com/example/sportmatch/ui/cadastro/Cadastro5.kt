@@ -27,7 +27,7 @@ import com.example.sportmatch.model.CadastroViewModel
 
 @Composable
 fun Cadastro5(
-    viewModel: CadastroViewModel = viewModel(),
+    viewModel: CadastroViewModel,
     onNavigateToCadastro6: () -> Unit
 ){
 
