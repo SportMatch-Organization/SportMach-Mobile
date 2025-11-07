@@ -43,9 +43,6 @@ fun Cadastro6(
 
         Spacer(modifier = Modifier.height(64.dp))
 
-        //teste - tirar depois
-        Text("texto de teste")
-
         Button(onClick = { /* Lógica de esporte aqui */ }) {
             Text(futebol)
         }

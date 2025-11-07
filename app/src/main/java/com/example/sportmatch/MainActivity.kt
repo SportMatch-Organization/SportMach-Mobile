@@ -1,7 +1,6 @@
 package com.example.sportmatch
 
 
-import Cadastro3
 import android.os.Build
 import CampeonatoViewModel
 import android.os.Bundle
@@ -23,6 +22,7 @@ import com.example.sportmatch.model.CadastroViewModel
 import com.example.sportmatch.ui.screens.competicoes.CadastroCompeticao
 import com.example.sportmatch.ui.Login
 import com.example.sportmatch.ui.Home
+import com.example.sportmatch.ui.cadastro.Cadastro3
 import com.example.sportmatch.ui.screens.cadastro.Cadastro1
 import com.example.sportmatch.ui.screens.cadastro.Cadastro2
 import com.example.sportmatch.ui.screens.cadastro.Cadastro4
