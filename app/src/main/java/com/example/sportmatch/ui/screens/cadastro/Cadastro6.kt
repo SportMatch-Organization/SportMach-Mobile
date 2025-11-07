@@ -36,7 +36,7 @@ fun Cadastro6(
         verticalArrangement = Arrangement.Top){
 
         Text(
-            text = "Quais os seus esportes de interesse?",
+            text = "Quais os seus esportes de interesse (testeeee)?",
             color = Color.Black,
             fontSize = 24.sp
         )
