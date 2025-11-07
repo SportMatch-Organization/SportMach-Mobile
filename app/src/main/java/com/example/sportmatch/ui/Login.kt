@@ -1,5 +1,5 @@
 
-package com.example.cadastrologinsportmatch.ui
+package com.example.sportmatch.ui
 
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke

@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "cadastroLoginSportMatch"
+rootProject.name = "SportmatchTheme"
 include(":app")
  

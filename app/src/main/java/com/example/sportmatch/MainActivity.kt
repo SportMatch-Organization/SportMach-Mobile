@@ -1,7 +1,9 @@
 package com.example.sportmatch
 
 
+import Cadastro3
 import android.os.Build
+import CampeonatoViewModel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -17,25 +19,25 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.cadastrologinsportmatch.ui.Login
 import com.example.sportmatch.model.CadastroViewModel
+import com.example.sportmatch.ui.screens.competicoes.CadastroCompeticao
+import com.example.sportmatch.ui.Login
 import com.example.sportmatch.ui.Home
-import com.example.sportmatch.ui.cadastro.Cadastro1
-import com.example.sportmatch.ui.cadastro.Cadastro2
-import com.example.sportmatch.ui.cadastro.Cadastro3
-import com.example.sportmatch.ui.cadastro.Cadastro4
-import com.example.sportmatch.ui.cadastro.Cadastro5
-import com.example.sportmatch.ui.cadastro.Cadastro6
-import com.example.sportmatch.ui.theme.CadastroLoginSportMatchTheme
-import com.google.firebase.Firebase
+import com.example.sportmatch.ui.screens.cadastro.Cadastro1
+import com.example.sportmatch.ui.screens.cadastro.Cadastro2
+import com.example.sportmatch.ui.screens.cadastro.Cadastro4
+import com.example.sportmatch.ui.screens.cadastro.Cadastro5
+import com.example.sportmatch.ui.screens.cadastro.Cadastro6
+import com.example.sportmatch.ui.theme.SportmatchTheme
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
         setContent {
-            CadastroLoginSportMatchTheme {
+            SportmatchTheme {
                 val navController = rememberNavController()
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -44,6 +46,7 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
+
             }
         }
     }
@@ -55,7 +58,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
     val cadastroViewModel: CadastroViewModel = viewModel()
     NavHost(
         navController = navController,
-        startDestination = "cadastro1",
+        startDestination = "login",
         modifier = modifier // aplica o padding aqui
     ) {
         composable("login") {
@@ -93,7 +96,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
         }
 
         composable("cadastro3"){
-            Cadastro3(
+            Cadastro3 (
                 viewModel = cadastroViewModel,
                 onNavigateToCadastro4 = {
                     navController.navigate("cadastro4")
@@ -130,6 +133,15 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
 
         composable("home") {
             Home()
+        }
+
+        composable("cadastro-competicao") {
+                backStackEntry ->
+            val campeonatoViewModel: CampeonatoViewModel = viewModel(backStackEntry)
+            CadastroCompeticao(
+                viewModel = campeonatoViewModel,
+                onNext = { /* ação de continuar */ }
+            )
         }
     }
 }

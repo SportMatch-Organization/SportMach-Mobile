@@ -1,4 +1,4 @@
-package com.example.sportmatch.ui.cadastro
+package com.example.sportmatch.ui.screens.cadastro
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*

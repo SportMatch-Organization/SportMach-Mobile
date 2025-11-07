@@ -1,5 +1,4 @@
-package com.example.sportmatch.ui.cadastro
-
+package com.example.sportmatch.ui.screens.cadastro
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
