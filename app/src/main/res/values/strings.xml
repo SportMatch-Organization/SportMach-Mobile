@@ -1,3 +1,7 @@
 <resources>
+<<<<<<< HEAD
     <string name="app_name">sportMatch</string>
+=======
+    <string name="app_name">cadastroLoginSportMatch</string>
+>>>>>>> 59d0a28ee1ce61a18ff7fca0f36db8f65742cbe1
 </resources>

@@ -1,4 +1,4 @@
-package com.example.sportmatch.api
+package com.example.sportmatch.api.viaCepApi
 
 import retrofit2.http.GET
 import retrofit2.http.Path

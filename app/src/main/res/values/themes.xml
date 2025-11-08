@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+<<<<<<< HEAD
     <style name="Theme.SportmatchTheme" parent="android:Theme.Material.Light.NoActionBar" />
+=======
+    <style name="Theme.CadastroLoginSportMatch" parent="Theme.Material3.DayNight.NoActionBar">
+
+        <item name="android:statusBarColor">@android:color/transparent</item>
+
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+
+>>>>>>> 59d0a28ee1ce61a18ff7fca0f36db8f65742cbe1
 </resources>
