@@ -1,7 +1,8 @@
 package com.example.sportmatch.ui.screens.competicoes
 
-import CampeonatoViewModel
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -32,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.sportmatch.model.CampeonatoViewModel
 import com.example.sportmatch.ui.components.CustomButton
 import com.example.sportmatch.ui.components.CustomSelectField
 import com.example.sportmatch.ui.components.CustomTextField
@@ -39,6 +41,7 @@ import com.example.sportmatch.ui.components.CustomRadioGroup
 import com.example.sportmatch.ui.components.CustomText
 import com.example.sportmatch.ui.components.TextType
 
+@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("SuspiciousIndentation")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

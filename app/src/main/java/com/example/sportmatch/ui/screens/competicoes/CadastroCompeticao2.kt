@@ -1,6 +1,5 @@
 package com.example.sportmatch.ui.competicoes
 
-import CampeonatoViewModel
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
@@ -31,6 +30,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.sportmatch.model.CampeonatoViewModel
 import com.example.sportmatch.ui.components.CustomButton
 import com.example.sportmatch.ui.components.CustomCheckBox
 import com.example.sportmatch.ui.components.CustomCheckBoxGroup

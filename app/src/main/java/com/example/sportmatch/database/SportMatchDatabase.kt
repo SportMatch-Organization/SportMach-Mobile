@@ -5,14 +5,17 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.example.sportmatch.database.dao.CompeticaoDao
 import com.example.sportmatch.database.dao.UserDao
 import com.example.sportmatch.database.entities.User
+import com.example.sportmatch.database.entities.Competicao
 
 
-@Database(entities = [User::class], version = 1)
+@Database(entities = [User::class, Competicao::class], version = 1)
 @TypeConverters(UserTypeConverters::class)
 abstract class SportMatchDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
+    abstract fun competicaoDao(): CompeticaoDao
 
     companion object {
         @Volatile

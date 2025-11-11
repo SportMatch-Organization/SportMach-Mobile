@@ -1,8 +1,13 @@
 package com.example.sportmatch.database
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.room.TypeConverter
 import com.example.sportmatch.model.enumTypes.user.GeneroEnum
 import com.example.sportmatch.model.enumTypes.user.PerfilEnum
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 import java.util.Date
 
 class UserTypeConverters {
@@ -12,8 +17,21 @@ class UserTypeConverters {
     }
 
     @TypeConverter
-    fun toDate(timestamp: Long?): Date? {
+    fun longToDate(timestamp: Long?): Date? {
         return timestamp?.let { Date(it) }
+    }
+
+    //método auxiliar - ignorado pelo Room Database
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun stringToLocalDate(date: String): LocalDate?{
+        return try{
+            val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+            LocalDate.parse(date, formatter)
+
+        } catch (e: DateTimeParseException){
+            e.printStackTrace()
+            null
+        }
     }
 
     @TypeConverter

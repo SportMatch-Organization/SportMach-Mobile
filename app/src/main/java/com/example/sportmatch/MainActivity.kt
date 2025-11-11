@@ -1,5 +1,4 @@
 package com.example.sportmatch
-import CampeonatoViewModel
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -17,21 +16,24 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.sportmatch.model.CadastroViewModel
+import com.example.sportmatch.model.CampeonatoViewModel
 import com.example.sportmatch.ui.screens.competicoes.CadastroCompeticao
 import com.example.sportmatch.ui.Login
 import com.example.sportmatch.ui.Home
-import com.example.sportmatch.ui.cadastro.Cadastro1
-import com.example.sportmatch.ui.cadastro.Cadastro2
 import com.example.sportmatch.ui.cadastro.Cadastro3
-import com.example.sportmatch.ui.cadastro.Cadastro4
-import com.example.sportmatch.ui.cadastro.Cadastro5
-import com.example.sportmatch.ui.cadastro.Cadastro6
 import com.example.sportmatch.ui.competicoes.CadastroCompeticao2
 import com.example.sportmatch.ui.competicoes.CadastroCompeticao3
+import com.example.sportmatch.ui.screens.cadastro.Cadastro1
+import com.example.sportmatch.ui.screens.cadastro.Cadastro2
+import com.example.sportmatch.ui.screens.cadastro.Cadastro4
+import com.example.sportmatch.ui.screens.cadastro.Cadastro5
+import com.example.sportmatch.ui.screens.cadastro.Cadastro6
 import com.example.sportmatch.ui.theme.SportmatchTheme
 import com.google.firebase.Firebase
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -55,9 +57,10 @@ class MainActivity : ComponentActivity() {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
+    val cadastroViewModel: CadastroViewModel = viewModel()
     NavHost(
         navController = navController,
-        startDestination = "cadastro-competicao",
+        startDestination = "login",
         modifier = modifier // aplica o padding aqui
     ) {
         composable("login") {
@@ -78,9 +81,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
 
         composable("cadastro1") {
             Cadastro1 (
-                onCadastro = { userDto ->
-                    navController.navigate("cadastro1")
-                },
+                viewModel = cadastroViewModel,
                 onNavigateToCadastro2 = {
                     navController.navigate("cadastro2")
                 }
@@ -89,6 +90,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
 
         composable("cadastro2"){
             Cadastro2(
+                viewModel = cadastroViewModel,
                 onNavigateToCadastro3 = {
                     navController.navigate("cadastro3")
                 }
@@ -96,7 +98,8 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
         }
 
         composable("cadastro3"){
-            Cadastro3(
+            Cadastro3 (
+                viewModel = cadastroViewModel,
                 onNavigateToCadastro4 = {
                     navController.navigate("cadastro4")
                 }
@@ -105,6 +108,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
 
         composable("cadastro4"){
             Cadastro4(
+                viewModel = cadastroViewModel,
                 onNavigateToCadastro5 = {
                     navController.navigate("cadastro5")
                 }
@@ -113,6 +117,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
 
         composable("cadastro5"){
             Cadastro5(
+                viewModel = cadastroViewModel,
                 onNavigateToCadastro6 = {
                     navController.navigate("cadastro6")
                 }
@@ -121,6 +126,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
 
         composable("cadastro6"){
             Cadastro6(
+                viewModel = cadastroViewModel,
                 onNavigateToLogin = {
                     navController.navigate("login")
                 }
@@ -158,7 +164,6 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
             val campeonatoViewModel: CampeonatoViewModel = viewModel(parentEntry)
             CadastroCompeticao3(
                 viewModel = campeonatoViewModel,
-                onNext = { /* próxima etapa */ },
                 onBefore = { navController.popBackStack() }
             )
         }
