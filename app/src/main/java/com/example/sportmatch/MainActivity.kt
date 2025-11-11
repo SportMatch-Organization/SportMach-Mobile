@@ -1,13 +1,16 @@
 package com.example.sportmatch
 import CampeonatoViewModel
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -23,6 +26,8 @@ import com.example.sportmatch.ui.cadastro.Cadastro3
 import com.example.sportmatch.ui.cadastro.Cadastro4
 import com.example.sportmatch.ui.cadastro.Cadastro5
 import com.example.sportmatch.ui.cadastro.Cadastro6
+import com.example.sportmatch.ui.competicoes.CadastroCompeticao2
+import com.example.sportmatch.ui.competicoes.CadastroCompeticao3
 import com.example.sportmatch.ui.theme.SportmatchTheme
 import com.google.firebase.Firebase
 
@@ -47,11 +52,12 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
     NavHost(
         navController = navController,
-        startDestination = "home",
+        startDestination = "cadastro-competicao",
         modifier = modifier // aplica o padding aqui
     ) {
         composable("login") {
@@ -125,14 +131,38 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
             Home()
         }
 
-        composable("cadastro-competicao") {
-                backStackEntry ->
+        composable("cadastro-competicao") { backStackEntry ->
             val campeonatoViewModel: CampeonatoViewModel = viewModel(backStackEntry)
             CadastroCompeticao(
                 viewModel = campeonatoViewModel,
-                onNext = { /* ação de continuar */ }
+                onNext = { navController.navigate("cadastro-competicao2") }
             )
         }
+
+        composable("cadastro-competicao2") { backStackEntry ->
+            val parentEntry = remember(backStackEntry) {
+                navController.getBackStackEntry("cadastro-competicao")
+            }
+            val campeonatoViewModel: CampeonatoViewModel = viewModel(parentEntry)
+            CadastroCompeticao2(
+                viewModel = campeonatoViewModel,
+                onNext = { navController.navigate("cadastro-competicao3") },
+                onBefore = { navController.popBackStack() }
+            )
+        }
+
+        composable("cadastro-competicao3") { backStackEntry ->
+            val parentEntry = remember(backStackEntry) {
+                navController.getBackStackEntry("cadastro-competicao")
+            }
+            val campeonatoViewModel: CampeonatoViewModel = viewModel(parentEntry)
+            CadastroCompeticao3(
+                viewModel = campeonatoViewModel,
+                onNext = { /* próxima etapa */ },
+                onBefore = { navController.popBackStack() }
+            )
+        }
+
     }
 }
 
