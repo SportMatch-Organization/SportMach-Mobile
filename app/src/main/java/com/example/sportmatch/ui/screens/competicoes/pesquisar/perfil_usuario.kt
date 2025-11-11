@@ -14,9 +14,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 
 data class UserProfileData(
     val nomeCompleto: String = "",
@@ -44,6 +43,7 @@ fun PerfilUsuario(
     onNavigateBack: () -> Unit,
     onOnboardingComplete: () -> Unit //
 ) {
+    /*
     var currentStep by remember { mutableStateOf(1) }
     var userProfileData by remember { mutableStateOf(UserProfileData()) }
 
@@ -368,5 +368,5 @@ fun ProfileStep2(
                 }
             }
         }
-    }
+    }*/
 }

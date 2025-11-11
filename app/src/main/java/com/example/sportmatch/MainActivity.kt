@@ -60,7 +60,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
     val cadastroViewModel: CadastroViewModel = viewModel()
     NavHost(
         navController = navController,
-        startDestination = "login",
+        startDestination = "cadastro4",
         modifier = modifier // aplica o padding aqui
     ) {
         composable("login") {
