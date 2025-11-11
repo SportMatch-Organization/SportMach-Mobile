@@ -25,8 +25,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.cadastrologinsportmatch.R
-import com.example.cadastrologinsportmatch.database.SportMatchDatabase
 import com.example.sportmatch.database.dao.CompeticaoDao
 import com.example.sportmatch.database.entities.Competicao
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -47,7 +45,7 @@ val listaEsportesLocal = listOf("Esporte", "Todos", "Vôlei", "Basquete", "Futeb
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Pesquisar(navController: NavHostController) {
-
+/*
     // --- Cérebro da Tela ---
     var listaCompeticoes by remember { mutableStateOf(emptyList<Competicao>()) }
     var listaEsportesDaApi by remember { mutableStateOf(emptyList<ApiSport>()) }
@@ -536,6 +534,6 @@ suspend fun adicionarDadosDeTeste(dao: CompeticaoDao) {
         dao.insert(Competicao(titulo="Basquete de Rua", status="Abertos", esporte="Basquete", modo="Masculino", taxa=10.00, data="20/11/2025", horario="10:00 - 12:00", local="Parque Central", vagasPreenchidas=3, vagasTotais=10, imagemUrl="placeholder"))
         dao.insert(Competicao(titulo="Campeonato Arriba", status="Em andamento", esporte="Vôlei", modo="Misto", taxa=25.90, data="16/11/2025", horario="13:00 - 17:00", local="Quadra do sagrada familia", vagasPreenchidas=10, vagasTotais=15, imagemUrl="placeholder"))
         dao.insert(Competicao(titulo="Campeonato Arau", status="Encerrados", esporte="Vôlei", modo="Misto", taxa=25.90, data="16/11/2025", horario="15:00 - 17:00", local="Quadra do sagrada familia", vagasPreenchidas=30, vagasTotais=30, imagemUrl="placeholder"))
-    }
+    }*/
 }
 
