@@ -12,10 +12,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import android.widget.Toast
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sportmatch.database.SportMatchDatabase
-import com.example.sportmatch.database.entities.User
-import com.example.sportmatch.database.service.AuthService // Importa o serviço do Firebase
+import com.example.sportmatch.service.AuthService // Importa o serviço do Firebase
 import com.example.sportmatch.model.CadastroViewModel
 import kotlinx.coroutines.launch
 
@@ -38,7 +36,7 @@ fun Cadastro6(
         verticalArrangement = Arrangement.Top){
 
         Text(
-            text = "Quais os seus esportes de interesse?",
+            text = "Quais os seus esportes de interesse (testeeee)?",
             color = Color.Black,
             fontSize = 24.sp
         )

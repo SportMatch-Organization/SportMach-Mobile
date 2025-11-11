@@ -5,7 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "competicao")
 data class Competicao(
-    @PrimaryKey val id: String = "",
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
 
     val nome: String = "",
     val descricao: String = "",

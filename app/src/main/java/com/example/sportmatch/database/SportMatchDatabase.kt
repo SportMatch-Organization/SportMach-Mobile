@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.example.sportmatch.database.converters.UserTypeConverters
 import com.example.sportmatch.database.dao.CompeticaoDao
 import com.example.sportmatch.database.dao.UserDao
 import com.example.sportmatch.database.entities.User
