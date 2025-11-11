@@ -27,7 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.sportmatch.database.UserTypeConverters
+import com.example.sportmatch.database.converters.UserTypeConverters
 import com.example.sportmatch.model.CadastroViewModel
 import com.example.sportmatch.model.enumTypes.user.PerfilEnum
 import com.example.sportmatch.ui.theme.Orange

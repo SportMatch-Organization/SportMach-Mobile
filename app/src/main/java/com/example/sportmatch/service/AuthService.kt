@@ -1,4 +1,4 @@
-package com.example.sportmatch.database.service
+package com.example.sportmatch.service
 
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth

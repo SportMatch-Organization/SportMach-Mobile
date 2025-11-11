@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("com.google.devtools.ksp")
     id("com.google.gms.google-services")
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 android {
@@ -73,8 +74,8 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
     implementation("androidx.compose.material:material-icons-extended")
 
+    //Room Database
     val room_version = "2.8.3"
-
     implementation("androidx.room:room-runtime:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
 
@@ -82,9 +83,14 @@ dependencies {
     // See Add the KSP plugin to your project
     ksp("androidx.room:room-compiler:$room_version") //alternativa mais rápida que o Kapt
 
+    //Firebase
     implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
     implementation("com.google.firebase:firebase-auth")
 
     implementation("androidx.compose.material:material-icons-extended-android:1.6.8")
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.32.0")
+
+    //Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 }

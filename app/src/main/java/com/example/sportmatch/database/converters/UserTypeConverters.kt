@@ -1,4 +1,4 @@
-package com.example.sportmatch.database
+package com.example.sportmatch.database.converters
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -21,7 +21,7 @@ class UserTypeConverters {
         return timestamp?.let { Date(it) }
     }
 
-    //método auxiliar - ignorado pelo Room Database
+    // método auxiliar - ignorado pelo Room Database
     @RequiresApi(Build.VERSION_CODES.O)
     fun stringToLocalDate(date: String): LocalDate?{
         return try{
