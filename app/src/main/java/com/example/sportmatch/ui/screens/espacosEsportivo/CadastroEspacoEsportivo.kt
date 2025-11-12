@@ -1,4 +1,4 @@
-package com.example.sportmatch.ui.competicoes
+package com.example.sportmatch.ui.screens.espacosEsportivo
 
 import android.os.Build
 import android.widget.Toast
@@ -25,32 +25,27 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.sportmatch.database.SportMatchDatabase
 import com.example.sportmatch.model.CampeonatoViewModel
 import com.example.sportmatch.ui.components.CustomButton
-import com.example.sportmatch.ui.components.CustomCheckBox
-import com.example.sportmatch.ui.components.CustomCheckBoxGroup
-import com.example.sportmatch.ui.components.CustomDateTimePicker
-import com.example.sportmatch.ui.components.CustomRadioGroup
+import com.example.sportmatch.ui.components.CustomMultiSelectField
 import com.example.sportmatch.ui.components.CustomSelectField
 import com.example.sportmatch.ui.components.CustomText
 import com.example.sportmatch.ui.components.CustomTextField
 import com.example.sportmatch.ui.components.ReviseSeusDados
 import com.example.sportmatch.ui.components.TextType
 import com.example.sportmatch.ui.theme.StrokeBt
+import com.example.sportmatch.ui.viewModel.EspacoEsportivoViewModel
 import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun CadastroCompeticao3(viewModel: CampeonatoViewModel = viewModel(), onBefore: () -> Unit) {
+fun CadastroEspacoEsportivo(viewModel: EspacoEsportivoViewModel = viewModel(), onBefore: () -> Unit) {
     val scrollState = rememberScrollState()
     var carregando by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
@@ -75,9 +70,50 @@ fun CadastroCompeticao3(viewModel: CampeonatoViewModel = viewModel(), onBefore: 
                 .padding(horizontal = 16.dp)
         ) {
             Spacer(modifier = Modifier.height(24.dp))
-            CustomText("Revise os dados", TextType.HEADLINE, fontSize = 24.sp)
+            CustomText("Informações do espaço esportivo", TextType.HEADLINE, fontSize = 24.sp)
             Spacer(modifier = Modifier.height(60.dp))
-            ReviseSeusDados(viewModel)
+            CustomTextField(
+                value = viewModel.nome,
+                onValueChange = { viewModel.nome = it },
+                label = "Nome do espaço esportivo",
+                space =false
+            )
+            CustomTextField(
+                value = viewModel.descricao,
+                onValueChange = { viewModel.descricao = it },
+                label = "Descrição",
+                singleLine = false,
+                maxLines = 3
+            )
+            CustomSelectField(
+                label = "Tipo de espaço",
+                options = viewModel.tiposEspaco,
+                selectedValue = viewModel.tipoSelecionado,
+                onValueChange = { viewModel.tipoSelecionado = it },
+            )
+            CustomTextField(
+                value = viewModel.endereco,
+                onValueChange = { viewModel.endereco = it },
+                label = "Endereço completo",
+                singleLine = false,
+                maxLines = 3
+            )
+            CustomTextField(
+                value = viewModel.telefone,
+                onValueChange = { viewModel.telefone = it },
+                label = "Telefone",
+            )
+            CustomTextField(
+                value = viewModel.maximoAtletas,
+                onValueChange = { viewModel.maximoAtletas = it },
+                label = "Capacidade máxima de atletas",
+            )
+            CustomMultiSelectField(
+                label = "Esportes suportados",
+                options = viewModel.esportesSuportados,
+                selectedValues = viewModel.esportesSuportadosSelecionados,
+                onValueChange = { viewModel.esportesSuportadosSelecionados = it }
+            )
             Spacer(modifier = Modifier.height(34.dp))
             CustomButton(
                 text = "Cadastrar",
@@ -85,7 +121,7 @@ fun CadastroCompeticao3(viewModel: CampeonatoViewModel = viewModel(), onBefore: 
                     carregando = true
                     scope.launch {
                         try {
-                            viewModel.salvarCompeticao()
+//                            viewModel.salvarCompeticao()
                             carregando = false
                             Toast.makeText(context, "Competição cadastrada com sucesso!", Toast.LENGTH_LONG).show()
                         } catch (error: Exception) {

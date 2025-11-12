@@ -33,7 +33,9 @@ import com.example.sportmatch.ui.screens.cadastro.Cadastro5
 import com.example.sportmatch.ui.screens.cadastro.Cadastro6
 import com.example.sportmatch.ui.screens.competicoes.pesquisar.PerfilUsuario
 import com.example.sportmatch.ui.screens.competicoes.pesquisar.Pesquisar
+import com.example.sportmatch.ui.screens.espacosEsportivo.CadastroEspacoEsportivo
 import com.example.sportmatch.ui.theme.SportmatchTheme
+import com.example.sportmatch.ui.viewModel.EspacoEsportivoViewModel
 
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
@@ -63,7 +65,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
     val cadastroViewModel: CadastroViewModel = viewModel()
     NavHost(
         navController = navController,
-        startDestination = "login",
+        startDestination = "cadastro-espaco-esportivo",
         modifier = modifier
     ) {
         composable("login") {
@@ -187,7 +189,14 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
             )
         }
         composable("pesquisar") {
-            Pesquisar(navController = navController) // Chama a nova tela
+            Pesquisar(navController = navController)
+        }
+        composable("cadastro-espaco-esportivo") {
+            val espacoEsportivoViewModel: EspacoEsportivoViewModel = viewModel()
+            CadastroEspacoEsportivo(
+                viewModel = espacoEsportivoViewModel,
+                onBefore = { navController.popBackStack() }
+            )
         }
     }
 }

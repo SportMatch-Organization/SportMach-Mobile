@@ -31,6 +31,7 @@ fun CustomTextField(
     isPassword: Boolean = false,
     enabled: Boolean = true,
     singleLine: Boolean = true,
+    maxLines: Int = 1,
     leadingIcon: @Composable (() -> Unit)? = null,
     readOnly: Boolean = false,
     trailingIcon: @Composable (() -> Unit)? = null,
@@ -52,6 +53,7 @@ fun CustomTextField(
         modifier = modifier,
         enabled = enabled,
         singleLine = singleLine,
+        maxLines = maxLines,
         leadingIcon = leadingIcon,
         readOnly = readOnly,
         trailingIcon = {
