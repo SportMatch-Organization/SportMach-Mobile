@@ -1,12 +1,7 @@
 package com.example.sportmatch.database.entities
-
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.sportmatch.model.enumTypes.user.GeneroEnum
-import com.example.sportmatch.model.enumTypes.user.PerfilEnum
-import java.time.LocalDate
-import java.util.Date
 
 @Entity(tableName = "user")
 data class User(

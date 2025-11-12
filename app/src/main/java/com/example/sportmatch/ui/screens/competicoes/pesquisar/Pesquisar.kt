@@ -1,5 +1,6 @@
 package com.example.sportmatch.ui.screens.competicoes.pesquisar
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -31,8 +32,10 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.launch
 import com.example.sportmatch.model.ApiSport
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import com.example.sportmatch.database.SportMatchDatabase
+import com.google.android.gms.common.api.Api
+import com.example.sportmatch.R
 
-// Cores do Figma
 val laranjaPrincipal = Color(0xFFF97316)
 val verdeTaxa = Color(0xFF04A777)
 val cinzaFundoClaro = Color(0xFFF3F4F6)
@@ -45,8 +48,7 @@ val listaEsportesLocal = listOf("Esporte", "Todos", "Vôlei", "Basquete", "Futeb
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Pesquisar(navController: NavHostController) {
-/*
-    // --- Cérebro da Tela ---
+
     var listaCompeticoes by remember { mutableStateOf(emptyList<Competicao>()) }
     var listaEsportesDaApi by remember { mutableStateOf(emptyList<ApiSport>()) }
     var isLoadingApi by remember { mutableStateOf(false) }
@@ -62,15 +64,12 @@ fun Pesquisar(navController: NavHostController) {
     val scope = rememberCoroutineScope()
     val competicaoDao = remember { SportMatchDatabase.getDatabase(context).competicaoDao() }
 
-    // Carregar esportes da API (fallback para lista local se falhar)
     LaunchedEffect(Unit) {
+        Log.d("DEBUG_COMPETICOES", "oi")
         isLoadingApi = true
         try {
-            val apiList = Api.retrofitService.getSports()
-            // Usa a lista local 'listaEsportesLocal' para preencher o dropdown
             listaEsportesDaApi = listaEsportesLocal.mapIndexed { index, name -> ApiSport(index, name) }
         } catch (e: Exception) {
-            // Se a API falhar, usa a nossa lista local
             listaEsportesDaApi = listaEsportesLocal.mapIndexed { index, name -> ApiSport(index, name) }
             Toast.makeText(context, "API falhou, a usar lista local de esportes.", Toast.LENGTH_SHORT).show()
         }
@@ -82,14 +81,9 @@ fun Pesquisar(navController: NavHostController) {
         if (selectedTabIndex == 0) {
             listaCompeticoes = competicaoDao.getTodasCompeticoes()
             if (listaCompeticoes.isEmpty()) {
-                scope.launch {
-                    adicionarDadosDeTeste(competicaoDao)
-                    listaCompeticoes = competicaoDao.getTodasCompeticoes()
-                }
+                adicionarDadosDeTeste(competicaoDao)
+                listaCompeticoes = competicaoDao.getTodasCompeticoes()
             }
-        }
-        if (selectedTabIndex == 1) {
-            // TODO: Adicionar lógica para a aba Pessoas (talvez ler do UserDao?)
         }
     }
 
@@ -131,7 +125,6 @@ fun Pesquisar(navController: NavHostController) {
         },
         bottomBar = {
             NavigationBar(containerColor = Color.White) {
-                // (Itens da Barra de Navegação)
                 NavigationBarItem(
                     selected = false,
                     onClick = { navController.navigate("home") { popUpTo("pesquisar") { inclusive = true } } },
@@ -189,7 +182,6 @@ fun Pesquisar(navController: NavHostController) {
                 .padding(horizontal = 16.dp)
         ) {
 
-            // --- Abas ---
             item {
                 PrimaryTabRow(
                     selectedTabIndex = selectedTabIndex,
@@ -409,15 +401,15 @@ fun CompeticaoCard(competicao: Competicao) {
                         verticalAlignment = Alignment.Top
                     ) {
                         Text(
-                            text = competicao.titulo,
+                            text = competicao.nome,
                             fontWeight = FontWeight.Bold,
                             fontSize = 18.sp,
                             color = Color.DarkGray,
                             modifier = Modifier.weight(1f, fill = false)
                         )
                         Spacer(Modifier.width(8.dp))
-                        ChipVisual( // Chip de Vagas
-                            text = "${competicao.vagasPreenchidas}/${competicao.vagasTotais}",
+                        ChipVisual(
+                            text = "${competicao.vagasPreenchidas}/${competicao.total}",
                             icon = Icons.Filled.Group,
                             iconTint = Color.DarkGray
                         )
@@ -437,7 +429,7 @@ fun CompeticaoCard(competicao: Competicao) {
                         )
                         Spacer(Modifier.width(8.dp))
                         ChipVisual(
-                            text = competicao.modo,
+                            text = competicao.tipo,
                             icon = Icons.Filled.People,
                             iconTint = laranjaPrincipal
                         )
@@ -445,7 +437,7 @@ fun CompeticaoCard(competicao: Competicao) {
 
 
                         ChipVisual(
-                            text = "R$ %.2f".format(competicao.taxa),
+                            text = "R$ %.2f".format(competicao.valor),
                             textColor = verdeTaxa,
                             fontWeight = FontWeight.Bold,
                             backgroundColor = verdeTaxa.copy(alpha = 0.1f)
@@ -458,16 +450,15 @@ fun CompeticaoCard(competicao: Competicao) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(Icons.Default.DateRange, contentDescription = "Data", modifier = Modifier.size(16.dp), tint = cinzaTextoSecundario)
                         Spacer(modifier = Modifier.width(6.dp))
-                        Text(competicao.data, fontSize = 12.sp, color = cinzaTextoSecundario)
+                        Text(competicao.inicioCompeticao, fontSize = 12.sp, color = cinzaTextoSecundario)
                         Spacer(modifier = Modifier.width(16.dp))
                         Icon(Icons.Default.Schedule, contentDescription = "Horário", modifier = Modifier.size(16.dp), tint = cinzaTextoSecundario)
                         Spacer(modifier = Modifier.width(6.dp))
-                        Text(competicao.horario, fontSize = 12.sp, color = cinzaTextoSecundario)
+                        Text(competicao.inicioCompeticao, fontSize = 12.sp, color = cinzaTextoSecundario)
                     }
 
                     Spacer(modifier = Modifier.height(6.dp))
 
-                    // Linha 4: Local
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(Icons.Default.LocationOn, contentDescription = "Local", modifier = Modifier.size(16.dp), tint = laranjaPrincipal)
                         Spacer(modifier = Modifier.width(6.dp))
@@ -490,10 +481,10 @@ fun CompeticaoCard(competicao: Competicao) {
 
             Image(
                 painter = painterResource(id = R.drawable.placeholder_volei),
-                contentDescription = competicao.titulo,
+                contentDescription = competicao.nome,
                 modifier = Modifier
-                    .width(110.dp) // Largura fixa da imagem
-                    .fillMaxHeight() // Ocupa toda a altura da Row
+                    .width(110.dp)
+                    .fillMaxHeight()
                     .clip(RoundedCornerShape(topEnd = 12.dp, bottomEnd = 12.dp)),
             )
         }
@@ -528,12 +519,9 @@ fun ChipVisual(
 }
 
 suspend fun adicionarDadosDeTeste(dao: CompeticaoDao) {
-    if (dao.getTodasCompeticoes().isEmpty()) {
-        dao.insert(Competicao(titulo="Campeonato Aravôlei", status="Abertos", esporte="Vôlei", modo="Misto", taxa=25.90, data="16/11/2025", horario="15:00 - 17:00", local="Quadra do sagrada familia", vagasPreenchidas=2, vagasTotais=33, imagemUrl="placeholder"))
-        dao.insert(Competicao(titulo="Campeonato Amador", status="Abertos", esporte="Vôlei", modo="Misto", taxa=20.00, data="16/11/2025", horario="15:00 - 17:00", local="Quadra do sagrada familia", vagasPreenchidas=5, vagasTotais=20, imagemUrl="placeholder"))
-        dao.insert(Competicao(titulo="Basquete de Rua", status="Abertos", esporte="Basquete", modo="Masculino", taxa=10.00, data="20/11/2025", horario="10:00 - 12:00", local="Parque Central", vagasPreenchidas=3, vagasTotais=10, imagemUrl="placeholder"))
-        dao.insert(Competicao(titulo="Campeonato Arriba", status="Em andamento", esporte="Vôlei", modo="Misto", taxa=25.90, data="16/11/2025", horario="13:00 - 17:00", local="Quadra do sagrada familia", vagasPreenchidas=10, vagasTotais=15, imagemUrl="placeholder"))
-        dao.insert(Competicao(titulo="Campeonato Arau", status="Encerrados", esporte="Vôlei", modo="Misto", taxa=25.90, data="16/11/2025", horario="15:00 - 17:00", local="Quadra do sagrada familia", vagasPreenchidas=30, vagasTotais=30, imagemUrl="placeholder"))
-    }*/
+    dao.insert(Competicao(nome="Campeonato Aravôlei", status="Abertos", esporte="Vôlei", tipo="Misto", valor=25.90, inicioCompeticao="16/11/2025", local="Quadra do sagrada familia", vagasPreenchidas=2, total=33, imagemUrl="placeholder"))
+    dao.insert(Competicao(nome="Campeonato Amador", status="Abertos", esporte="Vôlei", tipo="Misto", valor=20.00, inicioCompeticao="16/11/2025", local="Quadra do sagrada familia", vagasPreenchidas=5, total=20, imagemUrl="placeholder"))
+    dao.insert(Competicao(nome="Basquete de Rua", status="Abertos", esporte="Basquete", tipo="Masculino", valor=10.00, inicioCompeticao="20/11/2025", local="Parque Central", vagasPreenchidas=3, total=10, imagemUrl="placeholder"))
+    dao.insert(Competicao(nome="Campeonato Arriba", status="Em andamento", esporte="Vôlei", tipo="Misto", valor=25.90, inicioCompeticao="16/11/2025", local="Quadra do sagrada familia", vagasPreenchidas=10, total=15, imagemUrl="placeholder"))
+    dao.insert(Competicao(nome="Campeonato Arau", status="Encerrados", esporte="Vôlei", tipo="Misto", valor=25.90, inicioCompeticao="16/11/2025", local="Quadra do sagrada familia", vagasPreenchidas=30, total=30, imagemUrl="placeholder"))
 }
-
