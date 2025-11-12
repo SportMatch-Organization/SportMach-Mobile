@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sportmatch.model.CadastroViewModel
 import com.example.sportmatch.model.CreateUserDto
+import com.example.sportmatch.ui.components.CustomButton
 import com.example.sportmatch.ui.theme.Orange
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -145,18 +146,16 @@ fun Cadastro1(
                 .height(128.dp)
         )
 
-        Button(
-            onClick = {
+        CustomButton(
+            "Próximo",
+            {
                 viewModel.setEmail(email)
                 viewModel.setSenha(senha)
                 onNavigateToCadastro2()
             },
-            modifier = Modifier
-                .fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(Orange)
-        ) {
-            Text("Próximo")
-        }
+            backgroundColor = Orange
+        )
+
     }
 }
 

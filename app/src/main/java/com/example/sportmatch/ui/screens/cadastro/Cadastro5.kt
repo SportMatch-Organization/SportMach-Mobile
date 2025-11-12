@@ -1,4 +1,5 @@
 package com.example.sportmatch.ui.screens.cadastro
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,26 +27,30 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sportmatch.api.viaCepApi.Endereco
 import com.example.sportmatch.api.viaCepApi.RetrofitClient
 import com.example.sportmatch.model.CadastroViewModel
+import com.example.sportmatch.model.EnderecoUsuarioViewModel
+import com.example.sportmatch.ui.components.CustomButton
+import com.example.sportmatch.ui.theme.Orange
+import retrofit2.Response
 
 @Composable
 fun Cadastro5(
     viewModel: CadastroViewModel,
+    enderecoUsuarioViewModel: EnderecoUsuarioViewModel,
     onNavigateToCadastro6: () -> Unit
 ){
+    //if { erro: true } ...
+    // if { status: BadRequest }
 
-    var estado by remember { mutableStateOf("") }
-    var cidade by remember { mutableStateOf("") }
-    var logradouro by remember { mutableStateOf("") }
-    var bairro by remember { mutableStateOf("") }
+    var estado by remember { mutableStateOf(enderecoUsuarioViewModel.enderecoApi.estado) }
+    var cidade by remember { mutableStateOf(enderecoUsuarioViewModel.enderecoApi.localidade) }
+    var logradouro by remember { mutableStateOf(enderecoUsuarioViewModel.enderecoApi.logradouro) }
+    var bairro by remember { mutableStateOf(enderecoUsuarioViewModel.enderecoApi.bairro) }
     var numero by remember { mutableStateOf("") }
-    var complemento by remember { mutableStateOf("") }
+    var complemento by remember { mutableStateOf(enderecoUsuarioViewModel.enderecoApi.complemento) }
     var endereco by remember { mutableStateOf("") }
-
-    var enderecoApi by remember { mutableStateOf(Endereco()) }
-
-    LaunchedEffect(Unit){
-        enderecoApi = RetrofitClient.viaCepApi.buscarEnderecoPorCep(viewModel.user.cep)
-    }
+    /*LaunchedEffect(Unit){
+       var enderecoApi = RetrofitClient.viaCepApi.buscarEnderecoPorCep(viewModel.user.cep)
+    }*/
 
     Column(
         modifier = Modifier
@@ -72,10 +77,12 @@ fun Cadastro5(
 
         Spacer(modifier = Modifier.height(8.dp))
         TextField(
-            value = enderecoApi.logradouro,
+            value = logradouro,
             onValueChange = { logradouro = it },
-            enabled = false,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            label = {
+                Text("Digite seu logradouro")
+            }
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -111,9 +118,8 @@ fun Cadastro5(
                     Text("Complemento")
                     Spacer(modifier = Modifier.height(8.dp))
                     TextField(
-                        value = enderecoApi.complemento,
+                        value = complemento,
                         onValueChange = { complemento = it },
-                        enabled = false,
                         label = {
                             Text("Complemento")
                         }
@@ -127,7 +133,7 @@ fun Cadastro5(
         Text("Bairro")
         Spacer(modifier = Modifier.height(8.dp))
         TextField(
-            value = enderecoApi.bairro,
+            value = bairro,
             onValueChange = { bairro = it },
             label = {
                 Text("Bairro")
@@ -140,7 +146,7 @@ fun Cadastro5(
         Text("Cidade")
         Spacer(modifier = Modifier.height(8.dp))
         TextField(
-            value = enderecoApi.localidade,
+            value = cidade,
             onValueChange = { cidade = it },
             label = {
                 Text("Digite sua cidade")
@@ -154,30 +160,30 @@ fun Cadastro5(
 
         Spacer(modifier = Modifier.height(8.dp))
         TextField(
-            value = enderecoApi.estado,
+            value = estado,
             onValueChange = { estado = it },
             label = {
                 Text("Digite seu estado")
             },
             modifier = Modifier.fillMaxWidth()
         )
-    }
 
-    Spacer(modifier = Modifier.height(256.dp))
-    Button(
-        onClick = {
-            endereco = "$logradouro, $numero, $bairro, $cidade - $estado"
-            viewModel.setEndereco(endereco)
-            onNavigateToCadastro6()
-        },
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Text("Próximo")
+        Spacer(modifier = Modifier.height(128.dp))
+
+        CustomButton(
+            "Próximo",
+            {
+                endereco = "$logradouro, $numero, $bairro, $cidade - $estado"
+                viewModel.setEndereco(endereco)
+                onNavigateToCadastro6()
+            },
+            backgroundColor = Orange
+        )
     }
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun Cadastro5Preview(){
-    Cadastro5(viewModel { CadastroViewModel()}, {})
+    Cadastro5(viewModel { CadastroViewModel()}, viewModel { EnderecoUsuarioViewModel()},{})
 }

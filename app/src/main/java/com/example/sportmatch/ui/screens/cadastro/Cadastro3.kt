@@ -33,6 +33,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sportmatch.database.converters.UserTypeConverters
 import com.example.sportmatch.model.CadastroViewModel
 import com.example.sportmatch.model.enumTypes.user.GeneroEnum
+import com.example.sportmatch.ui.components.CustomButton
+import com.example.sportmatch.ui.theme.Orange
 import java.lang.Exception
 import java.util.Date
 
@@ -149,9 +151,9 @@ fun Cadastro3(
         )
         Spacer(modifier = Modifier.height(256.dp))
 
-        Button(
-            onClick = {
-                // só passa o valor se não for nulo
+        CustomButton(
+            "Próximo",
+            {
                 viewModel.setGenero(genero)
                 viewModel.setCpfCnpj(cpfCnpj)
                 viewModel.setTelefone(telefone)
@@ -161,13 +163,12 @@ fun Cadastro3(
                 }
                 onNavigateToCadastro4()
             },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Próximo")
-        }
+            backgroundColor = Orange
+        )
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun Cadastro3Preview(){
