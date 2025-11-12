@@ -19,6 +19,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.sportmatch.model.CadastroViewModel
+import com.example.sportmatch.model.EnderecoUsuarioViewModel
 import com.example.sportmatch.model.CampeonatoViewModel
 import com.example.sportmatch.ui.screens.competicoes.CadastroCompeticao
 import com.example.sportmatch.ui.Login
@@ -63,6 +64,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
     val cadastroViewModel: CadastroViewModel = viewModel()
+    val enderecoUsuarioViewModel: EnderecoUsuarioViewModel = viewModel()
     NavHost(
         navController = navController,
         startDestination = "cadastro-espaco-esportivo",
@@ -114,6 +116,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
         composable("cadastro4"){
             Cadastro4(
                 viewModel = cadastroViewModel,
+                enderecoUsuarioViewModel = enderecoUsuarioViewModel,
                 onNavigateToCadastro5 = {
                     navController.navigate("cadastro5")
                 }
@@ -123,6 +126,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
         composable("cadastro5"){
             Cadastro5(
                 viewModel = cadastroViewModel,
+                enderecoUsuarioViewModel = enderecoUsuarioViewModel,
                 onNavigateToCadastro6 = {
                     navController.navigate("cadastro6")
                 }

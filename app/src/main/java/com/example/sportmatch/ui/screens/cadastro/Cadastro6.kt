@@ -12,9 +12,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import android.widget.Toast
+import androidx.compose.material3.ButtonDefaults
 import com.example.sportmatch.database.SportMatchDatabase
 import com.example.sportmatch.service.AuthService // Importa o serviço do Firebase
 import com.example.sportmatch.model.CadastroViewModel
+import com.example.sportmatch.ui.components.CustomButton
+import com.example.sportmatch.ui.theme.Orange
 import kotlinx.coroutines.launch
 
 @Composable
@@ -36,20 +39,28 @@ fun Cadastro6(
         verticalArrangement = Arrangement.Top){
 
         Text(
-            text = "Quais os seus esportes de interesse (testeeee)?",
+            text = "Quais os seus esportes de interesse?",
             color = Color.Black,
             fontSize = 24.sp
         )
 
         Spacer(modifier = Modifier.height(64.dp))
 
-        Button(onClick = { /* Lógica de esporte aqui */ }) {
+        Button(
+            onClick = {},
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Orange,
+                contentColor = Color.White
+            )
+        ) {
             Text(futebol)
         }
 
         Spacer(modifier = Modifier.height(512.dp))
-        Button(
-            onClick = {
+
+        CustomButton(
+            "Cadastrar",
+            {
                 isCadastroLoading = true
 
                 authService.cadastrarUsuario(viewModel.user.email, viewModel.user.senha) { sucesso, uid, erroMsg ->
@@ -62,19 +73,16 @@ fun Cadastro6(
                             userDao.insert(viewModel.user)
                         }
                         isCadastroLoading = false
-                        Toast.makeText(context, "Cadastro OK! UID: $uid", Toast.LENGTH_LONG).show()
-                        onNavigateToLogin() // Navega para o Login
+                        Toast.makeText(context, "Cadastro realizado com sucesso!",Toast.LENGTH_LONG).show()
+                        onNavigateToLogin()
                     } else {
                         isCadastroLoading = false
-                        Toast.makeText(context, "Falha no Cadastro: $erroMsg", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, "Ocorreu uma falha no cadastro: $erroMsg", Toast.LENGTH_LONG).show()
                     }
                 }
             },
-            enabled = !isCadastroLoading,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(if (isCadastroLoading) "Cadastrando..." else "Cadastrar")
-        }
+            backgroundColor = Orange
+        )
     }
 }
 
