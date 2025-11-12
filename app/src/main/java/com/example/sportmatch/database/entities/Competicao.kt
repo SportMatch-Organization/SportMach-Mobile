@@ -7,7 +7,8 @@ import androidx.room.PrimaryKey
 data class Competicao(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-
+    val status: String = "",
+    val vagasPreenchidas: Int = 0,
     val nome: String = "",
     val descricao: String = "",
     val esporte: String = "",
@@ -18,6 +19,7 @@ data class Competicao(
     @ColumnInfo(name = "descricao_acessibilidade") val descricaoAcessibilidade: String = "",
     val tipo: String = "",
     val total: Int = 0,
+    val imagemUrl: String = "",
     @ColumnInfo(name = "minimo_equipe") val minimoEquipe: Int? = null,
     @ColumnInfo(name = "maximo_equipe") val maximoEquipe: Int? = null,
     @ColumnInfo(name = "faixa_etaria") val faixaEtaria: String = "",

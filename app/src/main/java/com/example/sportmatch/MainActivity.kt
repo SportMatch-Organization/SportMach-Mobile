@@ -24,7 +24,6 @@ import com.example.sportmatch.ui.screens.competicoes.CadastroCompeticao
 import com.example.sportmatch.ui.Login
 import com.example.sportmatch.ui.Home
 import com.example.sportmatch.ui.cadastro.Cadastro3
-import com.example.sportmatch.ui.cadastro.Cadastro3
 import com.example.sportmatch.ui.competicoes.CadastroCompeticao2
 import com.example.sportmatch.ui.competicoes.CadastroCompeticao3
 import com.example.sportmatch.ui.screens.cadastro.Cadastro1
@@ -35,7 +34,6 @@ import com.example.sportmatch.ui.screens.cadastro.Cadastro6
 import com.example.sportmatch.ui.screens.competicoes.pesquisar.PerfilUsuario
 import com.example.sportmatch.ui.screens.competicoes.pesquisar.Pesquisar
 import com.example.sportmatch.ui.theme.SportmatchTheme
-import com.google.firebase.Firebase
 
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
@@ -65,8 +63,8 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
     val cadastroViewModel: CadastroViewModel = viewModel()
     NavHost(
         navController = navController,
-        startDestination = "cadastro4",
-        modifier = modifier // aplica o padding aqui
+        startDestination = "login",
+        modifier = modifier
     ) {
         composable("login") {
             Login(

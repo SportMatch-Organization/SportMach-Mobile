@@ -12,9 +12,9 @@ interface CompeticaoDao {
     @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     suspend fun insert(competicao: Competicao)
 
-    @Query("SELECT * FROM competicoes_table")
-    suspend fun getTodasCompeticoes(): List<Competicao>
-
-    @Query("SELECT * FROM competicoes_table WHERE status = :status")
+    @Query("SELECT * FROM competicao WHERE status = :status")
     suspend fun getCompeticoesPorStatus(status: String): List<Competicao>
+
+    @Query("SELECT * FROM competicao")
+    suspend fun getTodasCompeticoes(): List<Competicao>
 }
