@@ -1,22 +1,36 @@
 package com.example.sportmatch.database.entities
-
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "competicoes_table") // O nome da nossa nova tabela no SQL
+@Entity(tableName = "competicao")
 data class Competicao(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-
-    val titulo: String,
-    val status: String, // "Abertos", "Em andamento", "Encerrados"
-    val esporte: String, // "Vôlei", "Futebol"
-    val modo: String, // "Misto"
-    val taxa: Double,
-    val data: String, // "16/11/2025"
-    val horario: String, // "15:00 - 17:00"
-    val local: String, // "Quadra do sagrada familia"
-    val vagasPreenchidas: Int,
-    val vagasTotais: Int,
-    val imagemUrl: String // Um link ou placeholder
+    val status: String = "",
+    val vagasPreenchidas: Int = 0,
+    val nome: String = "",
+    val descricao: String = "",
+    val esporte: String = "",
+    val modalidade: String = "",
+    val formato: String = "",
+    val categoria: String = "",
+    @ColumnInfo(name = "tipo_acessibilidade") val tipoAcessibilidade: String = "",
+    @ColumnInfo(name = "descricao_acessibilidade") val descricaoAcessibilidade: String = "",
+    val tipo: String = "",
+    val total: Int = 0,
+    val imagemUrl: String = "",
+    @ColumnInfo(name = "minimo_equipe") val minimoEquipe: Int? = null,
+    @ColumnInfo(name = "maximo_equipe") val maximoEquipe: Int? = null,
+    @ColumnInfo(name = "faixa_etaria") val faixaEtaria: String = "",
+    @ColumnInfo(name = "idade_minima") val idadeMinima: Int? = null,
+    @ColumnInfo(name = "idade_maxima") val idadeMaxima: Int? = null,
+    @ColumnInfo(name = "inicio_inscricao") val inicioInscricao: String = "",
+    @ColumnInfo(name = "final_inscricao") val finalInscricao: String = "",
+    @ColumnInfo(name = "inicio_competicao") val inicioCompeticao: String = "",
+    @ColumnInfo(name = "final_competicao") val finalCompeticao: String = "",
+    val local: String = "",
+    val gratuito: Boolean = false,
+    val valor: Double? = null,
+    @ColumnInfo(name = "formas_pagamento") val formasPagamento: String = ""
 )

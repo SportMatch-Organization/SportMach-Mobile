@@ -29,7 +29,6 @@ fun CustomTextField(
     label: String,
     modifier: Modifier = Modifier.fillMaxWidth(),
     isPassword: Boolean = false,
-    keyboardType: KeyboardType = KeyboardType.Text,
     enabled: Boolean = true,
     singleLine: Boolean = true,
     leadingIcon: @Composable (() -> Unit)? = null,
@@ -68,9 +67,7 @@ fun CustomTextField(
         },
         visualTransformation = if (isPassword && !passwordVisible)
             PasswordVisualTransformation() else VisualTransformation.None,
-        keyboardOptions = keyboardOptions.copy(
-            keyboardType = keyboardType,
-        ),
+        keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         colors = TextFieldDefaults.colors(
             focusedContainerColor = backgroundColor,

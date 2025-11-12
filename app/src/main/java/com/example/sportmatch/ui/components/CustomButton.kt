@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.shape.RoundedCornerShape
 import com.example.sportmatch.ui.components.CustomText
 import com.example.sportmatch.ui.components.TextType
+import com.example.sportmatch.ui.theme.DisableColor
 
 @Composable
 fun CustomButton(
@@ -25,10 +26,9 @@ fun CustomButton(
         .height(50.dp),
     backgroundColor: Color = MaterialTheme.colorScheme.primary,
     contentColor: Color = Color.White,
-    fontSize: Int = 16,
-    fontWeight: FontWeight = FontWeight.Bold,
     enabled: Boolean = true,
-    cornerRadius: Dp = 4.dp
+    cornerRadius: Dp = 4.dp,
+    textColor: Color = Color.White
 ) {
     Button(
         onClick = onClick,
@@ -37,15 +37,16 @@ fun CustomButton(
         colors = ButtonDefaults.buttonColors(
             containerColor = backgroundColor,
             contentColor = contentColor,
-            disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+            disabledContainerColor = DisableColor,
             disabledContentColor = Color.Gray
         ),
         shape = RoundedCornerShape(cornerRadius)
+
     ) {
         CustomText(
             text = text,
             type = TextType.TITULO,
-            color = Color.White
+            color = textColor
         )
     }
 }

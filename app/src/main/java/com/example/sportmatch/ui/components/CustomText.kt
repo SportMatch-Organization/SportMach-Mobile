@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.TextUnit
 
-// Define os tipos de texto disponíveis
 enum class TextType {
     LABEL,
     PARAGRAFO,
@@ -25,6 +24,7 @@ fun CustomText(
     type: TextType,
     color: Color =  MaterialTheme.colorScheme.tertiary,
     fontSize: TextUnit ? = null,
+    fontWeight: FontWeight ? = null,
 ) {
     var modifier = Modifier;
 
@@ -51,7 +51,7 @@ fun CustomText(
             Text(
                 text = text,
                 fontSize = fontSize ?: 16.sp,
-                fontWeight = FontWeight.Medium,
+                fontWeight = fontWeight ?: FontWeight.Medium,
                 color = color,
                 modifier = modifier
             )
