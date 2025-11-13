@@ -10,8 +10,7 @@ import com.example.sportmatch.database.entities.User
 interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(user: User) //indica que essa função pode demorar e deve ser executada em segundo plano
-
+    suspend fun insert(user: User)
     @Query("SELECT * FROM user WHERE email = :email AND senha = :senha LIMIT 1")
     suspend fun fazerLogin(email: String, senha: String): User?
 

@@ -68,7 +68,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
     val enderecoUsuarioViewModel: EnderecoUsuarioViewModel = viewModel()
     NavHost(
         navController = navController,
-        startDestination = "cadastro-patrocinador",
+        startDestination = "cadastro-espaco-esportivo",
         modifier = modifier
     ) {
         composable("login") {
