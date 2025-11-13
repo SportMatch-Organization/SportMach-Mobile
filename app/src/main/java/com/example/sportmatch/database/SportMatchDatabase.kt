@@ -7,18 +7,21 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.sportmatch.database.converters.UserTypeConverters
 import com.example.sportmatch.database.dao.CompeticaoDao
+import com.example.sportmatch.database.dao.PatrocinadorDao
 import com.example.sportmatch.database.dao.EspacoEsportivoDao
 import com.example.sportmatch.database.dao.UserDao
 import com.example.sportmatch.database.entities.User
 import com.example.sportmatch.database.entities.Competicao
+import com.example.sportmatch.database.entities.Patrocinador
 import com.example.sportmatch.database.entities.EspacoEsportivo
 
 
-@Database(entities = [User::class, Competicao::class, EspacoEsportivo:: class], version = 1)
+@Database(entities = [User::class, Competicao::class, Patrocinador:: class, EspacoEsportivo:: class], version = 1)
 @TypeConverters(UserTypeConverters::class)
 abstract class SportMatchDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun competicaoDao(): CompeticaoDao
+    abstract fun patrocinadorDao(): PatrocinadorDao
     abstract fun espacoEsportivoDao(): EspacoEsportivoDao
 
     companion object {

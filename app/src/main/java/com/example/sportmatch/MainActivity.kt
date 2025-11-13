@@ -35,6 +35,7 @@ import com.example.sportmatch.ui.screens.cadastro.Cadastro6
 import com.example.sportmatch.ui.screens.competicoes.pesquisar.PerfilUsuario
 import com.example.sportmatch.ui.screens.competicoes.pesquisar.Pesquisar
 import com.example.sportmatch.ui.screens.espacosEsportivo.CadastroEspacoEsportivo
+import com.example.sportmatch.ui.screens.patrocinadores.TelaCadastro
 import com.example.sportmatch.ui.theme.SportmatchTheme
 import com.example.sportmatch.ui.viewModel.EspacoEsportivoViewModel
 
@@ -202,6 +203,14 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
                 onBefore = { navController.popBackStack() }
             )
         }
+        composable("cadastro-patrocinador") {
+            TelaCadastro(
+                onVoltar = {},
+                onVerCadastrados = {}
+            )
+        }
+
+
     }
 }
 
