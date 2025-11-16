@@ -38,7 +38,7 @@ import com.example.sportmatch.model.CampeonatoViewModel
 import com.example.sportmatch.ui.components.CustomButton
 import com.example.sportmatch.ui.components.CustomCheckBox
 import com.example.sportmatch.ui.components.CustomCheckBoxGroup
-import com.example.sportmatch.ui.components.CustomDateTimePicker
+//import com.example.sportmatch.ui.components.CustomDateTimePicker
 import com.example.sportmatch.ui.components.CustomRadioGroup
 import com.example.sportmatch.ui.components.CustomSelectField
 import com.example.sportmatch.ui.components.CustomText
@@ -47,7 +47,7 @@ import com.example.sportmatch.ui.components.ReviseSeusDados
 import com.example.sportmatch.ui.components.TextType
 import com.example.sportmatch.ui.theme.StrokeBt
 import kotlinx.coroutines.launch
-
+/*
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CadastroCompeticao3(viewModel: CampeonatoViewModel = viewModel(), onBefore: () -> Unit) {
@@ -110,4 +110,4 @@ fun CadastroCompeticao3(viewModel: CampeonatoViewModel = viewModel(), onBefore: 
 
         }
     }
-}
+}*/

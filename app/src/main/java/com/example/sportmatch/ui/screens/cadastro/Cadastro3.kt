@@ -1,4 +1,4 @@
-package com.example.sportmatch.ui.cadastro
+/*package com.example.sportmatch.ui.cadastro
 
 import android.os.Build
 import android.util.Log
@@ -173,4 +173,4 @@ fun Cadastro3(
 @Composable
 fun Cadastro3Preview(){
     Cadastro3(viewModel {CadastroViewModel()}, {})
-}
+}*/

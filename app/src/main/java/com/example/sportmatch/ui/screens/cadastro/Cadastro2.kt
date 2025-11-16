@@ -1,4 +1,4 @@
-package com.example.sportmatch.ui.screens.cadastro
+/*package com.example.sportmatch.ui.screens.cadastro
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -154,4 +154,4 @@ fun Cadastro2(
 @Composable
 fun Cadastro2Preview(){
     Cadastro2(viewModel { CadastroViewModel() }, onNavigateToCadastro3 = {})
-}
+}*/

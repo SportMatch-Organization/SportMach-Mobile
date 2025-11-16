@@ -1,5 +1,6 @@
 package com.example.sportmatch.ui.components
 
+import android.app.TimePickerDialog
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
@@ -19,7 +20,7 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-
+/*
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -105,31 +106,29 @@ fun CustomDateTimePicker(
         }
     }
 
-    if (showTimeDialog && tempDate != null) {
-        TimePickerDialog(
-            onDismissRequest = { showTimeDialog = false },
-            confirmButton = {
-                TextButton(onClick = {
-                    val pickedTime = LocalTime.of(
-                        timePickerState.hour,
-                        timePickerState.minute
-                    )
-                    val newDateTime = LocalDateTime.of(tempDate!!.toLocalDate(), pickedTime)
-                    onValueChange(newDateTime)
-                    showTimeDialog = false
-                }) { Text("OK") }
-            },
-            title = { Text("") },
-            dismissButton = {
-                TextButton(onClick = { showTimeDialog = false }) { Text("Cancelar") }
-            }
-        ) {
-            TimePicker(
-                state = timePickerState,
-                colors = TimePickerDefaults.colors(
-                    timeSelectorSelectedContainerColor = primaryColor
+  if (showTimeDialog && tempDate != null) TimePickerDialog(
+        onDismissRequest = { showTimeDialog = false },
+        confirmButton = {
+            TextButton(onClick = {
+                val pickedTime = LocalTime.of(
+                    timePickerState.hour,
+                    timePickerState.minute
                 )
-            )
+                val newDateTime = LocalDateTime.of(tempDate!!.toLocalDate(), pickedTime)
+                onValueChange(newDateTime)
+                showTimeDialog = false
+            }) { Text("OK") }
+        },
+        title = { Text("") },
+        dismissButton = {
+            TextButton(onClick = { showTimeDialog = false }) { Text("Cancelar") }
         }
+    ) {
+        TimePicker(
+            state = timePickerState,
+            colors = TimePickerDefaults.colors(
+                timeSelectorSelectedContainerColor = primaryColor
+            )
+        )
     }
-}
+}*/

@@ -11,3 +11,9 @@ val ErrorColor = Color(0xFFE75858)
 val darkBlue = Color(0xFF012849)
 
 val Orange = Color(0xFFFD710F)
+
+ val verdeTaxa = Color(0xFF04A777)
+val cinzaChipFundo = Color(0xFFEEEEEE)
+val laranjaPrincipal = Color(0xFFF97316)
+val cinzaFundoClaro = Color(0xFFF3F4F6)
+val cinzaTextoSecundario = Color.Gray

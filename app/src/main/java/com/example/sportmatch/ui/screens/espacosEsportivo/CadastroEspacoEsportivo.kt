@@ -31,13 +31,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.sportmatch.model.CampeonatoViewModel
 import com.example.sportmatch.ui.components.CustomButton
 import com.example.sportmatch.ui.components.CustomMultiSelectField
 import com.example.sportmatch.ui.components.CustomSelectField
 import com.example.sportmatch.ui.components.CustomText
 import com.example.sportmatch.ui.components.CustomTextField
-import com.example.sportmatch.ui.components.ReviseSeusDados
 import com.example.sportmatch.ui.components.TextType
 import com.example.sportmatch.ui.theme.StrokeBt
 import com.example.sportmatch.ui.viewModel.EspacoEsportivoViewModel

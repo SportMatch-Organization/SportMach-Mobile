@@ -1,4 +1,4 @@
-package com.example.sportmatch.ui.screens.cadastro
+/*package com.example.sportmatch.ui.screens.cadastro
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -186,4 +186,4 @@ fun Cadastro5(
 @Composable
 fun Cadastro5Preview(){
     Cadastro5(viewModel { CadastroViewModel()}, viewModel { EnderecoUsuarioViewModel()},{})
-}
+}*/

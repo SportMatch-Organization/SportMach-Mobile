@@ -1,6 +1,4 @@
-
 package com.example.sportmatch.ui
-
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -27,7 +25,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.statusBars
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Login(
@@ -46,16 +43,13 @@ fun Login(
     val auth = FirebaseAuth.getInstance()
     val context = LocalContext.current
     val laranjaColor = Color(0xFFF97316)
-
     val systemUiController = rememberSystemUiController()
     SideEffect {
-
         systemUiController.setStatusBarColor(
             color = Color.Transparent,
             darkIcons = false
         )
     }
-
     Scaffold(
         topBar = {
             TopAppBar(
@@ -85,9 +79,7 @@ fun Login(
                 .padding(paddingValues)
                 .padding(horizontal = 24.dp)
         ) {
-
             Spacer(modifier = Modifier.height(16.dp))
-
             Text(
                 text = "Acesse",
                 style = MaterialTheme.typography.headlineLarge,
@@ -99,9 +91,7 @@ fun Login(
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.Gray
             )
-
             Spacer(modifier = Modifier.height(32.dp))
-
             Text(
                 text = "Email",
                 style = MaterialTheme.typography.labelMedium,
@@ -135,9 +125,7 @@ fun Login(
                     style = MaterialTheme.typography.bodySmall
                 )
             }
-
             Spacer(modifier = Modifier.height(16.dp))
-
             Text(
                 text = "Senha",
                 style = MaterialTheme.typography.labelMedium,
@@ -180,9 +168,7 @@ fun Login(
                     style = MaterialTheme.typography.bodySmall
                 )
             }
-
             Spacer(modifier = Modifier.height(16.dp))
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -206,9 +192,7 @@ fun Login(
                     fontWeight = FontWeight.Medium
                 )
             }
-
             Spacer(modifier = Modifier.height(32.dp))
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
