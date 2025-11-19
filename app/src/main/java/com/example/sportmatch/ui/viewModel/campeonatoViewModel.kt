@@ -1,6 +1,7 @@
 package com.example.sportmatch.model
 import EsportesData
 import android.app.Application
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
@@ -10,6 +11,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sportmatch.database.SportMatchDatabase
 import com.example.sportmatch.database.entities.Competicao
+import io.github.jan.supabase.storage.storage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -25,6 +27,12 @@ class CampeonatoViewModel(application: Application) : AndroidViewModel(applicati
     var categoriaSelecionada by mutableStateOf("Misto")
     var acessibilidadeSelecionada by mutableStateOf("Futebol de 5 (deficiência visual)")
     var descricaoAcessibilidade by mutableStateOf("boa")
+    var imagemUri by mutableStateOf<Uri?>(null)
+        private set
+
+    fun setImagem(uri: Uri?) {
+        imagemUri = uri
+    }
     var tipoSelecionado by mutableStateOf("Individual")
     var total by mutableStateOf("10")
     var minimoEquipe by mutableStateOf("4")
@@ -70,7 +78,8 @@ class CampeonatoViewModel(application: Application) : AndroidViewModel(applicati
                     (
                             acessibilidadeSelecionada.isBlank() ||
                                     (acessibilidadeSelecionada.isNotBlank() && descricaoAcessibilidade.isNotBlank())
-                            )
+                            ) &&
+                    imagemUri !== null
 
     val camposObrigatorios2: Boolean
         get() {
@@ -105,8 +114,40 @@ class CampeonatoViewModel(application: Application) : AndroidViewModel(applicati
 
     private val competicaoDao = SportMatchDatabase.getDatabase(application).competicaoDao()
 
+    suspend fun uploadImagemCompeticao(uri: Uri): String? {
+        return try {
+            val context = getApplication<Application>()
+            val inputStream = context.contentResolver.openInputStream(uri)
+            if (inputStream == null) {
+                return null
+            }
+
+            val bytes = inputStream.readBytes()
+            val fileName = "${System.currentTimeMillis()}.jpg"
+            val supabase = com.example.sportmatch.supabase.SupabaseClientInstance.client
+
+            val result = supabase.storage.from("competicoes").upload(
+                path = fileName,
+                data = bytes
+            )
+
+            val url = supabase.storage.from("competicoes").publicUrl(fileName)
+
+            return url
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+
     fun salvarCompeticao() {
         viewModelScope.launch(Dispatchers.IO) {
+
+            val urlImagem = imagemUri?.let { uploadImagemCompeticao(it) } ?: ""
+
+
             val novaCompeticao = Competicao(
                 nome = nome,
                 descricao = descricao,
@@ -122,9 +163,12 @@ class CampeonatoViewModel(application: Application) : AndroidViewModel(applicati
                 inicioCompeticao = dataIniciaCompeticao?.toString() ?: "",
                 finalCompeticao = dataFimCompeticao?.toString() ?: "",
                 gratuito = competicaoGratuita,
-                valor = valor.toDoubleOrNull() ?: 0.0
+                valor = valor.toDoubleOrNull() ?: 0.0,
+                imagemUrl = urlImagem
             )
+
             competicaoDao.insert(novaCompeticao)
         }
     }
+
 }
