@@ -44,7 +44,7 @@ object WeatherService {
             }.body()
         } catch (e: Exception) {
             println("Erro ao buscar clima: ${e.message}")
-            WeatherResponse(emptyList())  // fallback seguro
+            WeatherResponse(emptyList())
         }
     }
 }
