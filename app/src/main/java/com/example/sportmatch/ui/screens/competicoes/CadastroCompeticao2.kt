@@ -33,6 +33,7 @@ import com.example.sportmatch.model.CampeonatoViewModel
 import com.example.sportmatch.ui.components.CustomButton
 import com.example.sportmatch.ui.components.CustomCheckBox
 import com.example.sportmatch.ui.components.CustomCheckBoxGroup
+import com.example.sportmatch.ui.components.CustomDateTimePicker
 //import com.example.sportmatch.ui.components.CustomDateTimePicker
 import com.example.sportmatch.ui.components.CustomRadioGroup
 import com.example.sportmatch.ui.components.CustomSelectField
@@ -40,7 +41,6 @@ import com.example.sportmatch.ui.components.CustomText
 import com.example.sportmatch.ui.components.CustomTextField
 import com.example.sportmatch.ui.components.TextType
 import com.example.sportmatch.ui.theme.StrokeBt
-/*
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CadastroCompeticao2(viewModel: CampeonatoViewModel = viewModel(), onNext: () -> Unit, onBefore: () -> Unit) {
@@ -267,4 +267,4 @@ fun CadastroCompeticao2(viewModel: CampeonatoViewModel = viewModel(), onNext: ()
 
         }
     }
-}*/
+}

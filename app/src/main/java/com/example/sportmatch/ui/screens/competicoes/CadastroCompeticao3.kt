@@ -47,7 +47,6 @@ import com.example.sportmatch.ui.components.ReviseSeusDados
 import com.example.sportmatch.ui.components.TextType
 import com.example.sportmatch.ui.theme.StrokeBt
 import kotlinx.coroutines.launch
-/*
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CadastroCompeticao3(viewModel: CampeonatoViewModel = viewModel(), onBefore: () -> Unit) {
@@ -110,4 +109,4 @@ fun CadastroCompeticao3(viewModel: CampeonatoViewModel = viewModel(), onBefore: 
 
         }
     }
-}*/
+}

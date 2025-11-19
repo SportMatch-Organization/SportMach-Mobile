@@ -33,10 +33,17 @@ import com.example.sportmatch.model.CampeonatoViewModel
 import com.example.sportmatch.ui.screens.competicoes.CadastroCompeticao
 import com.example.sportmatch.ui.Login
 import com.example.sportmatch.ui.Home
+import com.example.sportmatch.ui.cadastro.Cadastro3
+import com.example.sportmatch.ui.competicoes.CadastroCompeticao2
+import com.example.sportmatch.ui.competicoes.CadastroCompeticao3
 //import com.example.sportmatch.ui.cadastro.Cadastro3
 //import com.example.sportmatch.ui.competicoes.CadastroCompeticao2
 //import com.example.sportmatch.ui.competicoes.CadastroCompeticao3
 import com.example.sportmatch.ui.screens.cadastro.Cadastro1
+import com.example.sportmatch.ui.screens.cadastro.Cadastro2
+import com.example.sportmatch.ui.screens.cadastro.Cadastro4
+import com.example.sportmatch.ui.screens.cadastro.Cadastro5
+import com.example.sportmatch.ui.screens.cadastro.Cadastro6
 // import com.example.sportmatch.ui.screens.cadastro.Cadastro2
 //import com.example.sportmatch.ui.screens.cadastro.Cadastro4
 //import com.example.sportmatch.ui.screens.cadastro.Cadastro5
@@ -128,7 +135,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
     val enderecoUsuarioViewModel: EnderecoUsuarioViewModel = viewModel()
     NavHost(
         navController = navController,
-        startDestination = "login",
+        startDestination = "pesquisar",
         modifier = modifier
     ) {
         composable("login") {
@@ -154,23 +161,23 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
                 }
             )
         }
-        /*composable("cadastro2"){
+        composable("cadastro2"){
             Cadastro2(
                 viewModel = cadastroViewModel,
                 onNavigateToCadastro3 = {
                     navController.navigate("cadastro3")
                 }
             )
-        }*/
-        /*composable("cadastro3"){
+        }
+        composable("cadastro3"){
             Cadastro3 (
                 viewModel = cadastroViewModel,
                 onNavigateToCadastro4 = {
                     navController.navigate("cadastro4")
                 }
             )
-        }*/
-       /* composable("cadastro4"){
+        }
+        composable("cadastro4"){
             Cadastro4(
                 viewModel = cadastroViewModel,
                 enderecoUsuarioViewModel = enderecoUsuarioViewModel,
@@ -195,7 +202,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
                     navController.navigate("login")
                 }
             )
-        }*/
+        }
         composable("home") {
             Home(navController = navController)
         }
@@ -206,7 +213,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
                 onNext = { navController.navigate("cadastro-competicao2") }
             )
         }
-      /*  composable("cadastro-competicao2") { backStackEntry ->
+       composable("cadastro-competicao2") { backStackEntry ->
             val parentEntry = remember(backStackEntry) {
                 navController.getBackStackEntry("cadastro-competicao")
             }
@@ -226,7 +233,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
                 viewModel = campeonatoViewModel,
                 onBefore = { navController.popBackStack() }
             )
-        }*/
+        }
         composable("pesquisar") {
             Pesquisar(navController = navController)
         }

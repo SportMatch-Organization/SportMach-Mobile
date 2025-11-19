@@ -1,4 +1,4 @@
-/*package com.example.sportmatch.ui.screens.cadastro
+package com.example.sportmatch.ui.screens.cadastro
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
@@ -92,4 +92,4 @@ fun Cadastro6(
 @Composable
 fun Cadastro6Preview(){
     Cadastro6(CadastroViewModel(), onNavigateToLogin = {})
-}*/
+}

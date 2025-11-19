@@ -45,7 +45,7 @@ fun CustomTextField(
 
     if (space) Spacer(modifier = Modifier.height(16.dp))
 
-    OutlinedTextField(
+    TextField(
         value = value,
         onValueChange = onValueChange,
         label = { if (label != null) Text(label) },

@@ -1,4 +1,4 @@
-/*package com.example.sportmatch.ui.screens.cadastro
+package com.example.sportmatch.ui.screens.cadastro
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -132,4 +132,4 @@ fun preencherEndereco(enderecoUsuarioViewModel: EnderecoUsuarioViewModel, endere
     enderecoUsuarioViewModel.setGia(enderecoApi?.gia)
     enderecoUsuarioViewModel.setDdd(enderecoApi?.ddd)
     enderecoUsuarioViewModel.setSiafi(enderecoApi?.siafi)
-}*/
+}
