@@ -1,4 +1,4 @@
-package com.example.sportmatch.model
+package com.example.sportmatch.ui.viewModel.user
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

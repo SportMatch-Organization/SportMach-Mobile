@@ -1,15 +1,15 @@
-package com.example.sportmatch.database.dao
+package com.example.sportmatch.database.dao.user
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.sportmatch.database.entities.User
+import com.example.sportmatch.database.entities.user.User
 
 @Dao
 interface UserDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     suspend fun insert(user: User) //indica que essa função pode demorar e deve ser executada em segundo plano
 
     @Query("SELECT * FROM user WHERE email = :email AND senha = :senha LIMIT 1")

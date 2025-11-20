@@ -1,13 +1,10 @@
-package com.example.sportmatch.model
+package com.example.sportmatch.ui.viewModel.user
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.sportmatch.database.entities.User
-import com.example.sportmatch.model.enumTypes.user.GeneroEnum
-import com.example.sportmatch.model.enumTypes.user.PerfilEnum
-import java.util.Date
+import com.example.sportmatch.database.entities.user.User
 
 class CadastroViewModel: ViewModel() {
 
@@ -60,10 +57,6 @@ class CadastroViewModel: ViewModel() {
 
     fun setPerfil(perfil: String){
         user = user.copy(perfil = perfil)
-    }
-
-    fun setEsporteInteresse(esporteInteresse:String){
-        user = user.copy(esporteIntresse = esporteInteresse)
     }
 
 }

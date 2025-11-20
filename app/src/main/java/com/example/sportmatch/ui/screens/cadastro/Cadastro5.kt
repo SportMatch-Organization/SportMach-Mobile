@@ -26,8 +26,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sportmatch.api.viaCepApi.Endereco
 import com.example.sportmatch.api.viaCepApi.RetrofitClient
-import com.example.sportmatch.model.CadastroViewModel
-import com.example.sportmatch.model.EnderecoUsuarioViewModel
+import com.example.sportmatch.ui.viewModel.user.CadastroViewModel
+import com.example.sportmatch.ui.viewModel.user.EnderecoUsuarioViewModel
 import com.example.sportmatch.ui.components.CustomButton
 import com.example.sportmatch.ui.theme.Orange
 import retrofit2.Response

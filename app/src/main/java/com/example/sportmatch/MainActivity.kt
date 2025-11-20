@@ -18,8 +18,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.sportmatch.model.CadastroViewModel
-import com.example.sportmatch.model.EnderecoUsuarioViewModel
+import com.example.sportmatch.ui.viewModel.user.CadastroViewModel
+import com.example.sportmatch.ui.viewModel.user.EnderecoUsuarioViewModel
 import com.example.sportmatch.model.CampeonatoViewModel
 import com.example.sportmatch.ui.screens.competicoes.CadastroCompeticao
 import com.example.sportmatch.ui.Login
@@ -38,6 +38,7 @@ import com.example.sportmatch.ui.screens.espacosEsportivo.CadastroEspacoEsportiv
 import com.example.sportmatch.ui.screens.patrocinadores.TelaCadastro
 import com.example.sportmatch.ui.theme.SportmatchTheme
 import com.example.sportmatch.ui.viewModel.EspacoEsportivoViewModel
+import com.example.sportmatch.ui.viewModel.user.EsportesInteresseViewModel
 
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
@@ -68,7 +69,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
     val enderecoUsuarioViewModel: EnderecoUsuarioViewModel = viewModel()
     NavHost(
         navController = navController,
-        startDestination = "cadastro-patrocinador",
+        startDestination = "cadastro1",
         modifier = modifier
     ) {
         composable("login") {
@@ -135,8 +136,10 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
         }
 
         composable("cadastro6"){
+            val esportesInteresseViewModel: EsportesInteresseViewModel = viewModel()
             Cadastro6(
                 viewModel = cadastroViewModel,
+                esportesInteresseViewModel = esportesInteresseViewModel,
                 onNavigateToLogin = {
                     navController.navigate("login")
                 }

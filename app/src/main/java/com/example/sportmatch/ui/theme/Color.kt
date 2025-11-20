@@ -11,3 +11,5 @@ val ErrorColor = Color(0xFFE75858)
 val darkBlue = Color(0xFF012849)
 
 val Orange = Color(0xFFFD710F)
+
+val Azul2E3E4B = Color(0xFF2E3E4B)

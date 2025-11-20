@@ -27,8 +27,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sportmatch.api.viaCepApi.Endereco
 import com.example.sportmatch.api.viaCepApi.RetrofitClient
 import com.example.sportmatch.database.converters.UserTypeConverters
-import com.example.sportmatch.model.CadastroViewModel
-import com.example.sportmatch.model.EnderecoUsuarioViewModel
+import com.example.sportmatch.ui.viewModel.user.CadastroViewModel
+import com.example.sportmatch.ui.viewModel.user.EnderecoUsuarioViewModel
 import com.example.sportmatch.ui.components.CustomButton
 import com.example.sportmatch.ui.theme.Orange
 
@@ -81,7 +81,6 @@ fun Cadastro4(
                     //Pode receber tanto um endereço como uma mensagem de erro
                     if (response.isSuccessful){
                         enderecoApi = response.body()
-                        print(enderecoApi)
                         preencherEndereco(enderecoUsuarioViewModel, enderecoApi)
                     } else{
                         mensagemErro = "Endereço não encontrado."
