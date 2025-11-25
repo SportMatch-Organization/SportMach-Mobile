@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:gravity="center_vertical">
+
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_calendar_orange"
+        android:contentDescription="Ícone de calendário"
+        android:tint="@android:color/holo_orange_dark" />
+
+    <TextView
+        android:id="@+id/text_descricao"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="8dp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        tools:text="Início das inscrições" />
+
+    <TextView
+        android:id="@+id/text_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="10/11/2025" />
+</LinearLayout>

@@ -1,6 +1,7 @@
 package com.example.sportmatch
 
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -21,12 +22,14 @@ import androidx.navigation.compose.rememberNavController
 import com.example.sportmatch.model.CadastroViewModel
 import com.example.sportmatch.model.EnderecoUsuarioViewModel
 import com.example.sportmatch.model.CampeonatoViewModel
+import com.example.sportmatch.model.Evento
 import com.example.sportmatch.ui.screens.competicoes.CadastroCompeticao
 import com.example.sportmatch.ui.Login
 import com.example.sportmatch.ui.Home
 import com.example.sportmatch.ui.cadastro.Cadastro3
 import com.example.sportmatch.ui.competicoes.CadastroCompeticao2
 import com.example.sportmatch.ui.competicoes.CadastroCompeticao3
+import com.example.sportmatch.ui.DetalhesEventoActivity
 import com.example.sportmatch.ui.screens.cadastro.Cadastro1
 import com.example.sportmatch.ui.screens.cadastro.Cadastro2
 import com.example.sportmatch.ui.screens.cadastro.Cadastro4
@@ -43,6 +46,34 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+        val eventoTeste = Evento(
+            titulo = "Vôlei de areia Pajuçara",
+            preco = 20.00,
+            esporte = "Vôlei",
+            modalidade = "Vôlei de praia",
+            categoria = "Misto",
+            subcategoria = "sub-17",
+            formatoCompeticao = "Sub-17",
+            nivelAcessibilidade = "Deficiência visual",
+            maxAtletas = 4,
+            minAtletas = 2,
+            dataInicioInscricoes = "10/11/2025",
+            dataFimInscricoes = "20/11/2025",
+            inicioCompeticao = "24/11/2025 - 15:00",
+            fimCompeticao = "24/11/2025 - 17:00",
+            nomeLocal = "Praia da Pajuçara"
+        )
+
+        val intent = Intent(this, DetalhesEventoActivity::class.java)
+        intent.putExtra("evento_detalhes", eventoTeste)
+        startActivity(intent)
+
+        // Se você quiser voltar ao fluxo normal de Compose (Login -> Home),
+        // COMENTE as linhas acima
+
+
         enableEdgeToEdge()
 
         setContent {
@@ -209,9 +240,5 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
                 onVerCadastrados = {}
             )
         }
-
-
     }
 }
-
-
