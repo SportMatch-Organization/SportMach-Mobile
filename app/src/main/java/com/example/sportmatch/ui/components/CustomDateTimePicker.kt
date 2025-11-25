@@ -1,6 +1,5 @@
 package com.example.sportmatch.ui.components
 
-import android.app.TimePickerDialog
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
@@ -106,29 +105,31 @@ fun CustomDateTimePicker(
         }
     }
 
-  if (showTimeDialog && tempDate != null) TimePickerDialog(
-        onDismissRequest = { showTimeDialog = false },
-        confirmButton = {
-            TextButton(onClick = {
-                val pickedTime = LocalTime.of(
-                    timePickerState.hour,
-                    timePickerState.minute
+    if (showTimeDialog && tempDate != null) {
+        TimePickerDialog(
+            onDismissRequest = { showTimeDialog = false },
+            confirmButton = {
+                TextButton(onClick = {
+                    val pickedTime = LocalTime.of(
+                        timePickerState.hour,
+                        timePickerState.minute
+                    )
+                    val newDateTime = LocalDateTime.of(tempDate!!.toLocalDate(), pickedTime)
+                    onValueChange(newDateTime)
+                    showTimeDialog = false
+                }) { Text("OK") }
+            },
+            title = { Text("") },
+            dismissButton = {
+                TextButton(onClick = { showTimeDialog = false }) { Text("Cancelar") }
+            }
+        ) {
+            TimePicker(
+                state = timePickerState,
+                colors = TimePickerDefaults.colors(
+                    timeSelectorSelectedContainerColor = primaryColor
                 )
-                val newDateTime = LocalDateTime.of(tempDate!!.toLocalDate(), pickedTime)
-                onValueChange(newDateTime)
-                showTimeDialog = false
-            }) { Text("OK") }
-        },
-        title = { Text("") },
-        dismissButton = {
-            TextButton(onClick = { showTimeDialog = false }) { Text("Cancelar") }
-        }
-    ) {
-        TimePicker(
-            state = timePickerState,
-            colors = TimePickerDefaults.colors(
-                timeSelectorSelectedContainerColor = primaryColor
             )
-        )
+        }
     }
 }

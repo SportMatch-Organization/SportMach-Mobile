@@ -57,6 +57,8 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+    implementation(libs.material3)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -78,7 +80,6 @@ dependencies {
     implementation("androidx.room:room-runtime:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
 
-
     ksp("androidx.room:room-compiler:$room_version") //alternativa mais rápida que o Kapt
 
     implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
@@ -99,4 +100,11 @@ dependencies {
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
+    implementation("io.github.jan-tennert.supabase:gotrue-kt:2.0.4")
+    implementation("io.github.jan-tennert.supabase:storage-kt:2.0.4")
+    implementation("io.github.jan-tennert.supabase:postgrest-kt:2.0.4")
+    implementation(platform("io.github.jan-tennert.supabase:bom:2.4.0"))
+    implementation("io.ktor:ktor-client-okhttp:2.3.7")
+    implementation("io.coil-kt:coil-compose:2.5.0")
+
 }

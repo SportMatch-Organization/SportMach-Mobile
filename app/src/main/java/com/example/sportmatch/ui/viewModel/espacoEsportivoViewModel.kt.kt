@@ -1,25 +1,32 @@
 package com.example.sportmatch.ui.viewModel
 
 import android.app.Application
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.sportmatch.database.SportMatchDatabase
+import com.example.sportmatch.database.entities.Competicao
+import com.example.sportmatch.database.entities.EspacoEsportivo
+import io.github.jan.supabase.storage.storage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 class EspacoEsportivoViewModel(application: Application) : AndroidViewModel(application) {
-    var nome by mutableStateOf("Quadra do Cebase")
-    var descricao by mutableStateOf("Quadra com as marcações visíveis")
-    var tipoSelecionado by mutableStateOf("Quadra")
-    var endereco by mutableStateOf("Rua Josué Messias, Povoado Pau darco, Arapiraca, Alagoas")
-    var telefone by mutableStateOf("333334332")
-    var maximoAtletas by mutableStateOf("2")
+    var nome by mutableStateOf("")
+    var descricao by mutableStateOf("")
+    var tipoSelecionado by mutableStateOf("")
+    var endereco by mutableStateOf("")
+    var telefone by mutableStateOf("")
+    var maximoAtletas by mutableStateOf("")
     var esportesSuportadosSelecionados by mutableStateOf(listOf<String>())
-
-    var nivelAcessibilidadeSelecionadas = mutableListOf<String>()
-    var recursosSelecionados = mutableListOf<String>()
+    var nivelAcessibilidadeSelecionadas by mutableStateOf(listOf<String>())
+    var recursosSelecionados by mutableStateOf(listOf<String>())
 
     val tiposEspaco = listOf(
         "Academia de musculação",
@@ -65,6 +72,7 @@ class EspacoEsportivoViewModel(application: Application) : AndroidViewModel(appl
         "Vôlei de praia")
 
     val niveisAcessibildade = listOf(
+        "Nenhum",
         "Acesso permitido a cão-guia",
         "Área de circulação ampla e livre de obstáculos",
         "Área de descanso acessível",
@@ -93,6 +101,7 @@ class EspacoEsportivoViewModel(application: Application) : AndroidViewModel(appl
         "Vestiário adaptado")
 
     val recursos = listOf(
+        "Nenhum",
         "Aluguel de bolas e equipamentos",
         "Área de aquecimento ou alongamento",
         "Área de churrasco ou confraternização",
@@ -124,4 +133,65 @@ class EspacoEsportivoViewModel(application: Application) : AndroidViewModel(appl
         "Tomadas e energia elétrica disponíveis",
         "Vestiários masculinos e femininos"
     )
+
+    val camposObrigatorios: Boolean
+        get(){
+            return nome.isNotBlank() && descricao.isNotBlank() && tiposEspaco.isNotEmpty() && endereco.isNotBlank() && telefone.isNotBlank() && maximoAtletas.isNotBlank() && esportesSuportadosSelecionados.isNotEmpty() && nivelAcessibilidadeSelecionadas.isNotEmpty() && recursosSelecionados.isNotEmpty() && imagemUri != null
+        }
+
+    var imagemUri by mutableStateOf<Uri?>(null)
+        private set
+
+    fun setImagem(uri: Uri?) {
+        imagemUri = uri
+    }
+    private val espacoEsportivoDao = SportMatchDatabase.getDatabase(application).espacoEsportivoDao()
+
+    suspend fun uploadImagemEspacosEsportivos(uri: Uri): String? {
+        return try {
+            val context = getApplication<Application>()
+            val inputStream = context.contentResolver.openInputStream(uri)
+            if (inputStream == null) {
+                return null
+            }
+
+            val bytes = inputStream.readBytes()
+            val fileName = "${System.currentTimeMillis()}.jpg"
+            val supabase = com.example.sportmatch.supabase.SupabaseClientInstance.client
+
+            val result = supabase.storage.from("espacos-esportivos").upload(
+                path = fileName,
+                data = bytes
+            )
+
+            val url = supabase.storage.from("espacos-esportivos").publicUrl(fileName)
+
+            return url
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    suspend fun salvarEspacoEsportivo() {
+        val urlImagem = imagemUri?.let { uploadImagemEspacosEsportivos(it) } ?: ""
+
+        val novoEspacoEsportivo = EspacoEsportivo(
+            nome = nome,
+            descricao = descricao,
+            tipoEspaco = tipoSelecionado,
+            endereco = endereco,
+            telefone = telefone,
+            maximoAtletas = maximoAtletas,
+            esportesSuportados = esportesSuportadosSelecionados.joinToString(", "),
+            nivelAcessibilidade = nivelAcessibilidadeSelecionadas.joinToString(", "),
+            recursos = recursosSelecionados.joinToString(", "),
+            imagemUrl = urlImagem
+        )
+
+        espacoEsportivoDao.insert(novoEspacoEsportivo)
+    }
+
+
 }

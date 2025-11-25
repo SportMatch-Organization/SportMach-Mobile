@@ -19,7 +19,7 @@ data class Competicao(
     @ColumnInfo(name = "descricao_acessibilidade") val descricaoAcessibilidade: String = "",
     val tipo: String = "",
     val total: Int = 0,
-    val imagemUrl: String = "",
+    @ColumnInfo(name = "imagem_url") val imagemUrl: String = "",
     @ColumnInfo(name = "minimo_equipe") val minimoEquipe: Int? = null,
     @ColumnInfo(name = "maximo_equipe") val maximoEquipe: Int? = null,
     @ColumnInfo(name = "faixa_etaria") val faixaEtaria: String = "",
@@ -32,5 +32,5 @@ data class Competicao(
     val local: String = "",
     val gratuito: Boolean = false,
     val valor: Double? = null,
-    @ColumnInfo(name = "formas_pagamento") val formasPagamento: String = ""
+    @ColumnInfo(name = "formas_pagamento") val formasPagamento: String = "",
 )
