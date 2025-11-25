@@ -20,6 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.sportmatch.R
 import com.example.sportmatch.database.entities.Competicao
 import com.example.sportmatch.ui.theme.verdeTaxa
@@ -151,8 +152,14 @@ fun CompeticaoCard(competicao: Competicao) {
                     .padding(top = 12.dp, bottom = 12.dp, end = 12.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.placeholder_volei),
+                val imagemParaMostrar = if (competicao.imagemUrl.startsWith("http")) {
+                    competicao.imagemUrl
+                } else {
+                    R.drawable.placeholder_volei
+                }
+
+                AsyncImage(
+                    model = imagemParaMostrar,
                     contentDescription = competicao.nome,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier

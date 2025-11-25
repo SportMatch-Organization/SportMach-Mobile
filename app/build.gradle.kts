@@ -100,11 +100,12 @@ dependencies {
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
+
+    implementation("io.coil-kt:coil-compose:2.6.0")
     implementation("io.github.jan-tennert.supabase:gotrue-kt:2.0.4")
     implementation("io.github.jan-tennert.supabase:storage-kt:2.0.4")
     implementation("io.github.jan-tennert.supabase:postgrest-kt:2.0.4")
     implementation(platform("io.github.jan-tennert.supabase:bom:2.4.0"))
     implementation("io.ktor:ktor-client-okhttp:2.3.7")
-    implementation("io.coil-kt:coil-compose:2.5.0")
 
 }
