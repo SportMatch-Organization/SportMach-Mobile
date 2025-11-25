@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -35,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sportmatch.model.CampeonatoViewModel
 import com.example.sportmatch.ui.components.CustomButton
+import com.example.sportmatch.ui.components.CustomImagePicker
 import com.example.sportmatch.ui.components.CustomMultiSelectField
 import com.example.sportmatch.ui.components.CustomSelectField
 import com.example.sportmatch.ui.components.CustomText
@@ -48,114 +50,140 @@ import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun CadastroEspacoEsportivo(viewModel: EspacoEsportivoViewModel = viewModel(), onBefore: () -> Unit) {
+fun CadastroEspacoEsportivo(
+    viewModel: EspacoEsportivoViewModel = viewModel(),
+    onBefore: () -> Unit
+) {
     val scrollState = rememberScrollState()
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     var carregando by remember { mutableStateOf(false) }
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .verticalScroll(scrollState)
     ) {
-        IconButton(onClick = { onBefore() }) {
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
-                tint = Color.Red,
-                contentDescription = "Voltar"
-            )
-        }
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = Color.White)
-                .padding(horizontal = 16.dp)
+                .background(Color.White)
+                .verticalScroll(scrollState)
         ) {
-            Spacer(modifier = Modifier.height(24.dp))
-            CustomText("Informações do espaço esportivo", TextType.HEADLINE, fontSize = 24.sp)
-            Spacer(modifier = Modifier.height(60.dp))
-            CustomTextField(
-                value = viewModel.nome,
-                onValueChange = { viewModel.nome = it },
-                label = "Nome do espaço esportivo",
-                space =false
-            )
-            CustomTextField(
-                value = viewModel.descricao,
-                onValueChange = { viewModel.descricao = it },
-                label = "Descrição",
-                singleLine = false,
-                maxLines = 3
-            )
-            CustomSelectField(
-                label = "Tipo de espaço",
-                options = viewModel.tiposEspaco,
-                selectedValue = viewModel.tipoSelecionado,
-                onValueChange = { viewModel.tipoSelecionado = it },
-            )
-            CustomTextField(
-                value = viewModel.endereco,
-                onValueChange = { viewModel.endereco = it },
-                label = "Endereço completo",
-                singleLine = false,
-                maxLines = 3
-            )
-            CustomTextField(
-                value = viewModel.telefone,
-                onValueChange = { newValue ->
-                    if (newValue.all { it.isDigit() } || newValue.isEmpty()) {
-                        viewModel.telefone = newValue
-                    } },
-                label = "Telefone",
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            )
-            CustomTextField(
-                value = viewModel.maximoAtletas,
-                onValueChange = { newValue ->
-                    if (newValue.all { it.isDigit() } || newValue.isEmpty()) {
-                        viewModel.maximoAtletas = newValue
-                    }},
-                label = "Capacidade máxima de atletas",
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            )
-            CustomMultiSelectField(
-                label = "Esportes suportados",
-                options = viewModel.esportesSuportados,
-                selectedValues = viewModel.esportesSuportadosSelecionados,
-                onValueChange = { viewModel.esportesSuportadosSelecionados = it }
-            )
-            CustomMultiSelectField(
-                label = "Nível de acessibidade",
-                options = viewModel.niveisAcessibildade,
-                selectedValues = viewModel.nivelAcessibilidadeSelecionadas,
-                onValueChange = { viewModel.nivelAcessibilidadeSelecionadas = it }
-            )
-            CustomMultiSelectField(
-                label = "Recursos do espaço",
-                options = viewModel.recursos,
-                selectedValues = viewModel.recursosSelecionados,
-                onValueChange = { viewModel.recursosSelecionados = it }
-            )
-            Spacer(modifier = Modifier.height(34.dp))
-            CustomButton(
-                text = "Cadastrar",
-                onClick = {
-                    carregando = true
-                    scope.launch {
-                        try {
-                            viewModel.salvarEspacoEsportivo()
-                            carregando = false
-                            Toast.makeText(context, "Espaço esportivo cadastrada com sucesso!", Toast.LENGTH_LONG).show()
-                        } catch (error: Exception) {
-                            carregando = false
-                            Toast.makeText(context, "Falha no Cadastro: ${error.message}", Toast.LENGTH_LONG).show()
+            IconButton(onClick = { onBefore() }) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    tint = Color.Red,
+                    contentDescription = "Voltar"
+                )
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = Color.White)
+                    .padding(horizontal = 16.dp)
+            ) {
+                Spacer(modifier = Modifier.height(24.dp))
+                CustomText("Informações do espaço esportivo", TextType.HEADLINE, fontSize = 24.sp)
+                Spacer(modifier = Modifier.height(60.dp))
+                CustomTextField(
+                    value = viewModel.nome,
+                    onValueChange = { viewModel.nome = it },
+                    label = "Nome do espaço esportivo",
+                    space = false
+                )
+                CustomTextField(
+                    value = viewModel.descricao,
+                    onValueChange = { viewModel.descricao = it },
+                    label = "Descrição",
+                    singleLine = false,
+                    maxLines = 3
+                )
+                CustomSelectField(
+                    label = "Tipo de espaço",
+                    options = viewModel.tiposEspaco,
+                    selectedValue = viewModel.tipoSelecionado,
+                    onValueChange = { viewModel.tipoSelecionado = it },
+                )
+                CustomTextField(
+                    value = viewModel.endereco,
+                    onValueChange = { viewModel.endereco = it },
+                    label = "Endereço completo",
+                    singleLine = false,
+                    maxLines = 3
+                )
+                CustomTextField(
+                    value = viewModel.telefone,
+                    onValueChange = { newValue ->
+                        if (newValue.all { it.isDigit() } || newValue.isEmpty()) {
+                            viewModel.telefone = newValue
                         }
-                    }
-                },
-                enabled = viewModel.camposObrigatorios || carregando
-            )
-            Spacer(modifier = Modifier.height(40.dp))
+                    },
+                    label = "Telefone",
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                )
+                CustomTextField(
+                    value = viewModel.maximoAtletas,
+                    onValueChange = { newValue ->
+                        if (newValue.all { it.isDigit() } || newValue.isEmpty()) {
+                            viewModel.maximoAtletas = newValue
+                        }
+                    },
+                    label = "Capacidade máxima de atletas",
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                )
+                CustomMultiSelectField(
+                    label = "Esportes suportados",
+                    options = viewModel.esportesSuportados,
+                    selectedValues = viewModel.esportesSuportadosSelecionados,
+                    onValueChange = { viewModel.esportesSuportadosSelecionados = it }
+                )
+                CustomMultiSelectField(
+                    label = "Nível de acessibidade",
+                    options = viewModel.niveisAcessibildade,
+                    selectedValues = viewModel.nivelAcessibilidadeSelecionadas,
+                    onValueChange = { viewModel.nivelAcessibilidadeSelecionadas = it }
+                )
+                CustomMultiSelectField(
+                    label = "Recursos do espaço",
+                    options = viewModel.recursos,
+                    selectedValues = viewModel.recursosSelecionados,
+                    onValueChange = { viewModel.recursosSelecionados = it }
+                )
+                CustomImagePicker(
+                    "Escolha abaixo a imagem do espaço esportivo: ",
+                    viewModel.imagemUri, { uri ->
+                        viewModel.setImagem(uri)
+                    })
+                Spacer(modifier = Modifier.height(34.dp))
+                CustomButton(
+                    text = "Cadastrar",
+                    onClick = {
+                        carregando = true
+                        scope.launch {
+                            try {
+                                viewModel.salvarEspacoEsportivo()
+                                carregando = false
+                                Toast.makeText(
+                                    context,
+                                    "Espaço esportivo cadastrado com sucesso!",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            } catch (e: Exception) {
+                                carregando = false
+                                Toast.makeText(
+                                    context,
+                                    "Falha no Cadastro: ${e.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+
+                    },
+                    enabled = viewModel.camposObrigatorios || carregando
+                )
+                Spacer(modifier = Modifier.height(40.dp))
+
+            }
         }
         Loading(visible = carregando)
     }

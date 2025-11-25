@@ -11,13 +11,13 @@ import kotlinx.serialization.json.Json
 
 @Serializable
 data class CurrentCondition(
-    val temp_C: String? = null,               // temperatura em Celsius
-    val weatherDesc: List<WeatherDesc> = emptyList()  // descrição do clima
+    val temp_C: String? = null,
+    val weatherDesc: List<WeatherDesc> = emptyList()
 )
 
 @Serializable
 data class WeatherDesc(
-    val value: String? = ""                    // descrição textual
+    val value: String? = ""
 )
 
 @Serializable

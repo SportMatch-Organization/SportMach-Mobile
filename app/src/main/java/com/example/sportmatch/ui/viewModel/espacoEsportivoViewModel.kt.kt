@@ -1,6 +1,7 @@
 package com.example.sportmatch.ui.viewModel
 
 import android.app.Application
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
@@ -11,6 +12,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.sportmatch.database.SportMatchDatabase
 import com.example.sportmatch.database.entities.Competicao
 import com.example.sportmatch.database.entities.EspacoEsportivo
+import io.github.jan.supabase.storage.storage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -134,26 +136,62 @@ class EspacoEsportivoViewModel(application: Application) : AndroidViewModel(appl
 
     val camposObrigatorios: Boolean
         get(){
-            return nome.isNotBlank() && descricao.isNotBlank() && tiposEspaco.isNotEmpty() && endereco.isNotBlank() && telefone.isNotBlank() && maximoAtletas.isNotBlank() && esportesSuportadosSelecionados.isNotEmpty() && nivelAcessibilidadeSelecionadas.isNotEmpty() && recursosSelecionados.isNotEmpty()
+            return nome.isNotBlank() && descricao.isNotBlank() && tiposEspaco.isNotEmpty() && endereco.isNotBlank() && telefone.isNotBlank() && maximoAtletas.isNotBlank() && esportesSuportadosSelecionados.isNotEmpty() && nivelAcessibilidadeSelecionadas.isNotEmpty() && recursosSelecionados.isNotEmpty() && imagemUri != null
         }
 
+    var imagemUri by mutableStateOf<Uri?>(null)
+        private set
+
+    fun setImagem(uri: Uri?) {
+        imagemUri = uri
+    }
     private val espacoEsportivoDao = SportMatchDatabase.getDatabase(application).espacoEsportivoDao()
 
-    fun salvarEspacoEsportivo() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val novoEspacoEsportivo = EspacoEsportivo(
-                        nome = nome,
-                        descricao = descricao,
-                        tipoEspaco = tipoSelecionado,
-                        endereco = endereco,
-                        telefone = telefone,
-                maximoAtletas = maximoAtletas,
-                        esportesSuportados = esportesSuportados.joinToString(", "),
-                        nivelAcessibilidade = nivelAcessibilidadeSelecionadas.joinToString(", "),
-                        recursos = recursos.joinToString(", ")
+    suspend fun uploadImagemEspacosEsportivos(uri: Uri): String? {
+        return try {
+            val context = getApplication<Application>()
+            val inputStream = context.contentResolver.openInputStream(uri)
+            if (inputStream == null) {
+                return null
+            }
 
+            val bytes = inputStream.readBytes()
+            val fileName = "${System.currentTimeMillis()}.jpg"
+            val supabase = com.example.sportmatch.supabase.SupabaseClientInstance.client
+
+            val result = supabase.storage.from("espacos-esportivos").upload(
+                path = fileName,
+                data = bytes
             )
-            espacoEsportivoDao.insert(novoEspacoEsportivo)
+
+            val url = supabase.storage.from("espacos-esportivos").publicUrl(fileName)
+
+            return url
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
         }
     }
+
+    suspend fun salvarEspacoEsportivo() {
+        val urlImagem = imagemUri?.let { uploadImagemEspacosEsportivos(it) } ?: ""
+
+        val novoEspacoEsportivo = EspacoEsportivo(
+            nome = nome,
+            descricao = descricao,
+            tipoEspaco = tipoSelecionado,
+            endereco = endereco,
+            telefone = telefone,
+            maximoAtletas = maximoAtletas,
+            esportesSuportados = esportesSuportadosSelecionados.joinToString(", "),
+            nivelAcessibilidade = nivelAcessibilidadeSelecionadas.joinToString(", "),
+            recursos = recursosSelecionados.joinToString(", "),
+            imagemUrl = urlImagem
+        )
+
+        espacoEsportivoDao.insert(novoEspacoEsportivo)
+    }
+
+
 }

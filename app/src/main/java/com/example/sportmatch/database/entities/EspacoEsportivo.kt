@@ -17,4 +17,5 @@ data class EspacoEsportivo(
     @ColumnInfo(name = "esportes_suportados") val esportesSuportados: String = "",
     @ColumnInfo(name = "nivel_acessibilidade") val nivelAcessibilidade: String = "",
     val recursos: String = "",
+    @ColumnInfo(name = "imagem_url") val imagemUrl: String = "",
 )

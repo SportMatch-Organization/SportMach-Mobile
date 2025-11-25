@@ -34,6 +34,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.sportmatch.model.CampeonatoViewModel
 import com.example.sportmatch.ui.components.CustomButton
+import com.example.sportmatch.ui.components.CustomImagePicker
 import com.example.sportmatch.ui.components.CustomSelectField
 import com.example.sportmatch.ui.components.CustomTextField
 import com.example.sportmatch.ui.components.CustomRadioGroup
@@ -57,7 +58,7 @@ fun CadastroCompeticao(viewModel: CampeonatoViewModel = viewModel(), onNext: () 
             .background(Color.White)
             .verticalScroll(scrollState)
     ) {
-        IconButton(onClick = { onNext() }) {
+        IconButton(onClick = {}) {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
                 tint = Color.Red,
@@ -67,8 +68,8 @@ fun CadastroCompeticao(viewModel: CampeonatoViewModel = viewModel(), onNext: () 
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = Color.White)
                 .padding(horizontal = 16.dp)
+                .background(color = Color.White)
         ) {
             Spacer(modifier = Modifier.height(24.dp))
             CustomText("Informações da competição", TextType.HEADLINE, fontSize = 24.sp)
@@ -110,7 +111,7 @@ fun CadastroCompeticao(viewModel: CampeonatoViewModel = viewModel(), onNext: () 
             )
 
             CustomRadioGroup(
-                label = "Selecione o categoria:",
+                label = "Selecione a categoria:",
                 options = viewModel.categorias,
                 selectedValue = viewModel.categoriaSelecionada,
                 onValueChange = { viewModel.categoriaSelecionada = it }
@@ -128,35 +129,11 @@ fun CadastroCompeticao(viewModel: CampeonatoViewModel = viewModel(), onNext: () 
                 onValueChange = { viewModel.descricaoAcessibilidade = it },
                 label = "Descreva como é a acessibilidade"
             )
-            Spacer(modifier = Modifier.height(16.dp))
-            CustomText(
+            CustomImagePicker(
                 "Escolha abaixo a imagem da competição: ",
-                TextType.SUBTITULO,
-                color = MaterialTheme.colorScheme.secondary
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            CustomButton(backgroundColor = MaterialTheme.colorScheme.secondary,
-                text = "Selecionar imagem",
-                onClick = { launcher.launch("image/*") },
-                icon = {
-                    Icon(
-                        imageVector = Icons.Default.ImageSearch,
-                        tint = Color.White,
-                        contentDescription = "Voltar"
-                    )
-                }
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Row (horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()){
-            if(viewModel.imagemUri !== null){
-                AsyncImage(
-                    model = viewModel.imagemUri,
-                    contentDescription = null,
-                    modifier = Modifier.size(150.dp),
-                    contentScale = ContentScale.Crop
-                )
-            }
-            }
+                viewModel.imagemUri,  { uri ->
+                    viewModel.setImagem(uri)
+                })
             Spacer(modifier = Modifier.height(34.dp))
             CustomButton(
                 enabled = viewModel.camposObrigatorios1,
