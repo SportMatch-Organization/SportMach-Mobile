@@ -17,6 +17,8 @@ data class Evento(
     val dataFimInscricoes: String,
     val inicioCompeticao: String,
     val fimCompeticao: String,
-    // Adicionar campos para o Local, como um nome e coordenadas, se necessário
-    val nomeLocal: String? = null
+    val nomeLocal: String? = null,
+
+    // NOVO: Lista de URLs de imagens
+    val urlsImagens: List<String> = emptyList()
 ) : Serializable

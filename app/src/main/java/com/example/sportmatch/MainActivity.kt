@@ -47,6 +47,17 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // ====================================================================
+        // === CÓDIGO DE TESTE: INICIAR A TELA DETALHES EVENTO (XML)          ===
+        // ====================================================================
+
+        val urlsDeTeste = listOf(
+            // Usa o placeholder existente como a primeira imagem
+            "drawable://placeholder_volei",
+            // Usa caminhos genéricos para simular outras imagens que serão carregadas como cor
+            "url://imagem_2",
+            "url://imagem_3"
+        )
 
         val eventoTeste = Evento(
             titulo = "Vôlei de areia Pajuçara",
@@ -63,16 +74,18 @@ class MainActivity : ComponentActivity() {
             dataFimInscricoes = "20/11/2025",
             inicioCompeticao = "24/11/2025 - 15:00",
             fimCompeticao = "24/11/2025 - 17:00",
-            nomeLocal = "Praia da Pajuçara"
+            nomeLocal = "Praia da Pajuçara",
+            urlsImagens = urlsDeTeste // Passa a lista de URLs
         )
 
         val intent = Intent(this, DetalhesEventoActivity::class.java)
         intent.putExtra("evento_detalhes", eventoTeste)
         startActivity(intent)
+        finish()
 
-        // Se você quiser voltar ao fluxo normal de Compose (Login -> Home),
-        // COMENTE as linhas acima
-
+        // ====================================================================
+        // === FIM DO CÓDIGO DE TESTE (Retorna o fluxo Compose depois)        ===
+        // ====================================================================
 
         enableEdgeToEdge()
 
@@ -86,7 +99,6 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
-
             }
         }
     }
