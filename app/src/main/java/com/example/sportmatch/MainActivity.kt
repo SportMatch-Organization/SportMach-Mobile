@@ -16,7 +16,6 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -31,9 +30,9 @@ import com.example.sportmatch.model.CadastroViewModel
 import com.example.sportmatch.model.EnderecoUsuarioViewModel
 import com.example.sportmatch.model.CampeonatoViewModel
 import com.example.sportmatch.ui.screens.competicoes.CadastroCompeticao
-import com.example.sportmatch.ui.Login
 import com.example.sportmatch.ui.Home
 import com.example.sportmatch.ui.Perfil_organizador.PerfilOrganizador
+import com.example.sportmatch.ui.login.Login
 //import com.example.sportmatch.ui.cadastro.Cadastro3
 //import com.example.sportmatch.ui.competicoes.CadastroCompeticao2
 //import com.example.sportmatch.ui.competicoes.CadastroCompeticao3
@@ -130,7 +129,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
     val enderecoUsuarioViewModel: EnderecoUsuarioViewModel = viewModel()
     NavHost(
         navController = navController,
-        startDestination = "PerfilOrganizador",
+        startDestination = "Login",
         modifier = modifier
     ) {
 
