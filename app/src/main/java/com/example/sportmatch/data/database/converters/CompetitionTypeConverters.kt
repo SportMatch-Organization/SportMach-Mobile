@@ -1,4 +1,4 @@
-package com.example.sportmatch.database.converters
+package com.example.sportmatch.data.database.converters
 
 import androidx.room.TypeConverter
 

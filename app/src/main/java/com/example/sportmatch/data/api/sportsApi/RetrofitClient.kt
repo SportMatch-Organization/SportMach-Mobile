@@ -1,4 +1,4 @@
-package com.example.sportmatch.api.sportsApi
+package com.example.sportmatch.data.api.sportsApi
 
 import com.example.sportmatch.model.ApiSport
 import retrofit2.Retrofit

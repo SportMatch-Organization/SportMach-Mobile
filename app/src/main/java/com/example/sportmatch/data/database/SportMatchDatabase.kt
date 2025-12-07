@@ -1,25 +1,28 @@
-package com.example.sportmatch.database
+package com.example.sportmatch.data.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.sportmatch.database.converters.UserTypeConverters
-import com.example.sportmatch.database.dao.CompeticaoDao
-import com.example.sportmatch.database.dao.PatrocinadorDao
-import com.example.sportmatch.database.dao.UserDao
-import com.example.sportmatch.database.entities.User
-import com.example.sportmatch.database.entities.Competicao
-import com.example.sportmatch.database.entities.Patrocinador
+import com.example.sportmatch.data.database.converters.UserTypeConverters
+import com.example.sportmatch.data.database.dao.CompeticaoDao
+import com.example.sportmatch.data.database.dao.LoginCacheDao
+import com.example.sportmatch.data.database.dao.PatrocinadorDao
+import com.example.sportmatch.data.database.dao.UserDao
+import com.example.sportmatch.data.database.entities.User
+import com.example.sportmatch.data.database.entities.Competicao
+import com.example.sportmatch.data.database.entities.LoginCacheEntity
+import com.example.sportmatch.data.database.entities.Patrocinador
 
 
-@Database(entities = [User::class, Competicao::class, Patrocinador:: class], version = 1)
+@Database(entities = [User::class, Competicao::class, Patrocinador:: class, LoginCacheEntity::class], version = 2)
 @TypeConverters(UserTypeConverters::class)
 abstract class SportMatchDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun competicaoDao(): CompeticaoDao
     abstract fun patrocinadorDao(): PatrocinadorDao
+    abstract fun loginCacheDao(): LoginCacheDao
     companion object {
         @Volatile
         private var INSTANCE: SportMatchDatabase? = null

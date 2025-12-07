@@ -3,9 +3,9 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sportmatch.database.dao.CompeticaoDao
-import com.example.sportmatch.database.entities.Competicao
-import com.example.sportmatch.database.SportMatchDatabase
+import com.example.sportmatch.data.database.dao.CompeticaoDao
+import com.example.sportmatch.data.database.entities.Competicao
+import com.example.sportmatch.data.database.SportMatchDatabase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

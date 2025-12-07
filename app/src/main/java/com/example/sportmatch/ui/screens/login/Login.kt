@@ -11,10 +11,14 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.ui.unit.dp
+import com.example.sportmatch.data.database.SportMatchDatabase
+import com.example.sportmatch.data.repositorio.RepositorioAutenticacao
 import com.example.sportmatch.ui.login.componentes.LoginHeader
 import com.example.sportmatch.ui.login.componentes.LoginInputs
 import com.example.sportmatch.ui.login.componentes.LoginButtons
 import com.example.sportmatch.ui.viewModel.LoginViewModel
+import com.example.sportmatch.ui.viewModel.LoginViewModelFactory
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Login(
@@ -24,6 +28,10 @@ fun Login(
     viewModel: LoginViewModel = viewModel()
 ) {
     val context = LocalContext.current
+    val db = remember { SportMatchDatabase.getDatabase(context) }
+    val viewModel: LoginViewModel = viewModel(
+        factory = LoginViewModelFactory(db)
+    )
     val systemUiController = rememberSystemUiController()
     SideEffect {
         systemUiController.setStatusBarColor(
@@ -63,7 +71,7 @@ fun Login(
             LoginButtons(
                 isLoading = viewModel.isLoading,
                 onLoginClick = {
-                    viewModel.Login(
+                    viewModel.login(
                         onSuccess = onLoginSuccess,
                         onError = { msg ->
                             Toast.makeText(context, msg, Toast.LENGTH_LONG).show()

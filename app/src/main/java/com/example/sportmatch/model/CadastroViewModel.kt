@@ -4,10 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.sportmatch.database.entities.User
-import com.example.sportmatch.model.enumTypes.user.GeneroEnum
-import com.example.sportmatch.model.enumTypes.user.PerfilEnum
-import java.util.Date
+import com.example.sportmatch.data.database.entities.User
 
 class CadastroViewModel: ViewModel() {
 

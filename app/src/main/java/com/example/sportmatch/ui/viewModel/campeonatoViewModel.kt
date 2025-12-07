@@ -8,8 +8,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sportmatch.database.SportMatchDatabase
-import com.example.sportmatch.database.entities.Competicao
+import com.example.sportmatch.data.database.SportMatchDatabase
+import com.example.sportmatch.data.database.entities.Competicao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime

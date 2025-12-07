@@ -1,6 +1,5 @@
-package com.example.sportmatch.api.viaCepApi
+package com.example.sportmatch.data.api.viaCepApi
 
-import com.example.sportmatch.api.viaCepApi.ViaCepApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

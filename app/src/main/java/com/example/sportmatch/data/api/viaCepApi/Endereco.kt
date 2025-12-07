@@ -1,4 +1,4 @@
-package com.example.sportmatch.api.viaCepApi
+package com.example.sportmatch.data.api.viaCepApi
 
 data class Endereco (
     var cep: String = "",

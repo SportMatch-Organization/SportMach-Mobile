@@ -1,7 +1,6 @@
 package com.example.sportmatch.ui.screens.competicoes.pesquisar
 import android.app.Activity
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -25,9 +24,6 @@ import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavHostController
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.sportmatch.database.entities.Competicao
-import com.example.sportmatch.ui.screens.competicoes.pesquisar.CompeticaoCard
-import com.example.sportmatch.ui.screens.competicoes.pesquisar.FilterChipComBotao
 import com.example.sportmatch.ui.theme.laranjaPrincipal
 import com.example.sportmatch.ui.theme.cinzaFundoClaro
 import com.example.sportmatch.ui.theme.cinzaTextoSecundario

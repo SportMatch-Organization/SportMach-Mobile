@@ -1,6 +1,6 @@
 package com.example.sportmatch.ui.viewModel
 import androidx.lifecycle.ViewModel
-import com.example.sportmatch.database.entities.Competicao
+import com.example.sportmatch.data.database.entities.Competicao
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

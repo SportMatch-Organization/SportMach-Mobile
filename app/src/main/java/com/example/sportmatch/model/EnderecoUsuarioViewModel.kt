@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.sportmatch.api.viaCepApi.Endereco
+import com.example.sportmatch.data.api.viaCepApi.Endereco
 
 class EnderecoUsuarioViewModel: ViewModel() {
 

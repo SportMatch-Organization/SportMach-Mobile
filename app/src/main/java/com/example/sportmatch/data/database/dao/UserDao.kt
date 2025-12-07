@@ -1,10 +1,10 @@
-package com.example.sportmatch.database.dao
+package com.example.sportmatch.data.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.sportmatch.database.entities.User
+import com.example.sportmatch.data.database.entities.User
 
 @Dao
 interface UserDao {

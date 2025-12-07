@@ -1,4 +1,4 @@
-package com.example.sportmatch.api.APITempo
+package com.example.sportmatch.data.api.APITempo
 
 import io.ktor.client.*
 import io.ktor.client.call.*

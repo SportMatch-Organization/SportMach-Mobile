@@ -1,6 +1,5 @@
 package com.example.sportmatch.ui.screens.competicoes.pesquisar
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -16,13 +15,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.sportmatch.R
-import com.example.sportmatch.database.entities.Competicao
+import com.example.sportmatch.data.database.entities.Competicao
 import com.example.sportmatch.ui.theme.verdeTaxa
 import com.example.sportmatch.ui.theme.cinzaChipFundo
 import com.example.sportmatch.ui.theme.laranjaPrincipal
