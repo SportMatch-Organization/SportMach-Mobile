@@ -22,10 +22,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.sportmatch.data.database.entities.Competicao
 import com.example.sportmatch.model.CadastroViewModel
 import com.example.sportmatch.model.EnderecoUsuarioViewModel
 import com.example.sportmatch.model.CampeonatoViewModel
@@ -33,22 +36,18 @@ import com.example.sportmatch.ui.screens.competicoes.CadastroCompeticao
 import com.example.sportmatch.ui.Home
 import com.example.sportmatch.ui.Perfil_organizador.PerfilOrganizador
 import com.example.sportmatch.ui.login.Login
-//import com.example.sportmatch.ui.cadastro.Cadastro3
-//import com.example.sportmatch.ui.competicoes.CadastroCompeticao2
-//import com.example.sportmatch.ui.competicoes.CadastroCompeticao3
 import com.example.sportmatch.ui.screens.cadastro.Cadastro1
-// import com.example.sportmatch.ui.screens.cadastro.Cadastro2
-//import com.example.sportmatch.ui.screens.cadastro.Cadastro4
-//import com.example.sportmatch.ui.screens.cadastro.Cadastro5
-//import com.example.sportmatch.ui.screens.cadastro.Cadastro6
 import com.example.sportmatch.ui.screens.competicoes.pesquisar.Pesquisar
 import com.example.sportmatch.ui.screens.espacosEsportivo.CadastroEspacoEsportivo
 import com.example.sportmatch.ui.screens.patrocinadores.TelaCadastro
 import com.example.sportmatch.ui.screens.perfil.EditarPerfilOrganizadorScreen
+import com.example.sportmatch.ui.screens.pesquisar.CompeticaoDetalhes
+import com.example.sportmatch.ui.screens.pesquisar.CompeticaoDetalhesRoute
 import com.example.sportmatch.ui.theme.SportmatchTheme
 import com.example.sportmatch.ui.viewModel.EspacoEsportivoViewModel
 import com.example.sportmatch.ui.theme.laranjaPrincipal
 import com.example.sportmatch.ui.theme.cinzaTextoSecundario
+
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,11 +78,11 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
-
             }
         }
     }
 }
+
 @Composable
 fun AppBottomNavigation(navController: NavHostController, currentRoute: String?) {
     NavigationBar(containerColor = Color.White) {
@@ -122,25 +121,38 @@ data class BottomNavItem(
     val icon: ImageVector,
     val label: String
 )
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
     val cadastroViewModel: CadastroViewModel = viewModel()
     val enderecoUsuarioViewModel: EnderecoUsuarioViewModel = viewModel()
+
     NavHost(
         navController = navController,
-        startDestination = "Login",
+        startDestination = "pesquisar",
         modifier = modifier
     ) {
+        composable(
+            route = "detalhes/{competicaoId}",
+            arguments = listOf(
+                navArgument("competicaoId") { type = NavType.IntType }
+            ),
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getInt("competicaoId") ?: 0
+            CompeticaoDetalhesRoute(
+                competicaoId = id,
+                onBackClick = { navController.popBackStack() }
+            )
 
-            composable("PerfilOrganizador") {
-                PerfilOrganizador(navController = navController)
-            }
+        }
+        composable("PerfilOrganizador") {
+            PerfilOrganizador(navController = navController)
+        }
         composable("editarPerfilOrganizador") {
             EditarPerfilOrganizadorScreen(
                 onVoltar = { navController.popBackStack() },
-                onSalvar = { navController.popBackStack()
-                }
+                onSalvar = { navController.popBackStack() }
             )
         }
         composable("login") {
@@ -166,51 +178,11 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
                 }
             )
         }
-        /*composable("cadastro2"){
-            Cadastro2(
-                viewModel = cadastroViewModel,
-                onNavigateToCadastro3 = {
-                    navController.navigate("cadastro3")
-                }
-            )
-        }*/
-        /*composable("cadastro3"){
-            Cadastro3 (
-                viewModel = cadastroViewModel,
-                onNavigateToCadastro4 = {
-                    navController.navigate("cadastro4")
-                }
-            )
-        }*/
-       /* composable("cadastro4"){
-            Cadastro4(
-                viewModel = cadastroViewModel,
-                enderecoUsuarioViewModel = enderecoUsuarioViewModel,
-                onNavigateToCadastro5 = {
-                    navController.navigate("cadastro5")
-                }
-            )
-        }
-        composable("cadastro5"){
-            Cadastro5(
-                viewModel = cadastroViewModel,
-                enderecoUsuarioViewModel = enderecoUsuarioViewModel,
-                onNavigateToCadastro6 = {
-                    navController.navigate("cadastro6")
-                }
-            )
-        }
-        composable("cadastro6"){
-            Cadastro6(
-                viewModel = cadastroViewModel,
-                onNavigateToLogin = {
-                    navController.navigate("login")
-                }
-            )
-        }*/
+
         composable("home") {
             Home(navController = navController)
         }
+
         composable("cadastro-competicao") { backStackEntry ->
             val campeonatoViewModel: CampeonatoViewModel = viewModel(backStackEntry)
             CadastroCompeticao(
@@ -218,30 +190,13 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
                 onNext = { navController.navigate("cadastro-competicao2") }
             )
         }
-      /*  composable("cadastro-competicao2") { backStackEntry ->
-            val parentEntry = remember(backStackEntry) {
-                navController.getBackStackEntry("cadastro-competicao")
-            }
-            val campeonatoViewModel: CampeonatoViewModel = viewModel(parentEntry)
-            CadastroCompeticao2(
-                viewModel = campeonatoViewModel,
-                onNext = { navController.navigate("cadastro-competicao3") },
-                onBefore = { navController.popBackStack() }
-            )
-        }
-        composable("cadastro-competicao3") { backStackEntry ->
-            val parentEntry = remember(backStackEntry) {
-                navController.getBackStackEntry("cadastro-competicao")
-            }
-            val campeonatoViewModel: CampeonatoViewModel = viewModel(parentEntry)
-            CadastroCompeticao3(
-                viewModel = campeonatoViewModel,
-                onBefore = { navController.popBackStack() }
-            )
-        }*/
+
         composable("pesquisar") {
+            // Nota: Dentro da tela Pesquisar, lembre-se de chamar:
+
             Pesquisar(navController = navController)
         }
+
         composable("cadastro-espaco-esportivo") {
             val espacoEsportivoViewModel: EspacoEsportivoViewModel = viewModel()
             CadastroEspacoEsportivo(

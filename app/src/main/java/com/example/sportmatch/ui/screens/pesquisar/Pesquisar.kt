@@ -1,4 +1,5 @@
 package com.example.sportmatch.ui.screens.competicoes.pesquisar
+
 import android.app.Activity
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
@@ -27,6 +28,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sportmatch.ui.theme.laranjaPrincipal
 import com.example.sportmatch.ui.theme.cinzaFundoClaro
 import com.example.sportmatch.ui.theme.cinzaTextoSecundario
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Pesquisar(
@@ -44,6 +46,7 @@ fun Pesquisar(
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
     val focusRequester = remember { FocusRequester() }
+
     LaunchedEffect(uiState.isSearching) {
         if (uiState.isSearching) {
             focusRequester.requestFocus()
@@ -167,7 +170,12 @@ fun Pesquisar(
                     } else {
                         items(uiState.competicoesAbertas, key = { "aberto-${it.id}" }) { competicao ->
                             Column(Modifier.padding(horizontal = 16.dp)) {
-                                CompeticaoCard(competicao = competicao)
+                                CompeticaoCard(
+                                    competicao = competicao,
+                                    onVerMaisClick = { id ->
+                                        navController.navigate("detalhes/$id")
+                                    }
+                                )
                             }
                         }
                     }
@@ -185,7 +193,12 @@ fun Pesquisar(
                     } else {
                         items(uiState.competicoesEmAndamento, key = { "andamento-${it.id}" }) { competicao ->
                             Column(Modifier.padding(horizontal = 16.dp)) {
-                                CompeticaoCard(competicao = competicao)
+                                CompeticaoCard(
+                                    competicao = competicao,
+                                    onVerMaisClick = { id ->
+                                        navController.navigate("detalhes/$id")
+                                    }
+                                )
                             }
                         }
                     }
@@ -203,7 +216,12 @@ fun Pesquisar(
                     } else {
                         items(uiState.competicoesEncerradas, key = { "encerrado-${it.id}" }) { competicao ->
                             Column(Modifier.padding(horizontal = 16.dp)) {
-                                CompeticaoCard(competicao = competicao)
+                                CompeticaoCard(
+                                    competicao = competicao,
+                                    onVerMaisClick = { id ->
+                                        navController.navigate("detalhes/$id")
+                                    }
+                                )
                             }
                         }
                     }

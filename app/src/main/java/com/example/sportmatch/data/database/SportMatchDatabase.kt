@@ -16,7 +16,7 @@ import com.example.sportmatch.data.database.entities.LoginCacheEntity
 import com.example.sportmatch.data.database.entities.Patrocinador
 
 
-@Database(entities = [User::class, Competicao::class, Patrocinador:: class, LoginCacheEntity::class], version = 2)
+@Database(entities = [User::class, Competicao::class, Patrocinador:: class, LoginCacheEntity::class], version = 3)
 @TypeConverters(UserTypeConverters::class)
 abstract class SportMatchDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
@@ -33,10 +33,13 @@ abstract class SportMatchDatabase : RoomDatabase() {
                     context.applicationContext,
                     SportMatchDatabase::class.java,
                     "sportmatch-database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration()
+                    .build()
                 INSTANCE = instance
                 instance
             }
         }
+
     }
 }

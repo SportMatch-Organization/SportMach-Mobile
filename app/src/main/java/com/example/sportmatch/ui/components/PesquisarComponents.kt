@@ -50,12 +50,15 @@ fun FilterChipComBotao(text: String, onClick: () -> Unit) {
 }
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun CompeticaoCard(competicao: Competicao) {
+fun CompeticaoCard(
+    competicao: Competicao,
+    onVerMaisClick: (Int) -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
-            .clickable {  },
+            .clickable { onVerMaisClick(competicao.id) },
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)
@@ -110,7 +113,7 @@ fun CompeticaoCard(competicao: Competicao) {
                             iconTint = laranjaPrincipal
                         )
                         ChipVisual(
-                            text = "R$ %.2f".format(competicao.valor),
+                            text = "R$ %.2f".format(competicao.valor ?: 0.0),
                             textColor = verdeTaxa,
                             fontWeight = FontWeight.Bold,
                             backgroundColor = verdeTaxa.copy(alpha = 0.1f)
@@ -124,7 +127,7 @@ fun CompeticaoCard(competicao: Competicao) {
                         Spacer(modifier = Modifier.width(16.dp))
                         Icon(Icons.Default.Schedule, contentDescription = "Horário", modifier = Modifier.size(16.dp), tint = cinzaTextoSecundario)
                         Spacer(modifier = Modifier.width(6.dp))
-                        Text(competicao.inicioCompeticao, fontSize = 12.sp, color = cinzaTextoSecundario)
+                        Text(competicao.inicioCompeticao.split(" - ").lastOrNull() ?: "", fontSize = 12.sp, color = cinzaTextoSecundario)
                     }
                     Spacer(modifier = Modifier.height(6.dp))
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -136,7 +139,7 @@ fun CompeticaoCard(competicao: Competicao) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .clickable { }
+                        .clickable { onVerMaisClick(competicao.id) }
                         .padding(top = 10.dp)
                 ) {
                     Text("Ver mais", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = laranjaPrincipal)
@@ -150,12 +153,12 @@ fun CompeticaoCard(competicao: Competicao) {
                     .padding(top = 12.dp, bottom = 12.dp, end = 12.dp),
                 contentAlignment = Alignment.Center
             ) {
-                val imagemParaMostrar = if (competicao.imagemUrl.startsWith("http")) {
-                    competicao.imagemUrl
+                val url = competicao.imagemUrl ?: ""
+                val imagemParaMostrar = if (url.startsWith("http")) {
+                    url
                 } else {
                     R.drawable.placeholder_volei
                 }
-
                 AsyncImage(
                     model = imagemParaMostrar,
                     contentDescription = competicao.nome,
