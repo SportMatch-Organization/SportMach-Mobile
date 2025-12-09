@@ -1,8 +1,11 @@
 package com.example.sportmatch.model
+import CompeticaoSupabase
+import EspacoEsportivoSupabase
 import EsportesData
 import android.app.Application
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -11,6 +14,10 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sportmatch.database.SportMatchDatabase
 import com.example.sportmatch.database.entities.Competicao
+import com.example.sportmatch.service.CompeticaoService
+import com.example.sportmatch.service.EspacoEsportivoService
+import com.example.sportmatch.supabase.SupabaseClientInstance
+import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.storage.storage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -44,7 +51,7 @@ class CampeonatoViewModel(application: Application) : AndroidViewModel(applicati
     var dataFimInscricao by mutableStateOf<LocalDateTime?>(LocalDateTime.of(2025, 12, 27, 9, 0))
     var dataIniciaCompeticao by mutableStateOf<LocalDateTime?>(LocalDateTime.of(2025, 10, 27, 9, 0))
     var dataFimCompeticao by mutableStateOf<LocalDateTime?>(LocalDateTime.of(2025, 11, 27, 9, 0))
-    var local by mutableStateOf("Quadra do Cebase")
+    var local by mutableStateOf("")
 
     var competicaoGratuita by mutableStateOf(true)
     var valor by mutableStateOf("")
@@ -52,7 +59,7 @@ class CampeonatoViewModel(application: Application) : AndroidViewModel(applicati
 
     var opcoesEsportes = EsportesData.map { it.nome }
     val categorias = listOf("Masculino", "Feminino", "Misto")
-    val locais = listOf("Quadra do sagrada família", "Quadra do Cebase", "Quadra do Arena CF")
+    var locais by mutableStateOf(listOf<String>())
     val formasDePagamento = listOf("Pix", "Dinheiro", "Cartão de crédito", "Cartão de débito")
 
     val esporteAtual get() = EsportesData.find { it.nome == esporteSelecionado }
@@ -60,6 +67,7 @@ class CampeonatoViewModel(application: Application) : AndroidViewModel(applicati
     val formatos get() = esporteAtual?.formatos ?: emptyList()
     val acessibilidades get() = esporteAtual?.tiposAcessibilidade ?: emptyList()
 
+    var carregando by mutableStateOf(false)
     fun limparCampos() {
         modalidadeSelecionada = ""
         formatoSelecionado = ""
@@ -140,34 +148,67 @@ class CampeonatoViewModel(application: Application) : AndroidViewModel(applicati
             null
         }
     }
-
-
-    fun salvarCompeticao() {
-        viewModelScope.launch(Dispatchers.IO) {
-
+    suspend fun salvarCompeticao(): Boolean {
+        return try {
             val urlImagem = imagemUri?.let { uploadImagemCompeticao(it) } ?: ""
 
-
-            val novaCompeticao = Competicao(
+            val novaCompeticao = CompeticaoSupabase(
+                id = null,
+                status = "aberta",
+                vagas_preenchidas = 0,
                 nome = nome,
                 descricao = descricao,
                 esporte = esporteSelecionado,
                 modalidade = modalidadeSelecionada,
                 formato = formatoSelecionado,
                 categoria = categoriaSelecionada,
+                tipo_acessibilidade = acessibilidadeSelecionada,
+                descricao_acessibilidade = descricaoAcessibilidade,
                 tipo = tipoSelecionado,
                 total = total.toIntOrNull() ?: 0,
+                imagem_url = urlImagem,
+                minimo_equipe = minimoEquipe?.toIntOrNull(),
+                maximo_equipe = maximoEquipe?.toIntOrNull(),
+                faixa_etaria = faixaEtariaSelecionada,
+                idade_minima = idadeMinima?.toIntOrNull(),
+                idade_maxima = idadeMaxima?.toIntOrNull(),
+                inicio_inscricao = dataIniciaInscricao?.toString() ?: "",
+                final_inscricao = dataFimInscricao?.toString() ?: "",
+                inicio_competicao = dataIniciaCompeticao?.toString() ?: "",
+                final_competicao = dataFimCompeticao?.toString() ?: "",
                 local = local,
-                inicioInscricao = dataIniciaInscricao?.toString() ?: "",
-                finalInscricao = dataFimInscricao?.toString() ?: "",
-                inicioCompeticao = dataIniciaCompeticao?.toString() ?: "",
-                finalCompeticao = dataFimCompeticao?.toString() ?: "",
                 gratuito = competicaoGratuita,
-                valor = valor.toDoubleOrNull() ?: 0.0,
-                imagemUrl = urlImagem
+                valor = valor.toDoubleOrNull(),
+                formas_pagamento = formasDeDePagamentoSelecionado.joinToString(",")
             )
 
-            competicaoDao.insert(novaCompeticao)
+            CompeticaoService.postCompeticao(novaCompeticao)
+
+        } catch (e: Exception) {
+            Log.e("COMPETICAO", "Erro ao cadastrar: ${e.message}")
+            false
+        }
+    }
+
+
+
+
+    var espacosEsportivos by mutableStateOf<List<EspacoEsportivoSupabase>>(emptyList())
+        private set
+
+    suspend fun buscarEspacosEsportivosSupabase() {
+        carregando = true
+
+        try {
+            val lista = EspacoEsportivoService.getEspacosEsportivos()
+
+            espacosEsportivos = lista
+            locais = lista.map { it.nome }
+
+        } catch (e: Exception) {
+            Log.e("SUPABASE", "Erro ao buscar: ${e.message}")
+        } finally {
+            carregando = false
         }
     }
 

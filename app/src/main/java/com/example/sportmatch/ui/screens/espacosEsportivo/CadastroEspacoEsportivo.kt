@@ -161,20 +161,20 @@ fun CadastroEspacoEsportivo(
                         carregando = true
                         scope.launch {
                             try {
-                                viewModel.salvarEspacoEsportivo()
-                                carregando = false
+                                viewModel.acionadorDeSalvarEspacoEsportivo()
                                 Toast.makeText(
                                     context,
                                     "Espaço esportivo cadastrado com sucesso!",
                                     Toast.LENGTH_LONG
                                 ).show()
                             } catch (e: Exception) {
-                                carregando = false
                                 Toast.makeText(
                                     context,
                                     "Falha no Cadastro: ${e.message}",
                                     Toast.LENGTH_LONG
                                 ).show()
+                            }finally {
+                                carregando = false
                             }
                         }
 
