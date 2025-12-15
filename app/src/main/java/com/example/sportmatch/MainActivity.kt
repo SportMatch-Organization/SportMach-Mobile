@@ -1,6 +1,7 @@
 package com.example.sportmatch
 
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -32,6 +33,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.sportmatch.data.database.entities.Competicao
 import com.example.sportmatch.ui.viewModel.user.CadastroViewModel
 import com.example.sportmatch.ui.viewModel.user.EnderecoUsuarioViewModel
 import com.example.sportmatch.model.CampeonatoViewModel
@@ -42,6 +44,8 @@ import com.example.sportmatch.ui.screens.Home
 import com.example.sportmatch.ui.cadastro.Cadastro3
 import com.example.sportmatch.ui.competicoes.CadastroCompeticao2
 import com.example.sportmatch.ui.competicoes.CadastroCompeticao3
+import com.example.sportmatch.ui.DetalhesCompeticaoActivity
+import com.example.sportmatch.ui.Perfil.PerfilUsuario
 import com.example.sportmatch.ui.screens.cadastro.Cadastro4
 import com.example.sportmatch.ui.screens.cadastro.Cadastro5
 import com.example.sportmatch.ui.screens.cadastro.Cadastro6
@@ -62,6 +66,48 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // ====================================================================
+        // === CÓDIGO DE TESTE: INICIAR A TELA DETALHES EVENTO (XML)          ===
+        // ====================================================================
+
+        val urlsDeTeste = listOf(
+            // Usa o placeholder existente como a primeira imagem
+            "drawable://placeholder_volei",
+            // Usa caminhos genéricos para simular outras imagens que serão carregadas como cor
+            "url://imagem_2",
+            "url://imagem_3"
+        )
+
+        val eventoTeste = Competicao(
+            nome = "Vôlei de areia Pajuçara",
+            valor = 20.00,
+            esporte = "Vôlei",
+            modalidade = "Vôlei de praia",
+            categoria = "Misto",
+            //subcategoria = "sub-17",
+            formato = "Sub-17",
+            tipoAcessibilidade = "Deficiência visual",
+            //maxAtletas = 4,
+            //minAtletas = 2,
+            inicioInscricao = "10/11/2025",
+            finalInscricao = "20/11/2025",
+            inicioCompeticao = "24/11/2025 - 15:00",
+            finalCompeticao = "24/11/2025 - 17:00",
+            local = "Praia da Pajuçara",
+            imagemUrl = urlsDeTeste[0] // Passa a lista de URLs
+        )
+
+        val intent = Intent(this, DetalhesCompeticaoActivity::class.java)
+        intent.putExtra("evento_detalhes", savedInstanceState)
+        //intent.putExtra("evento_detalhes", eventoTeste)
+        startActivity(intent)
+        finish()
+
+        // ====================================================================
+        // === FIM DO CÓDIGO DE TESTE (Retorna o fluxo Compose depois)        ===
+        // ====================================================================
+
         enableEdgeToEdge()
 
         setContent {
@@ -139,17 +185,18 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
     val enderecoUsuarioViewModel: EnderecoUsuarioViewModel = viewModel()
     NavHost(
         navController = navController,
-        startDestination = "explore-competicao",
+        startDestination = "login",
         modifier = modifier
     ) {
 
-            composable("PerfilOrganizador") {
-                PerfilOrganizador(navController = navController)
-            }
+        composable("PerfilOrganizador") {
+            PerfilOrganizador(navController = navController)
+        }
         composable("editarPerfilOrganizador") {
             EditarPerfilOrganizadorScreen(
                 onVoltar = { navController.popBackStack() },
-                onSalvar = { navController.popBackStack()
+                onSalvar = {
+                    navController.popBackStack()
                 }
             )
         }
@@ -170,7 +217,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
         }
 
         composable("cadastro1") {
-            Cadastro1 (
+            Cadastro1(
                 viewModel = cadastroViewModel,
                 onNavigateToCadastro2 = {
                     navController.navigate("cadastro2")
@@ -178,7 +225,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
             )
         }
 
-        composable("cadastro2"){
+        composable("cadastro2") {
             Cadastro2(
                 viewModel = cadastroViewModel,
                 onNavigateToCadastro3 = {
@@ -187,8 +234,8 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
             )
         }
 
-        composable("cadastro3"){
-            Cadastro3 (
+        composable("cadastro3") {
+            Cadastro3(
                 viewModel = cadastroViewModel,
                 onNavigateToCadastro4 = {
                     navController.navigate("cadastro4")
@@ -196,7 +243,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
             )
         }
 
-        composable("cadastro4"){
+        composable("cadastro4") {
             Cadastro4(
                 viewModel = cadastroViewModel,
                 enderecoUsuarioViewModel = enderecoUsuarioViewModel,
@@ -206,8 +253,8 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
             )
         }
 
-        composable("cadastro5"){
-            Cadastro5 (
+        composable("cadastro5") {
+            Cadastro5(
                 viewModel = cadastroViewModel,
                 enderecoUsuarioViewModel = enderecoUsuarioViewModel,
                 onNavigateToCadastro6 = {
@@ -216,7 +263,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
             )
         }
 
-        composable("cadastro6"){
+        composable("cadastro6") {
             val esportesInteresseViewModel: EsportesInteresseViewModel = viewModel()
             Cadastro6(
                 viewModel = cadastroViewModel,
@@ -305,9 +352,5 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
                 onVerCadastrados = {}
             )
         }
-
-
     }
 }
-
-

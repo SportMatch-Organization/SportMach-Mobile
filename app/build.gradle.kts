@@ -59,6 +59,17 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.material3)
+
+    // Suporte ao View System Tradicional (XML)
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.cardview:cardview:1.0.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+
+    // NOVO: Dependências para Carrossel (RecyclerView) e ViewPager2
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
+
+    // Dependências de Teste e Debug
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -107,6 +118,7 @@ dependencies {
     implementation("io.github.jan-tennert.supabase:postgrest-kt:2.0.4")
     implementation(platform("io.github.jan-tennert.supabase:bom:2.4.0"))
     implementation("io.ktor:ktor-client-okhttp:2.3.7")
+    implementation("io.coil-kt:coil-compose:2.5.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
 }

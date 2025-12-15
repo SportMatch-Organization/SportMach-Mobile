@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    tools:context=".ui.DetalhesEventoActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- 1. APP BAR FIXA (BRANCA) - ALTURA: 70dp -->
+        <LinearLayout
+            android:id="@+id/box_app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:orientation="horizontal"
+            android:background="@android:color/white"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:gravity="center_vertical"
+            android:elevation="4dp">
+
+            <!-- BOTÃO DE VOLTAR (SETA LARANJA) -->
+            <ImageView
+                android:id="@+id/btn_voltar"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_arrow_back"
+                android:contentDescription="Botão de voltar"
+                android:tint="#FF743B"
+                android:clickable="true"
+                android:focusable="true"/>
+
+
+            <!-- TÍTULO -->
+            <TextView
+                android:id="@+id/text_titulo_evento"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="16dp"
+                android:text="Vôlei de areia Pajuçara"
+                android:textColor="#193D53"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:ellipsize="end"
+                android:maxLines="1"/>
+        </LinearLayout>
+
+        <!-- 2. CARROSSEL (ViewPager2) COMEÇA ABAIXO DA APP BAR -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- CARROSSEL DE IMAGENS -->
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/view_pager_carrossel"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:contentDescription="Carrossel de imagens do evento" />
+
+            <!-- CONTADOR DE IMAGENS (Ex: 1/3) - FLUTUA NO CANTO INFERIOR DO CARROSSEL -->
+            <TextView
+                android:id="@+id/text_contador_imagens"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@id/view_pager_carrossel"
+                android:layout_alignBottom="@id/view_pager_carrossel"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:paddingStart="8dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="4dp"
+                android:background="@drawable/contador_background"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:text="1/3" />
+
+        </RelativeLayout>
+
+
+        <!-- 3. CARD DE DETALHES -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="-32dp"
+            android:layout_marginBottom="16dp"
+            android:padding="16dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="8dp">
+
+                    <!-- CABEÇALHO DA SEÇÃO DETALHES (COM ÍCONE) - CENTRALIZADO -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:contentDescription="Ícone de detalhes"
+                            android:src="@drawable/ic_details_solid"
+                            android:tint="@android:color/holo_orange_dark" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="Detalhes"
+                            android:textColor="@android:color/black"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/text_preco"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:textColor="@android:color/holo_green_dark"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        tools:text="R$ 20,00" />
+                </RelativeLayout>
+
+                <!-- INCLUDE DE DETALHES -->
+                <include android:id="@+id/item_esporte" layout="@layout/item_detalhe_evento" />
+                <include android:id="@+id/item_modalidade" layout="@layout/item_detalhe_evento" />
+                <include android:id="@+id/item_categoria" layout="@layout/item_detalhe_evento" />
+                <include android:id="@+id/item_subcategoria" layout="@layout/item_detalhe_evento" />
+                <include android:id="@+id/item_formato" layout="@layout/item_detalhe_evento" />
+                <include android:id="@+id/item_acessibilidade" layout="@layout/item_detalhe_evento" />
+                <include android:id="@+id/item_max_atletas" layout="@layout/item_detalhe_evento" />
+                <include android:id="@+id/item_min_atletas" layout="@layout/item_detalhe_evento" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <!-- 4. LOCAL (MAPA) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="16dp"
+            android:layout_marginBottom="16dp">
+
+            <!-- CABEÇALHO DA SEÇÃO LOCAL (COM ÍCONE) - CENTRALIZADO -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingBottom="8dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_location_vector"
+                    android:contentDescription="Ícone de localização"
+                    android:tint="@android:color/holo_orange_dark"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Local"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/black"/>
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="256dp"
+                android:layout_marginTop="8dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/placeholder_mapa"
+                android:contentDescription="Placeholder de mapa de localização" />
+        </LinearLayout>
+
+
+        <!-- 5. CARD DE CRONOGRAMA -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- CABEÇALHO DA SEÇÃO CRONOGRAMA (COM ÍCONE) - CENTRALIZADO -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="8dp"
+                    android:layout_marginBottom="8dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_calendar_time"
+                        android:contentDescription="Ícone de cronograma"
+                        android:tint="@android:color/black"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="Cronograma"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- INCLUDES DO CRONOGRAMA -->
+                <include android:id="@+id/item_data_inicio_inscricoes" layout="@layout/item_cronograma" />
+                <include android:id="@+id/item_data_fim_inscricoes" layout="@layout/item_cronograma" />
+                <include android:id="@+id/item_inicio_competicao" layout="@layout/item_cronograma" />
+                <include android:id="@+id/item_fim_competicao" layout="@layout/item_cronograma" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- 6. BOTÃO INSCREVER-SE -->
+        <Button
+            android:id="@+id/btn_inscrever_se"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="@android:color/holo_orange_dark"
+            android:text="Inscrever-se"
+            android:textSize="18sp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</ScrollView>
