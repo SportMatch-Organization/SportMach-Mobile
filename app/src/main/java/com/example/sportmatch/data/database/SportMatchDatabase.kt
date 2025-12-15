@@ -1,5 +1,6 @@
 package com.example.sportmatch.data.database
 
+import EspacoEsportivoDao
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
@@ -7,7 +8,6 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.sportmatch.data.database.converters.UserTypeConverters
 import com.example.sportmatch.data.database.dao.CompeticaoDao
-import com.example.sportmatch.data.database.dao.EspacoEsportivoDao
 import com.example.sportmatch.data.database.dao.PatrocinadorDao
 import com.example.sportmatch.data.database.dao.user.EsportesInteresseDao
 import com.example.sportmatch.data.database.dao.user.UserDao

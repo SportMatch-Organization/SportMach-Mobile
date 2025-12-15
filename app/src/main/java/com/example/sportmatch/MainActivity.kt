@@ -36,19 +36,20 @@ import com.example.sportmatch.ui.viewModel.user.CadastroViewModel
 import com.example.sportmatch.ui.viewModel.user.EnderecoUsuarioViewModel
 import com.example.sportmatch.model.CampeonatoViewModel
 import com.example.sportmatch.ui.screens.competicoes.CadastroCompeticao
-import com.example.sportmatch.ui.Login
-import com.example.sportmatch.ui.Home
 import com.example.sportmatch.ui.Perfil_organizador.PerfilOrganizador
+import com.example.sportmatch.ui.screens.Login
+import com.example.sportmatch.ui.screens.Home
 import com.example.sportmatch.ui.cadastro.Cadastro3
 import com.example.sportmatch.ui.competicoes.CadastroCompeticao2
 import com.example.sportmatch.ui.competicoes.CadastroCompeticao3
-import com.example.sportmatch.ui.screens.cadastro.Cadastro1
-import com.example.sportmatch.ui.screens.competicoes.pesquisar.Pesquisar
-import com.example.sportmatch.ui.screens.espacosEsportivo.CadastroEspacoEsportivo
-import com.example.sportmatch.ui.screens.cadastro.Cadastro2
 import com.example.sportmatch.ui.screens.cadastro.Cadastro4
 import com.example.sportmatch.ui.screens.cadastro.Cadastro5
 import com.example.sportmatch.ui.screens.cadastro.Cadastro6
+import com.example.sportmatch.ui.screens.cadastroUsuario.Cadastro1
+import com.example.sportmatch.ui.screens.cadastroUsuario.Cadastro2
+import com.example.sportmatch.ui.screens.competicoes.ExploreCompeticao
+import com.example.sportmatch.ui.screens.competicoes.pesquisar.Pesquisar
+import com.example.sportmatch.ui.screens.espacosEsportivo.CadastroEspacoEsportivo
 import com.example.sportmatch.ui.screens.patrocinadores.TelaCadastro
 import com.example.sportmatch.ui.screens.perfil.EditarPerfilOrganizadorScreen
 import com.example.sportmatch.ui.theme.SportmatchTheme
@@ -138,7 +139,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
     val enderecoUsuarioViewModel: EnderecoUsuarioViewModel = viewModel()
     NavHost(
         navController = navController,
-        startDestination = "cadastro4",
+        startDestination = "explore-competicao",
         modifier = modifier
     ) {
 
@@ -206,7 +207,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
         }
 
         composable("cadastro5"){
-            Cadastro5(
+            Cadastro5 (
                 viewModel = cadastroViewModel,
                 enderecoUsuarioViewModel = enderecoUsuarioViewModel,
                 onNavigateToCadastro6 = {
@@ -261,6 +262,32 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
             )
         }
 
+        composable("detalhes-competicao") {
+        }
+
+        composable("explore-competicao") {
+            ExploreCompeticao(
+                onNavigateToDetail = {
+                    navController.navigate("detalhes-competicao")
+                }
+            )
+        }
+
+
+        composable("perfil_usuario") {
+            PerfilUsuario(
+                onNavigateBack = {
+                    navController.navigate("login") {
+                        popUpTo("perfil_usuario") { inclusive = true }
+                    }
+                },
+                onOnboardingComplete = {
+                    navController.navigate("home") {
+                        popUpTo("perfil_usuario") { inclusive = true }
+                    }
+                }
+            )
+        }
         composable("cadastro-espaco-esportivo") {
             val espacoEsportivoViewModel: EspacoEsportivoViewModel = viewModel()
             CadastroEspacoEsportivo(

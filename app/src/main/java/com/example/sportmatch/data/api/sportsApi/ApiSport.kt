@@ -1,4 +1,3 @@
-package com.example.sportmatch.model
 
 import kotlinx.serialization.Serializable
 

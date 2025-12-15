@@ -134,6 +134,35 @@ fun CadastroCompeticao(viewModel: CampeonatoViewModel = viewModel(), onNext: () 
                 viewModel.imagemUri,  { uri ->
                     viewModel.setImagem(uri)
                 })
+            Spacer(modifier = Modifier.height(16.dp))
+            CustomText(
+                "Escolha abaixo a imagem da competição: ",
+                TextType.SUBTITULO,
+                color = MaterialTheme.colorScheme.secondary
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            CustomButton(backgroundColor = MaterialTheme.colorScheme.secondary,
+                text = "Selecionar imagem",
+                onClick = { launcher.launch("image/*") },
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.ImageSearch,
+                        tint = Color.White,
+                        contentDescription = "Voltar"
+                    )
+                }
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Row (horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()){
+            if(viewModel.imagemUri !== null){
+                AsyncImage(
+                    model = viewModel.imagemUri,
+                    contentDescription = null,
+                    modifier = Modifier.size(150.dp),
+                    contentScale = ContentScale.Crop
+                )
+            }
+            }
             Spacer(modifier = Modifier.height(34.dp))
             CustomButton(
                 enabled = viewModel.camposObrigatorios1,

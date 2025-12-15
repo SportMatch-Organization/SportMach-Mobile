@@ -1,4 +1,4 @@
-package com.example.sportmatch.ui.screens.cadastro
+package com.example.sportmatch.ui.screens.cadastroUsuario
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sportmatch.ui.viewModel.user.CadastroViewModel
-import com.example.sportmatch.model.enumTypes.user.PerfilEnum
+import com.example.sportmatch.database.entities.user.PerfilEnum
 import com.example.sportmatch.ui.components.CustomButton
 import com.example.sportmatch.ui.theme.Orange
 

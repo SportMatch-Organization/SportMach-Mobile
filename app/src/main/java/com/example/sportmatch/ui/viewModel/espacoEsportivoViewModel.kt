@@ -7,19 +7,24 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.sportmatch.database.SportMatchDatabase
+import com.example.sportmatch.database.entities.Competicao
+import com.example.sportmatch.database.entities.EspacoEsportivo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 class EspacoEsportivoViewModel(application: Application) : AndroidViewModel(application) {
-    var nome by mutableStateOf("Quadra do Cebase")
-    var descricao by mutableStateOf("Quadra com as marcações visíveis")
-    var tipoSelecionado by mutableStateOf("Quadra")
-    var endereco by mutableStateOf("Rua Josué Messias, Povoado Pau darco, Arapiraca, Alagoas")
-    var telefone by mutableStateOf("333334332")
-    var maximoAtletas by mutableStateOf("2")
+    var nome by mutableStateOf("")
+    var descricao by mutableStateOf("")
+    var tipoSelecionado by mutableStateOf("")
+    var endereco by mutableStateOf("")
+    var telefone by mutableStateOf("")
+    var maximoAtletas by mutableStateOf("")
     var esportesSuportadosSelecionados by mutableStateOf(listOf<String>())
-
-    var nivelAcessibilidadeSelecionadas = mutableListOf<String>()
-    var recursosSelecionados = mutableListOf<String>()
+    var nivelAcessibilidadeSelecionadas by mutableStateOf(listOf<String>())
+    var recursosSelecionados by mutableStateOf(listOf<String>())
 
     val tiposEspaco = listOf(
         "Academia de musculação",
@@ -65,6 +70,7 @@ class EspacoEsportivoViewModel(application: Application) : AndroidViewModel(appl
         "Vôlei de praia")
 
     val niveisAcessibildade = listOf(
+        "Nenhum",
         "Acesso permitido a cão-guia",
         "Área de circulação ampla e livre de obstáculos",
         "Área de descanso acessível",
@@ -93,6 +99,7 @@ class EspacoEsportivoViewModel(application: Application) : AndroidViewModel(appl
         "Vestiário adaptado")
 
     val recursos = listOf(
+        "Nenhum",
         "Aluguel de bolas e equipamentos",
         "Área de aquecimento ou alongamento",
         "Área de churrasco ou confraternização",
@@ -124,4 +131,29 @@ class EspacoEsportivoViewModel(application: Application) : AndroidViewModel(appl
         "Tomadas e energia elétrica disponíveis",
         "Vestiários masculinos e femininos"
     )
+
+    val camposObrigatorios: Boolean
+        get(){
+            return nome.isNotBlank() && descricao.isNotBlank() && tiposEspaco.isNotEmpty() && endereco.isNotBlank() && telefone.isNotBlank() && maximoAtletas.isNotBlank() && esportesSuportadosSelecionados.isNotEmpty() && nivelAcessibilidadeSelecionadas.isNotEmpty() && recursosSelecionados.isNotEmpty()
+        }
+
+    private val espacoEsportivoDao = SportMatchDatabase.getDatabase(application).espacoEsportivoDao()
+
+    fun salvarEspacoEsportivo() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val novoEspacoEsportivo = EspacoEsportivo(
+                        nome = nome,
+                        descricao = descricao,
+                        tipoEspaco = tipoSelecionado,
+                        endereco = endereco,
+                        telefone = telefone,
+                maximoAtletas = maximoAtletas,
+                        esportesSuportados = esportesSuportados.joinToString(", "),
+                        nivelAcessibilidade = nivelAcessibilidadeSelecionadas.joinToString(", "),
+                        recursos = recursos.joinToString(", ")
+
+            )
+            espacoEsportivoDao.insert(novoEspacoEsportivo)
+        }
+    }
 }

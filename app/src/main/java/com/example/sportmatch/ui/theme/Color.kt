@@ -22,3 +22,5 @@ val cinzaTextoSecundario = Color.Gray
 val TextoEscuro = Color(0xFF1A2C42)
  val CorFundoCampo = Color(0xFFF0F4F8)
  val CorLabel = Color(0xFF6A7C8F)
+
+val Branco = Color(0xFFFFFFFF)

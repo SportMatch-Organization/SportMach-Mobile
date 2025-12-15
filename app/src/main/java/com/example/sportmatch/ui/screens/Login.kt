@@ -1,5 +1,4 @@
-
-package com.example.sportmatch.ui
+package com.example.sportmatch.ui.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke

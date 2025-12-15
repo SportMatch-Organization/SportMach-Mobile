@@ -3,8 +3,8 @@ package com.example.sportmatch.data.database.converters
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.room.TypeConverter
-import com.example.sportmatch.model.enumTypes.user.GeneroEnum
-import com.example.sportmatch.model.enumTypes.user.PerfilEnum
+import com.example.sportmatch.database.entities.user.GeneroEnum
+import com.example.sportmatch.database.entities.user.PerfilEnum
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException

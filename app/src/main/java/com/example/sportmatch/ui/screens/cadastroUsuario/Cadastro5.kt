@@ -175,9 +175,3 @@ fun Cadastro5(
         )
     }
 }
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun Cadastro5Preview(){
-    Cadastro5(viewModel { CadastroViewModel()}, viewModel { EnderecoUsuarioViewModel()},{})
-}

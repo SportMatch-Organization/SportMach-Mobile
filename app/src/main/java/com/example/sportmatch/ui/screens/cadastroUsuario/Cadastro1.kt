@@ -1,4 +1,4 @@
-package com.example.sportmatch.ui.screens.cadastro
+package com.example.sportmatch.ui.screens.cadastroUsuario
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -10,7 +10,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sportmatch.ui.viewModel.user.CadastroViewModel
-import com.example.sportmatch.model.CreateUserDto
 import com.example.sportmatch.ui.components.CustomButton
 import com.example.sportmatch.ui.theme.Orange
 
