@@ -14,10 +14,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 import androidx.compose.material3.TextFieldDefaults
-import com.example.sportmatch.api.APITempo.WeatherService
-import com.example.sportmatch.database.SportMatchDatabase
-import com.example.sportmatch.database.entities.Patrocinador
-import com.example.sportmatch.ui.theme.SportmatchTheme
+import com.example.sportmatch.data.api.APITempo.WeatherService
+import com.example.sportmatch.data.database.SportMatchDatabase
+import com.example.sportmatch.data.database.entities.Patrocinador
 
 
 @OptIn(ExperimentalMaterial3Api::class)

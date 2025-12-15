@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,32 +30,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.sportmatch.database.SportMatchDatabase
 import com.example.sportmatch.model.CampeonatoViewModel
 import com.example.sportmatch.ui.components.CustomButton
-import com.example.sportmatch.ui.components.CustomCheckBox
-import com.example.sportmatch.ui.components.CustomCheckBoxGroup
-import com.example.sportmatch.ui.components.CustomDateTimePicker
-import com.example.sportmatch.ui.components.CustomRadioGroup
-import com.example.sportmatch.ui.components.CustomSelectField
 import com.example.sportmatch.ui.components.CustomText
-import com.example.sportmatch.ui.components.CustomTextField
+import com.example.sportmatch.ui.components.Loading
 import com.example.sportmatch.ui.components.ReviseSeusDados
 import com.example.sportmatch.ui.components.TextType
 import com.example.sportmatch.ui.theme.StrokeBt
 import kotlinx.coroutines.launch
-
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CadastroCompeticao3(viewModel: CampeonatoViewModel = viewModel(), onBefore: () -> Unit) {
     val scrollState = rememberScrollState()
-    var carregando by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+    ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -82,19 +79,20 @@ fun CadastroCompeticao3(viewModel: CampeonatoViewModel = viewModel(), onBefore: 
             CustomButton(
                 text = "Cadastrar",
                 onClick = {
-                    carregando = true
                     scope.launch {
-                        try {
-                            viewModel.salvarCompeticao()
-                            carregando = false
+                        viewModel.carregando = true
+                        val sucesso = viewModel.salvarCompeticao()
+                        viewModel.carregando = false
+
+                        if (sucesso) {
                             Toast.makeText(context, "Competição cadastrada com sucesso!", Toast.LENGTH_LONG).show()
-                        } catch (error: Exception) {
-                            carregando = false
-                            Toast.makeText(context, "Falha no Cadastro: ${error.message}", Toast.LENGTH_LONG).show()
+                        } else {
+                            Toast.makeText(context, "Falha no Cadastro!", Toast.LENGTH_LONG).show()
                         }
                     }
                 },
-                enabled = !carregando
+
+                enabled = !viewModel.carregando
             )
             Spacer(modifier = Modifier.height(16.dp))
             CustomButton(
@@ -110,4 +108,6 @@ fun CadastroCompeticao3(viewModel: CampeonatoViewModel = viewModel(), onBefore: 
 
         }
     }
+    }
+    Loading(visible = viewModel.carregando)
 }

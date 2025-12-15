@@ -2,28 +2,39 @@ package com.example.sportmatch.ui.screens.competicoes
 
 import android.annotation.SuppressLint
 import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ImageSearch
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
 import com.example.sportmatch.model.CampeonatoViewModel
 import com.example.sportmatch.ui.components.CustomButton
+import com.example.sportmatch.ui.components.CustomImagePicker
 import com.example.sportmatch.ui.components.CustomSelectField
 import com.example.sportmatch.ui.components.CustomTextField
 import com.example.sportmatch.ui.components.CustomRadioGroup
@@ -36,13 +47,18 @@ import com.example.sportmatch.ui.components.TextType
 @Composable
 fun CadastroCompeticao(viewModel: CampeonatoViewModel = viewModel(), onNext: () -> Unit){
     val scrollState = rememberScrollState()
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri ->
+        viewModel.setImagem(uri)
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
             .verticalScroll(scrollState)
     ) {
-        IconButton(onClick = { onNext() }) {
+        IconButton(onClick = {}) {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
                 tint = Color.Red,
@@ -52,7 +68,8 @@ fun CadastroCompeticao(viewModel: CampeonatoViewModel = viewModel(), onNext: () 
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = Color.White).padding(horizontal = 16.dp)
+                .padding(horizontal = 16.dp)
+                .background(color = Color.White)
         ) {
             Spacer(modifier = Modifier.height(24.dp))
             CustomText("Informações da competição", TextType.HEADLINE, fontSize = 24.sp)
@@ -94,7 +111,7 @@ fun CadastroCompeticao(viewModel: CampeonatoViewModel = viewModel(), onNext: () 
             )
 
             CustomRadioGroup(
-                label = "Selecione o categoria:",
+                label = "Selecione a categoria:",
                 options = viewModel.categorias,
                 selectedValue = viewModel.categoriaSelecionada,
                 onValueChange = { viewModel.categoriaSelecionada = it }
@@ -112,6 +129,11 @@ fun CadastroCompeticao(viewModel: CampeonatoViewModel = viewModel(), onNext: () 
                 onValueChange = { viewModel.descricaoAcessibilidade = it },
                 label = "Descreva como é a acessibilidade"
             )
+            CustomImagePicker(
+                "Escolha abaixo a imagem da competição: ",
+                viewModel.imagemUri,  { uri ->
+                    viewModel.setImagem(uri)
+                })
             Spacer(modifier = Modifier.height(34.dp))
             CustomButton(
                 enabled = viewModel.camposObrigatorios1,

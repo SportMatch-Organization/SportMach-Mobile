@@ -4,9 +4,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.sportmatch.api.viaCepApi.Endereco
+import androidx.lifecycle.viewModelScope
+import com.example.sportmatch.data.database.entities.user.Endereco
+import com.example.sportmatch.data.repository.user.UserAddressRepository
+import com.example.sportmatch.ui.state.UserAddressState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
-class EnderecoUsuarioViewModel: ViewModel() {
+class EnderecoUsuarioViewModel(
+    private val addressRepository: UserAddressRepository
+): ViewModel() {
+
+    private val _uiState: MutableStateFlow<UserAddressState> =
+        MutableStateFlow(UserAddressState())
+
+    val uiState get() = _uiState.asStateFlow()
 
     var enderecoApi by mutableStateOf(Endereco())
         private set
@@ -61,6 +74,19 @@ class EnderecoUsuarioViewModel: ViewModel() {
 
     fun setSiafi(siafi:String?){
         siafi?.let { enderecoApi = enderecoApi.copy(siafi = it) }
+    }
+
+    fun buscarEnderecoPorCep(cep: String): Endereco{
+        val endereco = Endereco()
+        viewModelScope.launch {
+            val endereco = try {
+                addressRepository.buscarEnderecoPorCep(cep)
+                _uiState.value = _uiState.value.copy(endereco = endereco)
+            } catch (e: Exception){
+                endereco
+            }
+        }
+        return endereco
     }
 
 }

@@ -70,7 +70,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling-preview")
 
     implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.material3:material3:1.3.0")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.navigation:navigation-compose:2.7.2")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
@@ -80,8 +80,6 @@ dependencies {
     implementation("androidx.room:room-runtime:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
 
-    // If this project uses any Kotlin source, use Kotlin Symbol Processing (KSP)
-    // See Add the KSP plugin to your project
     ksp("androidx.room:room-compiler:$room_version") //alternativa mais rápida que o Kapt
 
     implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
@@ -102,4 +100,13 @@ dependencies {
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
+
+    implementation("io.coil-kt:coil-compose:2.6.0")
+    implementation("io.github.jan-tennert.supabase:gotrue-kt:2.0.4")
+    implementation("io.github.jan-tennert.supabase:storage-kt:2.0.4")
+    implementation("io.github.jan-tennert.supabase:postgrest-kt:2.0.4")
+    implementation(platform("io.github.jan-tennert.supabase:bom:2.4.0"))
+    implementation("io.ktor:ktor-client-okhttp:2.3.7")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+
 }

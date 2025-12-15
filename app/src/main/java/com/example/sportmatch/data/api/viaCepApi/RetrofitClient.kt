@@ -1,0 +1,13 @@
+package com.example.sportmatch.data.api.viaCepApi
+
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+
+object RetrofitClient {
+    private val retrofit: Retrofit = Retrofit.Builder()
+        .baseUrl("https://viacep.com.br/ws/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    val viaCepApi: RemoteAdressApiDataSource = retrofit.create(RemoteAdressApiDataSource::class.java)
+}

@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.sportmatch.database.entities.user.User
+import com.example.sportmatch.data.database.entities.user.User
 
 class CadastroViewModel: ViewModel() {
 

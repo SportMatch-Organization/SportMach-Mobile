@@ -5,14 +5,16 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
 import com.example.sportmatch.model.CampeonatoViewModel
 import java.time.format.DateTimeFormatter
 
@@ -37,11 +39,23 @@ fun ReviseSeusDados(viewModel: CampeonatoViewModel = viewModel()){
             CustomText(viewModel.acessibilidadeSelecionada, TextType.SUBTITULO, color = Color(0xFF8C8C8C), fontWeight = FontWeight.Normal)
             CustomText("Descrição da acessibilidade: ", TextType.SUBTITULO, color = MaterialTheme.colorScheme.secondary)
             CustomText(viewModel.descricaoAcessibilidade, TextType.SUBTITULO, color = Color(0xFF8C8C8C), fontWeight = FontWeight.Normal)
-            Spacer(modifier = Modifier.height(16.dp))
         }
         if(viewModel.acessibilidadeSelecionada.isBlank()){
             Spacer(modifier = Modifier.height(16.dp))
         }
+        CustomText(
+            "Imagem da competição: ",
+            TextType.SUBTITULO,
+            color = MaterialTheme.colorScheme.secondary
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        AsyncImage(
+            model = viewModel.imagemUri,
+            contentDescription = null,
+            modifier = Modifier.size(150.dp),
+            contentScale = ContentScale.Crop
+        )
+        Spacer(modifier = Modifier.height(16.dp))
         CustomText("Informações para os participantes", TextType.TITULO)
         Spacer(modifier = Modifier.height(height = 8.dp))
         RowData("Tipo de esporte", value = viewModel.tipoSelecionado)

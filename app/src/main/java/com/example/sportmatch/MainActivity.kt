@@ -9,14 +9,28 @@ import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.sportmatch.ui.viewModel.user.CadastroViewModel
 import com.example.sportmatch.ui.viewModel.user.EnderecoUsuarioViewModel
@@ -24,19 +38,22 @@ import com.example.sportmatch.model.CampeonatoViewModel
 import com.example.sportmatch.ui.screens.competicoes.CadastroCompeticao
 import com.example.sportmatch.ui.Login
 import com.example.sportmatch.ui.Home
+import com.example.sportmatch.ui.Perfil_organizador.PerfilOrganizador
 import com.example.sportmatch.ui.cadastro.Cadastro3
 import com.example.sportmatch.ui.competicoes.CadastroCompeticao2
 import com.example.sportmatch.ui.competicoes.CadastroCompeticao3
 import com.example.sportmatch.ui.screens.cadastro.Cadastro1
+import com.example.sportmatch.ui.screens.competicoes.pesquisar.Pesquisar
+import com.example.sportmatch.ui.screens.espacosEsportivo.CadastroEspacoEsportivo
 import com.example.sportmatch.ui.screens.cadastro.Cadastro2
 import com.example.sportmatch.ui.screens.cadastro.Cadastro4
 import com.example.sportmatch.ui.screens.cadastro.Cadastro5
 import com.example.sportmatch.ui.screens.cadastro.Cadastro6
-import com.example.sportmatch.ui.screens.competicoes.pesquisar.PerfilUsuario
-import com.example.sportmatch.ui.screens.competicoes.pesquisar.Pesquisar
-import com.example.sportmatch.ui.screens.espacosEsportivo.CadastroEspacoEsportivo
 import com.example.sportmatch.ui.screens.patrocinadores.TelaCadastro
+import com.example.sportmatch.ui.screens.perfil.EditarPerfilOrganizadorScreen
 import com.example.sportmatch.ui.theme.SportmatchTheme
+import com.example.sportmatch.ui.theme.cinzaTextoSecundario
+import com.example.sportmatch.ui.theme.laranjaPrincipal
 import com.example.sportmatch.ui.viewModel.EspacoEsportivoViewModel
 import com.example.sportmatch.ui.viewModel.user.EsportesInteresseViewModel
 
@@ -49,8 +66,23 @@ class MainActivity : ComponentActivity() {
         setContent {
             SportmatchTheme {
                 val navController = rememberNavController()
-
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry?.destination?.route
+                val bottomBarRoutes = setOf(
+                    "home",
+                    "pesquisar",
+                    "notificacoes",
+                    "PerfilOrganizador"
+                )
+                val shouldShowBottomBar = currentRoute in bottomBarRoutes
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    bottomBar = {
+                        if (shouldShowBottomBar) {
+                            AppBottomNavigation(navController = navController, currentRoute = currentRoute)
+                        }
+                    }
+                ) { innerPadding ->
                     AppNavHost(
                         navController = navController,
                         modifier = Modifier.padding(innerPadding)
@@ -61,7 +93,44 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
+@Composable
+fun AppBottomNavigation(navController: NavHostController, currentRoute: String?) {
+    NavigationBar(containerColor = Color.White) {
+        val items = listOf(
+            BottomNavItem("home", Icons.Default.Home, "Home"),
+            BottomNavItem("pesquisar", Icons.Default.Search, "Pesquisar"),
+            BottomNavItem("notificacoes", Icons.Default.Notifications, "Notificações"),
+            BottomNavItem("PerfilOrganizador", Icons.Default.Person, "Perfil")
+        )
+        items.forEach { item ->
+            NavigationBarItem(
+                selected = currentRoute == item.route,
+                onClick = {
+                    navController.navigate(item.route) {
+                        popUpTo(navController.graph.startDestinationId) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                    }
+                },
+                icon = { Icon(item.icon, contentDescription = item.label) },
+                label = { Text(item.label) },
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = laranjaPrincipal,
+                    selectedTextColor = laranjaPrincipal,
+                    unselectedIconColor = cinzaTextoSecundario,
+                    unselectedTextColor = cinzaTextoSecundario,
+                    indicatorColor = laranjaPrincipal.copy(alpha = 0.1f)
+                )
+            )
+        }
+    }
+}
+data class BottomNavItem(
+    val route: String,
+    val icon: ImageVector,
+    val label: String
+)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
@@ -69,9 +138,20 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
     val enderecoUsuarioViewModel: EnderecoUsuarioViewModel = viewModel()
     NavHost(
         navController = navController,
-        startDestination = "cadastro1",
+        startDestination = "cadastro4",
         modifier = modifier
     ) {
+
+            composable("PerfilOrganizador") {
+                PerfilOrganizador(navController = navController)
+            }
+        composable("editarPerfilOrganizador") {
+            EditarPerfilOrganizadorScreen(
+                onVoltar = { navController.popBackStack() },
+                onSalvar = { navController.popBackStack()
+                }
+            )
+        }
         composable("login") {
             Login(
                 onLoginSuccess = {
@@ -142,7 +222,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
                 esportesInteresseViewModel = esportesInteresseViewModel,
                 onNavigateToLogin = {
                     navController.navigate("login")
-                }
+                },
             )
         }
 
@@ -181,30 +261,16 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
             )
         }
 
-
-        composable("perfil_usuario") {
-            PerfilUsuario(
-                onNavigateBack = {
-                    navController.navigate("login") {
-                        popUpTo("perfil_usuario") { inclusive = true }
-                    }
-                },
-                onOnboardingComplete = {
-                    navController.navigate("home") {
-                        popUpTo("perfil_usuario") { inclusive = true }
-                    }
-                }
-            )
-        }
-        composable("pesquisar") {
-            Pesquisar(navController = navController)
-        }
         composable("cadastro-espaco-esportivo") {
             val espacoEsportivoViewModel: EspacoEsportivoViewModel = viewModel()
             CadastroEspacoEsportivo(
                 viewModel = espacoEsportivoViewModel,
                 onBefore = { navController.popBackStack() }
             )
+        }
+
+        composable("pesquisar") {
+            Pesquisar(navController = navController)
         }
         composable("cadastro-patrocinador") {
             TelaCadastro(

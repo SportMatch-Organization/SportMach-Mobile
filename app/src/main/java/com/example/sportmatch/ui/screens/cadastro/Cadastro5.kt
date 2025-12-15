@@ -1,5 +1,4 @@
 package com.example.sportmatch.ui.screens.cadastro
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,12 +7,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,13 +21,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.sportmatch.api.viaCepApi.Endereco
-import com.example.sportmatch.api.viaCepApi.RetrofitClient
 import com.example.sportmatch.ui.viewModel.user.CadastroViewModel
 import com.example.sportmatch.ui.viewModel.user.EnderecoUsuarioViewModel
 import com.example.sportmatch.ui.components.CustomButton
 import com.example.sportmatch.ui.theme.Orange
-import retrofit2.Response
 
 @Composable
 fun Cadastro5(

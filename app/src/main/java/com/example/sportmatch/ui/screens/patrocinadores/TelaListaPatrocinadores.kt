@@ -16,8 +16,8 @@ import kotlinx.coroutines.launch
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.filled.Delete
-import com.example.sportmatch.database.SportMatchDatabase
-import com.example.sportmatch.database.entities.Patrocinador
+import com.example.sportmatch.data.database.SportMatchDatabase
+import com.example.sportmatch.data.database.entities.Patrocinador
 
 
 @OptIn(ExperimentalMaterial3Api::class)

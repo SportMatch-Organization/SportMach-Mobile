@@ -1,8 +1,6 @@
 package com.example.sportmatch.ui.cadastro
 
 import android.os.Build
-import android.util.Log
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
@@ -30,13 +27,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.sportmatch.database.converters.UserTypeConverters
+import com.example.sportmatch.data.database.converters.UserTypeConverters
 import com.example.sportmatch.ui.viewModel.user.CadastroViewModel
 import com.example.sportmatch.model.enumTypes.user.GeneroEnum
 import com.example.sportmatch.ui.components.CustomButton
 import com.example.sportmatch.ui.theme.Orange
-import java.lang.Exception
-import java.util.Date
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)

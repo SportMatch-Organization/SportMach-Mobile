@@ -1,7 +1,5 @@
 package com.example.sportmatch.ui.screens.cadastro
 
-import android.annotation.SuppressLint
-import android.os.Build
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -9,21 +7,17 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.ui.Alignment
-import com.example.sportmatch.database.SportMatchDatabase
-import com.example.sportmatch.database.entities.user.EsportesInteresse
+import com.example.sportmatch.data.database.SportMatchDatabase
+import com.example.sportmatch.data.database.entities.user.EsportesInteresse
 import com.example.sportmatch.service.AuthService // Importa o serviço do Firebase
 import com.example.sportmatch.ui.viewModel.user.CadastroViewModel
 import com.example.sportmatch.ui.components.CustomButton
 import com.example.sportmatch.ui.theme.Azul2E3E4B
 import com.example.sportmatch.ui.theme.Orange
-import com.example.sportmatch.ui.viewModel.EspacoEsportivoViewModel
 import com.example.sportmatch.ui.viewModel.user.EsportesInteresseViewModel
 import kotlinx.coroutines.launch
 
