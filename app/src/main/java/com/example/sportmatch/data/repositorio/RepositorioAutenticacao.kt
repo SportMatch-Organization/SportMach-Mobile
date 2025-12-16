@@ -1,7 +1,7 @@
 package com.example.sportmatch.data.repositorio
 
 import com.example.sportmatch.data.api.LoginApi.kt.RemoteLoginDataSource
-import com.example.sportmatch.data.database.Login.LocalLoginDataSource
+import com.example.sportmatch.data.database.dao.LocalLoginDataSource
 
 class RepositorioAutenticacao(
     private val remoteLoginDataSource: RemoteLoginDataSource,

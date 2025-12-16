@@ -13,10 +13,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sportmatch.ui.components.CabecalhoOrganizador
-import com.example.sportmatch.ui.screens.competicoes.pesquisar.CompeticaoCard
+import com.example.sportmatch.ui.components.CompeticaoCard
 import com.example.sportmatch.ui.viewModel.PerfilOrganizadorViewModel
 import androidx.navigation.NavController
-import com.example.sportmatch.data.database.entities.Competicao
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

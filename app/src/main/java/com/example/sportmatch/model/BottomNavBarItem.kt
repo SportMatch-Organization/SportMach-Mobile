@@ -34,7 +34,7 @@ sealed class BottomNavBarItem (
     object Perfil: BottomNavBarItem(
         label = "Perfil",
         icon = Icons.Default.Person,
-        route = "perfil"
+        route = "PerfilOrganizador"
     )
 
 

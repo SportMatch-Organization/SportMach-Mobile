@@ -1,5 +1,4 @@
-package com.example.sportmatch.ui.screens.competicoes.pesquisar
-
+package com.example.sportmatch.ui.screens.pesquisar
 import android.app.Activity
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
@@ -25,10 +24,12 @@ import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavHostController
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.sportmatch.ui.components.CompeticaoCard
+import com.example.sportmatch.ui.components.FilterChipComBotao
+import com.example.sportmatch.ui.screens.competicoes.pesquisar.PesquisarViewModel
 import com.example.sportmatch.ui.theme.laranjaPrincipal
 import com.example.sportmatch.ui.theme.cinzaFundoClaro
 import com.example.sportmatch.ui.theme.cinzaTextoSecundario
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Pesquisar(
@@ -46,7 +47,6 @@ fun Pesquisar(
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
     val focusRequester = remember { FocusRequester() }
-
     LaunchedEffect(uiState.isSearching) {
         if (uiState.isSearching) {
             focusRequester.requestFocus()
@@ -144,13 +144,25 @@ fun Pesquisar(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         FilterChipComBotao(text = "Cidade") {
-                            Toast.makeText(context, "Filtro Cidade não implementado", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                "Filtro Cidade não implementado",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                         FilterChipComBotao(text = "Esporte") {
-                            Toast.makeText(context, "Filtro Esporte não implementado", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                "Filtro Esporte não implementado",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                         FilterChipComBotao(text = "Categoria") {
-                            Toast.makeText(context, "Filtro Categoria não implementado", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                "Filtro Categoria não implementado",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
                     Spacer(modifier = Modifier.height(16.dp))

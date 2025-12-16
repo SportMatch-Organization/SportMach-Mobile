@@ -1,4 +1,4 @@
-package com.example.sportmatch.ui.login
+package com.example.sportmatch.ui.screens.Login
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -12,7 +12,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.ui.unit.dp
 import com.example.sportmatch.data.database.SportMatchDatabase
-import com.example.sportmatch.data.repositorio.RepositorioAutenticacao
 import com.example.sportmatch.ui.login.componentes.LoginHeader
 import com.example.sportmatch.ui.login.componentes.LoginInputs
 import com.example.sportmatch.ui.login.componentes.LoginButtons
@@ -24,8 +23,7 @@ import com.example.sportmatch.ui.viewModel.LoginViewModelFactory
 fun Login(
     onLoginSuccess: () -> Unit,
     onNavigateToCadastro: () -> Unit,
-    onNavigateBack: () -> Unit,
-    viewModel: LoginViewModel = viewModel()
+    onNavigateBack: () -> Unit
 ) {
     val context = LocalContext.current
     val db = remember { SportMatchDatabase.getDatabase(context) }

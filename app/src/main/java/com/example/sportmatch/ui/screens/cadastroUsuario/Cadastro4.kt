@@ -1,4 +1,5 @@
-package com.example.sportmatch.ui.screens.cadastro
+package com.example.sportmatch.ui.screens.cadastroUsuario
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,7 +12,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,14 +19,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.util.Logger
 import com.example.sportmatch.data.database.entities.user.Endereco
 import com.example.sportmatch.data.api.viaCepApi.RetrofitClient
-import com.example.sportmatch.data.database.LocalAddressDataSource
-import com.example.sportmatch.data.repository.user.UserAddressRepository
 import com.example.sportmatch.ui.viewModel.user.CadastroViewModel
 import com.example.sportmatch.ui.viewModel.user.EnderecoUsuarioViewModel
 import com.example.sportmatch.ui.components.CustomButton
@@ -43,8 +40,6 @@ fun Cadastro4(
     var cep by remember { mutableStateOf("") }
     var context = LocalContext.current
     var mensagemErro by remember { mutableStateOf("") }
-
-    val addressState by enderecoUsuarioViewModel.uiState.collectAsState()
 
 
     Column(
@@ -78,18 +73,21 @@ fun Cadastro4(
             var validaCepNum = "[0-9]{8}".toRegex()
             var validaCepComHifem = "[0-9]{5}-[0-9]{3}".toRegex()
 
+            Log.i("Cadastro4", "Cep não vazio")
+
             if ((cep.matches(validaCepNum)) || (cep.matches(validaCepComHifem))){
-                /*LaunchedEffect(Unit){
+                Log.i("Cadastro4", "Cep válido")
+                LaunchedEffect(Unit){
                     var response = RetrofitClient.viaCepApi.buscarEnderecoPorCep(cep)
                     //Pode receber tanto um endereço como uma mensagem de erro
                     if (response.isSuccessful){
+                        Log.i("Cadastro4", "Endereço encontrado")
                         enderecoApi = response.body()
                         preencherEndereco(enderecoUsuarioViewModel, enderecoApi)
                     } else{
                         mensagemErro = "Endereço não encontrado."
                     }
-                }*/
-                enderecoUsuarioViewModel.buscarEnderecoPorCep(cep)
+                }
             } else{
                 mensagemErro = "CEP inválido."
             }
@@ -102,7 +100,7 @@ fun Cadastro4(
         CustomButton(
             "Próximo",
             {
-                if (addressState != null){
+                if (enderecoApi != null){
                     viewModel.setCep(cep)
                     onNavigateToCadastro5()
                 }else{
@@ -115,7 +113,7 @@ fun Cadastro4(
 
 }
 
-/*fun preencherEndereco(enderecoUsuarioViewModel: EnderecoUsuarioViewModel, enderecoApi: Endereco?){
+fun preencherEndereco(enderecoUsuarioViewModel: EnderecoUsuarioViewModel, enderecoApi: Endereco?){
     enderecoUsuarioViewModel.setCep(enderecoApi?.cep)
     enderecoUsuarioViewModel.setLogradouro(enderecoApi?.logradouro)
     enderecoUsuarioViewModel.setComplemento(enderecoApi?.complemento)
@@ -129,4 +127,4 @@ fun Cadastro4(
     enderecoUsuarioViewModel.setGia(enderecoApi?.gia)
     enderecoUsuarioViewModel.setDdd(enderecoApi?.ddd)
     enderecoUsuarioViewModel.setSiafi(enderecoApi?.siafi)
-}*/
+}

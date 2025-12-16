@@ -1,4 +1,4 @@
-package com.example.sportmatch.data.database
+package com.example.sportmatch.data.database.dao.user
 
 import androidx.room.Dao
 import androidx.room.Query

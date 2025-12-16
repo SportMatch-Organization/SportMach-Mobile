@@ -21,8 +21,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.sportmatch.model.BottomNavBarItem
 import com.example.sportmatch.model.BottomNavBarItem.Perfil
+import com.example.sportmatch.ui.Perfil_organizador.PerfilOrganizador
 import com.example.sportmatch.ui.screens.cadastroUsuario.Cadastro1
 import com.example.sportmatch.ui.screens.competicoes.ExploreCompeticao
+import com.example.sportmatch.ui.screens.pesquisar.Pesquisar
 import com.example.sportmatch.ui.theme.Branco
 import com.example.sportmatch.ui.viewModel.user.CadastroViewModel
 
@@ -35,7 +37,7 @@ val bottomNavBarItems = listOf(
 @Composable
 fun Home(navController: NavHostController) {
 
-    var selectedItem by remember {
+    /*var selectedItem by remember {
         val item = bottomNavBarItems.first()
         mutableStateOf(item)
     }
@@ -65,15 +67,15 @@ fun Home(navController: NavHostController) {
                 val item = bottomNavBarItems[page]
                 when (item) {
                     BottomNavBarItem.ExploreCompeticao -> ExploreCompeticao({})
-                    BottomNavBarItem.Pesquisar -> Text(text = "Pesquisar")
-                    BottomNavBarItem.Notificacao -> Text(text = "Notificações")
-                    Perfil -> Text(text = "Perfil")
+                    BottomNavBarItem.Pesquisar -> Pesquisar(navController)
+                    BottomNavBarItem.Notificacao -> Noticacoes()
+                    Perfil -> PerfilOrganizador(navController)
                 }
             }
         }
-    }
+    }*/
 }
-
+/*
 @Composable
 fun BottomNavBar(selectedItem: BottomNavBarItem) {
     NavigationBar(containerColor = Branco) {
@@ -103,4 +105,4 @@ fun HomePreview() {
     Home(
         navController = TODO()
     )
-}
+}*/

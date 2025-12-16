@@ -1,5 +1,5 @@
-package com.example.sportmatch.data.database.Login
-import com.example.sportmatch.data.database.dao.LoginCacheDao
+package com.example.sportmatch.data.database.dao
+
 import com.example.sportmatch.data.database.entities.LoginCacheEntity
 
 class LocalLoginDataSource(

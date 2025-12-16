@@ -9,18 +9,25 @@ import androidx.room.TypeConverters
 import com.example.sportmatch.data.database.converters.UserTypeConverters
 import com.example.sportmatch.data.database.dao.CompeticaoDao
 import com.example.sportmatch.data.database.dao.EspacoEsportivoDao
+import com.example.sportmatch.data.database.dao.LoginCacheDao
 import com.example.sportmatch.data.database.dao.PatrocinadorDao
 import com.example.sportmatch.data.database.dao.user.EsportesInteresseDao
+import com.example.sportmatch.data.database.dao.user.LocalAddressDataSource
 import com.example.sportmatch.data.database.dao.user.UserDao
 import com.example.sportmatch.data.database.entities.Competicao
 import com.example.sportmatch.data.database.entities.EspacoEsportivo
+import com.example.sportmatch.data.database.entities.LoginCacheEntity
 import com.example.sportmatch.data.database.entities.Patrocinador
 import com.example.sportmatch.data.database.entities.user.Endereco
 import com.example.sportmatch.data.database.entities.user.EsportesInteresse
 import com.example.sportmatch.data.database.entities.user.User
 
 
-@Database(entities = [User::class, Competicao::class, Patrocinador:: class, EsportesInteresse::class, EspacoEsportivo::class, Endereco::class], version = 2)
+@Database(
+    entities = [User::class, Competicao::class, Patrocinador:: class, EsportesInteresse::class,
+    EspacoEsportivo::class, Endereco::class, LoginCacheEntity::class],
+    version = 2
+)
 @TypeConverters(UserTypeConverters::class)
 abstract class SportMatchDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
@@ -30,6 +37,8 @@ abstract class SportMatchDatabase : RoomDatabase() {
     abstract fun espacoEsportivoDao(): EspacoEsportivoDao
 
     abstract fun enderecoDao(): LocalAddressDataSource
+
+    abstract fun loginCacheDao(): LoginCacheDao
 
     companion object {
         @Volatile

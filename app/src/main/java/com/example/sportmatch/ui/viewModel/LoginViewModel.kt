@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sportmatch.data.api.LoginApi.kt.RemoteLoginDataSource
 import com.example.sportmatch.data.repositorio.RepositorioAutenticacao
-import com.example.sportmatch.data.database.Login.LocalLoginDataSource
+import com.example.sportmatch.data.database.dao.LocalLoginDataSource
 import com.example.sportmatch.data.database.SportMatchDatabase
 import kotlinx.coroutines.launch
 class LoginViewModel(

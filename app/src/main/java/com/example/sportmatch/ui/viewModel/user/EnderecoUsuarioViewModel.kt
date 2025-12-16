@@ -12,14 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class EnderecoUsuarioViewModel(
-    private val addressRepository: UserAddressRepository
-): ViewModel() {
-
-    private val _uiState: MutableStateFlow<UserAddressState> =
-        MutableStateFlow(UserAddressState())
-
-    val uiState get() = _uiState.asStateFlow()
+class EnderecoUsuarioViewModel: ViewModel() {
 
     var enderecoApi by mutableStateOf(Endereco())
         private set
@@ -74,19 +67,6 @@ class EnderecoUsuarioViewModel(
 
     fun setSiafi(siafi:String?){
         siafi?.let { enderecoApi = enderecoApi.copy(siafi = it) }
-    }
-
-    fun buscarEnderecoPorCep(cep: String): Endereco{
-        val endereco = Endereco()
-        viewModelScope.launch {
-            val endereco = try {
-                addressRepository.buscarEnderecoPorCep(cep)
-                _uiState.value = _uiState.value.copy(endereco = endereco)
-            } catch (e: Exception){
-                endereco
-            }
-        }
-        return endereco
     }
 
 }
