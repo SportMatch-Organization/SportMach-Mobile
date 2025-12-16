@@ -1,9 +1,12 @@
 package com.example.sportmatch.ui.screens
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -15,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -36,73 +40,10 @@ val bottomNavBarItems = listOf(
 )
 @Composable
 fun Home(navController: NavHostController) {
-
-    /*var selectedItem by remember {
-        val item = bottomNavBarItems.first()
-        mutableStateOf(item)
-    }
-
-    val pageState = rememberPagerState {
-        bottomNavBarItems.size
-    }
-
-    LaunchedEffect(selectedItem) {
-        val currentIndex = bottomNavBarItems.indexOf(selectedItem)
-        pageState.animateScrollToPage(currentIndex)
-    }
-
-    LaunchedEffect(pageState.targetPage) {
-        selectedItem = bottomNavBarItems[pageState.targetPage]
-    }
-
-    Scaffold (bottomBar = {
-        BottomNavBar(
-        selectedItem = selectedItem,
-    )
-    }) {
-        innerPadding ->
-        Surface(modifier = Modifier.padding(innerPadding)){
-            HorizontalPager(pageState) {
-                page ->
-                val item = bottomNavBarItems[page]
-                when (item) {
-                    BottomNavBarItem.ExploreCompeticao -> ExploreCompeticao({})
-                    BottomNavBarItem.Pesquisar -> Pesquisar(navController)
-                    BottomNavBarItem.Notificacao -> Noticacoes()
-                    Perfil -> PerfilOrganizador(navController)
-                }
-            }
-        }
-    }*/
-}
-/*
-@Composable
-fun BottomNavBar(selectedItem: BottomNavBarItem) {
-    NavigationBar(containerColor = Branco) {
-        bottomNavBarItems.forEach { item ->
-            NavigationBarItem(
-                selected = item.label == selectedItem.label,
-                onClick = {
-
-                },
-                icon = {
-                    Icon(
-                        item.icon,
-                        contentDescription = ""
-                    )
-                },
-                label = {
-                    Text(item.label)
-                }
-            )
-        }
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Text("Tela de Home", style = MaterialTheme.typography.headlineMedium)
     }
 }
-
-@Preview
-@Composable
-fun HomePreview() {
-    Home(
-        navController = TODO()
-    )
-}*/
