@@ -1,10 +1,10 @@
 package com.example.sportmatch.data.database.converters
 
+import GeneroEnum
+import PerfilEnum
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.room.TypeConverter
-import com.example.sportmatch.database.entities.user.GeneroEnum
-import com.example.sportmatch.database.entities.user.PerfilEnum
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException

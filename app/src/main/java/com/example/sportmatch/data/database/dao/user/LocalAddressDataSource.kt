@@ -1,4 +1,4 @@
-package com.example.sportmatch.data.database
+package com.example.sportmatch.data.database.dao.user
 
 import androidx.room.Dao
 import androidx.room.Query
@@ -11,7 +11,7 @@ interface LocalAddressDataSource {
     @Upsert
     suspend fun adicionarEndereco(endereco: Endereco)
 
-    @Query("SELECT * FROM user_address")
+    @Query("SELECT * FROM user_address WHERE cep = :cep")
     suspend fun buscarEnderecoPorCep(cep: String): Endereco?
 
 }

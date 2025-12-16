@@ -27,35 +27,39 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.sportmatch.data.database.entities.Competicao
 import com.example.sportmatch.ui.viewModel.user.CadastroViewModel
 import com.example.sportmatch.ui.viewModel.user.EnderecoUsuarioViewModel
 import com.example.sportmatch.model.CampeonatoViewModel
 import com.example.sportmatch.ui.screens.competicoes.CadastroCompeticao
 import com.example.sportmatch.ui.Perfil_organizador.PerfilOrganizador
-import com.example.sportmatch.ui.screens.Login
 import com.example.sportmatch.ui.screens.Home
 import com.example.sportmatch.ui.cadastro.Cadastro3
 import com.example.sportmatch.ui.competicoes.CadastroCompeticao2
 import com.example.sportmatch.ui.competicoes.CadastroCompeticao3
 import com.example.sportmatch.ui.DetalhesCompeticaoActivity
-import com.example.sportmatch.ui.Perfil.PerfilUsuario
+import com.example.sportmatch.ui.login.Login
+import com.example.sportmatch.ui.screens.Noticacoes
 import com.example.sportmatch.ui.screens.cadastro.Cadastro4
 import com.example.sportmatch.ui.screens.cadastro.Cadastro5
 import com.example.sportmatch.ui.screens.cadastro.Cadastro6
 import com.example.sportmatch.ui.screens.cadastroUsuario.Cadastro1
 import com.example.sportmatch.ui.screens.cadastroUsuario.Cadastro2
 import com.example.sportmatch.ui.screens.competicoes.ExploreCompeticao
-import com.example.sportmatch.ui.screens.competicoes.pesquisar.Pesquisar
+import com.example.sportmatch.ui.screens.pesquisar.Pesquisar
 import com.example.sportmatch.ui.screens.espacosEsportivo.CadastroEspacoEsportivo
 import com.example.sportmatch.ui.screens.patrocinadores.TelaCadastro
 import com.example.sportmatch.ui.screens.perfil.EditarPerfilOrganizadorScreen
+import com.example.sportmatch.ui.screens.pesquisar.CompeticaoDetalhesRoute
 import com.example.sportmatch.ui.theme.SportmatchTheme
 import com.example.sportmatch.ui.theme.cinzaTextoSecundario
 import com.example.sportmatch.ui.theme.laranjaPrincipal
@@ -71,7 +75,7 @@ class MainActivity : ComponentActivity() {
         // === CÓDIGO DE TESTE: INICIAR A TELA DETALHES EVENTO (XML)          ===
         // ====================================================================
 
-        val urlsDeTeste = listOf(
+        /*val urlsDeTeste = listOf(
             // Usa o placeholder existente como a primeira imagem
             "drawable://placeholder_volei",
             // Usa caminhos genéricos para simular outras imagens que serão carregadas como cor
@@ -102,12 +106,11 @@ class MainActivity : ComponentActivity() {
         intent.putExtra("evento_detalhes", savedInstanceState)
         //intent.putExtra("evento_detalhes", eventoTeste)
         startActivity(intent)
-        finish()
+        finish()*/
 
         // ====================================================================
         // === FIM DO CÓDIGO DE TESTE (Retorna o fluxo Compose depois)        ===
         // ====================================================================
-
         enableEdgeToEdge()
 
         setContent {
@@ -115,6 +118,7 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
+
                 val bottomBarRoutes = setOf(
                     "home",
                     "pesquisar",
@@ -122,6 +126,7 @@ class MainActivity : ComponentActivity() {
                     "PerfilOrganizador"
                 )
                 val shouldShowBottomBar = currentRoute in bottomBarRoutes
+
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     bottomBar = {
@@ -135,11 +140,11 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
-
             }
         }
     }
 }
+
 @Composable
 fun AppBottomNavigation(navController: NavHostController, currentRoute: String?) {
     NavigationBar(containerColor = Color.White) {
@@ -178,7 +183,6 @@ data class BottomNavItem(
     val icon: ImageVector,
     val label: String
 )
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
     val cadastroViewModel: CadastroViewModel = viewModel()
@@ -188,18 +192,6 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
         startDestination = "login",
         modifier = modifier
     ) {
-
-        composable("PerfilOrganizador") {
-            PerfilOrganizador(navController = navController)
-        }
-        composable("editarPerfilOrganizador") {
-            EditarPerfilOrganizadorScreen(
-                onVoltar = { navController.popBackStack() },
-                onSalvar = {
-                    navController.popBackStack()
-                }
-            )
-        }
         composable("login") {
             Login(
                 onLoginSuccess = {
@@ -216,6 +208,11 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
             )
         }
 
+        composable("home") {
+            // Unificado: Passando navController para permitir navegação interna na Home
+            Home(navController = navController)
+        }
+
         composable("cadastro1") {
             Cadastro1(
                 viewModel = cadastroViewModel,
@@ -224,7 +221,6 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
                 }
             )
         }
-
         composable("cadastro2") {
             Cadastro2(
                 viewModel = cadastroViewModel,
@@ -242,7 +238,6 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
                 }
             )
         }
-
         composable("cadastro4") {
             Cadastro4(
                 viewModel = cadastroViewModel,
@@ -252,7 +247,6 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
                 }
             )
         }
-
         composable("cadastro5") {
             Cadastro5(
                 viewModel = cadastroViewModel,
@@ -262,7 +256,6 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
                 }
             )
         }
-
         composable("cadastro6") {
             val esportesInteresseViewModel: EsportesInteresseViewModel = viewModel()
             Cadastro6(
@@ -274,8 +267,38 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
             )
         }
 
-        composable("home") {
-            Home()
+        /*composable("perfil_usuario") {
+            PerfilUsuario(
+                onNavigateBack = {
+                    navController.navigate("login") {
+                        popUpTo("perfil_usuario") { inclusive = true }
+                    }
+                },
+                onOnboardingComplete = {
+                    navController.navigate("home") {
+                        popUpTo("perfil_usuario") { inclusive = true }
+                    }
+                }
+            )
+        }*/
+
+        composable("PerfilOrganizador") {
+            PerfilOrganizador(navController = navController)
+        }
+
+        composable("editarPerfilOrganizador") {
+            EditarPerfilOrganizadorScreen(
+                onVoltar = { navController.popBackStack() },
+                onSalvar = { navController.popBackStack() }
+            )
+        }
+
+        composable("pesquisar") {
+            Pesquisar(navController = navController)
+        }
+
+        composable("notificacoes") {
+            Noticacoes()
         }
 
         composable("cadastro-competicao") { backStackEntry ->
@@ -308,30 +331,23 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
                 onBefore = { navController.popBackStack() }
             )
         }
-
-        composable("detalhes-competicao") {
+        composable(
+            route = "detalhes/{competicaoId}",
+            arguments = listOf(
+                navArgument("competicaoId") { type = NavType.IntType }
+            ),
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getInt("competicaoId") ?: 0
+            CompeticaoDetalhesRoute(
+                competicaoId = id,
+                onBackClick = { navController.popBackStack() }
+            )
         }
 
         composable("explore-competicao") {
             ExploreCompeticao(
                 onNavigateToDetail = {
-                    navController.navigate("detalhes-competicao")
-                }
-            )
-        }
-
-
-        composable("perfil_usuario") {
-            PerfilUsuario(
-                onNavigateBack = {
-                    navController.navigate("login") {
-                        popUpTo("perfil_usuario") { inclusive = true }
-                    }
-                },
-                onOnboardingComplete = {
-                    navController.navigate("home") {
-                        popUpTo("perfil_usuario") { inclusive = true }
-                    }
+                    navController.navigate("detalhes/1")
                 }
             )
         }
@@ -343,12 +359,9 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
             )
         }
 
-        composable("pesquisar") {
-            Pesquisar(navController = navController)
-        }
         composable("cadastro-patrocinador") {
             TelaCadastro(
-                onVoltar = {},
+                onVoltar = { navController.popBackStack() },
                 onVerCadastrados = {}
             )
         }

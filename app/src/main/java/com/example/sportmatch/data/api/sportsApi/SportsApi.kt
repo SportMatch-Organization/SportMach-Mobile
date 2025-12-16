@@ -1,6 +1,6 @@
 package com.example.sportmatch.data.api.sportsApi
 
-import com.example.sportmatch.api.sportsApi.ApiSport
+import ApiSport
 import retrofit2.http.GET
 
 interface SportsApi {

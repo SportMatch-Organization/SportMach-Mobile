@@ -1,4 +1,4 @@
-package com.example.sportmatch.ui.Perfil
+package com.example.sportmatch.ui.screens.Perfil
 
 import androidx.compose.runtime.Composable
 

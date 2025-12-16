@@ -13,9 +13,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sportmatch.ui.components.CabecalhoOrganizador
-import com.example.sportmatch.ui.screens.competicoes.pesquisar.CompeticaoCard
+import com.example.sportmatch.ui.components.CompeticaoCard
 import com.example.sportmatch.ui.viewModel.PerfilOrganizadorViewModel
 import androidx.navigation.NavController
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PerfilOrganizador(
@@ -63,7 +64,12 @@ fun PerfilOrganizador(
                 )
             }
             items(listaCompeticoes) { competicao ->
-                CompeticaoCard(competicao = competicao)
+                CompeticaoCard(
+                    competicao = competicao,
+                    onVerMaisClick = { id ->
+                        navController.navigate("detalhes/$id")
+                    }
+                )
             }
         }
     }

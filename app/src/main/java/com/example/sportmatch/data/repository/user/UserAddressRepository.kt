@@ -1,7 +1,7 @@
 package com.example.sportmatch.data.repository.user
 
 import com.example.sportmatch.data.api.viaCepApi.RemoteAdressApiDataSource
-import com.example.sportmatch.data.database.LocalAddressDataSource
+import com.example.sportmatch.data.database.dao.user.LocalAddressDataSource
 import com.example.sportmatch.data.database.entities.user.Endereco
 import retrofit2.Response
 import java.lang.Exception

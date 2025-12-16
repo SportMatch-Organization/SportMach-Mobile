@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sportmatch.data.database.entities.user.Endereco
 import com.example.sportmatch.data.api.viaCepApi.RetrofitClient
-import com.example.sportmatch.data.database.LocalAddressDataSource
+import com.example.sportmatch.data.database.dao.user.LocalAddressDataSource
 import com.example.sportmatch.data.repository.user.UserAddressRepository
 import com.example.sportmatch.ui.viewModel.user.CadastroViewModel
 import com.example.sportmatch.ui.viewModel.user.EnderecoUsuarioViewModel

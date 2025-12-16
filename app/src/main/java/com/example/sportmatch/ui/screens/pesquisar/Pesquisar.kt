@@ -1,4 +1,4 @@
-package com.example.sportmatch.ui.screens.competicoes.pesquisar
+package com.example.sportmatch.ui.screens.pesquisar
 import android.app.Activity
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
@@ -24,6 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavHostController
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.sportmatch.ui.components.CompeticaoCard
+import com.example.sportmatch.ui.components.FilterChipComBotao
+import com.example.sportmatch.ui.screens.competicoes.pesquisar.PesquisarViewModel
 import com.example.sportmatch.ui.theme.laranjaPrincipal
 import com.example.sportmatch.ui.theme.cinzaFundoClaro
 import com.example.sportmatch.ui.theme.cinzaTextoSecundario
@@ -141,13 +144,25 @@ fun Pesquisar(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         FilterChipComBotao(text = "Cidade") {
-                            Toast.makeText(context, "Filtro Cidade não implementado", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                "Filtro Cidade não implementado",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                         FilterChipComBotao(text = "Esporte") {
-                            Toast.makeText(context, "Filtro Esporte não implementado", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                "Filtro Esporte não implementado",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                         FilterChipComBotao(text = "Categoria") {
-                            Toast.makeText(context, "Filtro Categoria não implementado", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                "Filtro Categoria não implementado",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
                     Spacer(modifier = Modifier.height(16.dp))
@@ -167,7 +182,12 @@ fun Pesquisar(
                     } else {
                         items(uiState.competicoesAbertas, key = { "aberto-${it.id}" }) { competicao ->
                             Column(Modifier.padding(horizontal = 16.dp)) {
-                                CompeticaoCard(competicao = competicao)
+                                CompeticaoCard(
+                                    competicao = competicao,
+                                    onVerMaisClick = { id ->
+                                        navController.navigate("detalhes/$id")
+                                    }
+                                )
                             }
                         }
                     }
@@ -185,7 +205,12 @@ fun Pesquisar(
                     } else {
                         items(uiState.competicoesEmAndamento, key = { "andamento-${it.id}" }) { competicao ->
                             Column(Modifier.padding(horizontal = 16.dp)) {
-                                CompeticaoCard(competicao = competicao)
+                                CompeticaoCard(
+                                    competicao = competicao,
+                                    onVerMaisClick = { id ->
+                                        navController.navigate("detalhes/$id")
+                                    }
+                                )
                             }
                         }
                     }
@@ -203,7 +228,12 @@ fun Pesquisar(
                     } else {
                         items(uiState.competicoesEncerradas, key = { "encerrado-${it.id}" }) { competicao ->
                             Column(Modifier.padding(horizontal = 16.dp)) {
-                                CompeticaoCard(competicao = competicao)
+                                CompeticaoCard(
+                                    competicao = competicao,
+                                    onVerMaisClick = { id ->
+                                        navController.navigate("detalhes/$id")
+                                    }
+                                )
                             }
                         }
                     }
