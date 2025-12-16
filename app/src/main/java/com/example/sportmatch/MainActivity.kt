@@ -1,7 +1,6 @@
 package com.example.sportmatch
 
 
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -27,7 +26,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -36,7 +34,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.sportmatch.data.database.entities.Competicao
 import com.example.sportmatch.ui.viewModel.user.CadastroViewModel
 import com.example.sportmatch.ui.viewModel.user.EnderecoUsuarioViewModel
 import com.example.sportmatch.model.CampeonatoViewModel
@@ -46,10 +43,9 @@ import com.example.sportmatch.ui.screens.Home
 import com.example.sportmatch.ui.cadastro.Cadastro3
 import com.example.sportmatch.ui.competicoes.CadastroCompeticao2
 import com.example.sportmatch.ui.competicoes.CadastroCompeticao3
-import com.example.sportmatch.ui.DetalhesCompeticaoActivity
-import com.example.sportmatch.ui.login.Login
+import com.example.sportmatch.ui.screens.Login.Login
 import com.example.sportmatch.ui.screens.Noticacoes
-import com.example.sportmatch.ui.screens.cadastro.Cadastro4
+import com.example.sportmatch.ui.screens.cadastroUsuario.Cadastro4
 import com.example.sportmatch.ui.screens.cadastro.Cadastro5
 import com.example.sportmatch.ui.screens.cadastro.Cadastro6
 import com.example.sportmatch.ui.screens.cadastroUsuario.Cadastro1
@@ -70,47 +66,6 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // ====================================================================
-        // === CÓDIGO DE TESTE: INICIAR A TELA DETALHES EVENTO (XML)          ===
-        // ====================================================================
-
-        /*val urlsDeTeste = listOf(
-            // Usa o placeholder existente como a primeira imagem
-            "drawable://placeholder_volei",
-            // Usa caminhos genéricos para simular outras imagens que serão carregadas como cor
-            "url://imagem_2",
-            "url://imagem_3"
-        )
-
-        val eventoTeste = Competicao(
-            nome = "Vôlei de areia Pajuçara",
-            valor = 20.00,
-            esporte = "Vôlei",
-            modalidade = "Vôlei de praia",
-            categoria = "Misto",
-            //subcategoria = "sub-17",
-            formato = "Sub-17",
-            tipoAcessibilidade = "Deficiência visual",
-            //maxAtletas = 4,
-            //minAtletas = 2,
-            inicioInscricao = "10/11/2025",
-            finalInscricao = "20/11/2025",
-            inicioCompeticao = "24/11/2025 - 15:00",
-            finalCompeticao = "24/11/2025 - 17:00",
-            local = "Praia da Pajuçara",
-            imagemUrl = urlsDeTeste[0] // Passa a lista de URLs
-        )
-
-        val intent = Intent(this, DetalhesCompeticaoActivity::class.java)
-        intent.putExtra("evento_detalhes", savedInstanceState)
-        //intent.putExtra("evento_detalhes", eventoTeste)
-        startActivity(intent)
-        finish()*/
-
-        // ====================================================================
-        // === FIM DO CÓDIGO DE TESTE (Retorna o fluxo Compose depois)        ===
-        // ====================================================================
         enableEdgeToEdge()
 
         setContent {
