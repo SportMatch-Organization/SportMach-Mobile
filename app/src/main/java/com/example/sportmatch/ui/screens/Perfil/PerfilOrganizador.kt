@@ -64,12 +64,12 @@ fun PerfilOrganizador(
                 )
             }
             items(listaCompeticoes) { competicao ->
-                CompeticaoCard(
-                    competicao = competicao,
-                    onVerMaisClick = { id ->
-                        navController.navigate("detalhes/$id")
-                    }
-                )
+//                CompeticaoCard(
+//                    competicao = competicao,
+//                    onVerMaisClick = { id ->
+//                        navController.navigate("detalhes/$id")
+//                    }
+//                )
             }
         }
     }

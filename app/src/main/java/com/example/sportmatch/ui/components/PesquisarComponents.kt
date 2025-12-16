@@ -1,4 +1,5 @@
 package com.example.sportmatch.ui.components
+import CompeticaoSupabase
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -51,14 +52,14 @@ fun FilterChipComBotao(text: String, onClick: () -> Unit) {
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CompeticaoCard(
-    competicao: Competicao,
+    competicao: CompeticaoSupabase,
     onVerMaisClick: (Int) -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
-            .clickable { onVerMaisClick(competicao.id) },
+            .clickable { onVerMaisClick(competicao.id!!) },
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)
@@ -91,7 +92,7 @@ fun CompeticaoCard(
                         )
                         Spacer(Modifier.width(8.dp))
                         ChipVisual(
-                            text = "${competicao.vagasPreenchidas}/${competicao.total}",
+                            text = "${competicao.vagas_preenchidas.toString()}/${competicao.total}",
                             icon = Icons.Filled.Group,
                             iconTint = Color.DarkGray
                         )
@@ -123,11 +124,10 @@ fun CompeticaoCard(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(Icons.Default.DateRange, contentDescription = "Data", modifier = Modifier.size(16.dp), tint = cinzaTextoSecundario)
                         Spacer(modifier = Modifier.width(6.dp))
-                        Text(competicao.inicioCompeticao, fontSize = 12.sp, color = cinzaTextoSecundario)
+                        Text(competicao.inicio_competicao, fontSize = 12.sp, color = cinzaTextoSecundario)
                         Spacer(modifier = Modifier.width(16.dp))
                         Icon(Icons.Default.Schedule, contentDescription = "Horário", modifier = Modifier.size(16.dp), tint = cinzaTextoSecundario)
                         Spacer(modifier = Modifier.width(6.dp))
-                        Text(competicao.inicioCompeticao.split(" - ").lastOrNull() ?: "", fontSize = 12.sp, color = cinzaTextoSecundario)
                     }
                     Spacer(modifier = Modifier.height(6.dp))
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -139,7 +139,7 @@ fun CompeticaoCard(
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .clickable { onVerMaisClick(competicao.id) }
+                        .clickable { onVerMaisClick(competicao.id!!) }
                         .padding(top = 10.dp)
                 ) {
                     Text("Ver mais", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = laranjaPrincipal)
@@ -153,7 +153,7 @@ fun CompeticaoCard(
                     .padding(top = 12.dp, bottom = 12.dp, end = 12.dp),
                 contentAlignment = Alignment.Center
             ) {
-                val url = competicao.imagemUrl ?: ""
+                val url = competicao.imagem_url ?: ""
                 val imagemParaMostrar = if (url.startsWith("http")) {
                     url
                 } else {
@@ -161,11 +161,9 @@ fun CompeticaoCard(
                 }
                 AsyncImage(
                     model = imagemParaMostrar,
-                    contentDescription = competicao.nome,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clip(RoundedCornerShape(8.dp)),
+                    contentDescription = null,
+                    modifier = Modifier.size(150.dp).clip(RoundedCornerShape(8.dp)),
+                    contentScale = ContentScale.Crop
                 )
             }
         }

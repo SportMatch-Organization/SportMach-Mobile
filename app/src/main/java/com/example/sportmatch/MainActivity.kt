@@ -61,6 +61,7 @@ import com.example.sportmatch.ui.theme.SportmatchTheme
 import com.example.sportmatch.ui.theme.cinzaTextoSecundario
 import com.example.sportmatch.ui.theme.laranjaPrincipal
 import com.example.sportmatch.ui.viewModel.EspacoEsportivoViewModel
+import com.example.sportmatch.ui.viewModel.HomeViewModel
 import com.example.sportmatch.ui.viewModel.user.EsportesInteresseViewModel
 
 class MainActivity : ComponentActivity() {
@@ -153,10 +154,11 @@ data class BottomNavItem(
 @Composable
 fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
     val cadastroViewModel: CadastroViewModel = viewModel()
+    val homeViewModel: HomeViewModel = viewModel()
     val enderecoUsuarioViewModel: EnderecoUsuarioViewModel = viewModel()
     NavHost(
         navController = navController,
-        startDestination = "login",
+        startDestination = "home",
         modifier = modifier
     ) {
         composable("login") {
@@ -177,7 +179,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
 
         composable("home") {
             // Unificado: Passando navController para permitir navegação interna na Home
-            Home(navController = navController)
+            Home(navController = navController, homeViewModel)
         }
 
         composable("cadastro1") {

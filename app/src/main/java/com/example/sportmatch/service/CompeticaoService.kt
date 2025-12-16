@@ -30,7 +30,7 @@ object CompeticaoService {
     suspend fun getCompeticoes(): List<CompeticaoSupabase> {
         return try {
             val result = supabase
-                .postgrest["competicoescompeticoes"]
+                .postgrest["competicoes"]
                 .select()
 
             result.decodeList<CompeticaoSupabase>()

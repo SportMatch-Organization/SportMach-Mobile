@@ -182,12 +182,12 @@ fun Pesquisar(
                     } else {
                         items(uiState.competicoesAbertas, key = { "aberto-${it.id}" }) { competicao ->
                             Column(Modifier.padding(horizontal = 16.dp)) {
-                                CompeticaoCard(
+                                /*CompeticaoCard(
                                     competicao = competicao,
                                     onVerMaisClick = { id ->
                                         navController.navigate("detalhes/$id")
                                     }
-                                )
+                                )*/
                             }
                         }
                     }
@@ -205,12 +205,12 @@ fun Pesquisar(
                     } else {
                         items(uiState.competicoesEmAndamento, key = { "andamento-${it.id}" }) { competicao ->
                             Column(Modifier.padding(horizontal = 16.dp)) {
-                                CompeticaoCard(
+                                /*CompeticaoCard(
                                     competicao = competicao,
                                     onVerMaisClick = { id ->
                                         navController.navigate("detalhes/$id")
                                     }
-                                )
+                                )*/
                             }
                         }
                     }
@@ -228,12 +228,12 @@ fun Pesquisar(
                     } else {
                         items(uiState.competicoesEncerradas, key = { "encerrado-${it.id}" }) { competicao ->
                             Column(Modifier.padding(horizontal = 16.dp)) {
-                                CompeticaoCard(
+                                /*CompeticaoCard(
                                     competicao = competicao,
                                     onVerMaisClick = { id ->
                                         navController.navigate("detalhes/$id")
                                     }
-                                )
+                                )*/
                             }
                         }
                     }
