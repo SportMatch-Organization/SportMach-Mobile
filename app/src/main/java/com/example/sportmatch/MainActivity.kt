@@ -10,6 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
@@ -77,6 +78,7 @@ class MainActivity : ComponentActivity() {
                 val bottomBarRoutes = setOf(
                     "home",
                     "pesquisar",
+                    "cadastro-competicao",
                     "notificacoes",
                     "PerfilOrganizador"
                 )
@@ -103,13 +105,22 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppBottomNavigation(navController: NavHostController, currentRoute: String?) {
     NavigationBar(containerColor = Color.White) {
-        val items = listOf(
+        val itemsAtleta = listOf(
             BottomNavItem("home", Icons.Default.Home, "Home"),
             BottomNavItem("pesquisar", Icons.Default.Search, "Pesquisar"),
             BottomNavItem("notificacoes", Icons.Default.Notifications, "Notificações"),
             BottomNavItem("PerfilOrganizador", Icons.Default.Person, "Perfil")
         )
-        items.forEach { item ->
+        val itemsOrganizador = listOf(
+            BottomNavItem("home", Icons.Default.Home, "Home"),
+            BottomNavItem("cadastro-competicao", Icons.Default.Add, "Cadastro Competição"),
+            BottomNavItem("notificacoes", Icons.Default.Notifications, "Notificações"),
+            BottomNavItem("PerfilOrganizador", Icons.Default.Person, "Perfil")
+        )
+
+        NavBarRender()
+
+        itemsOrganizador.forEach { item ->
             NavigationBarItem(
                 selected = currentRoute == item.route,
                 onClick = {
@@ -138,6 +149,7 @@ data class BottomNavItem(
     val icon: ImageVector,
     val label: String
 )
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
     val cadastroViewModel: CadastroViewModel = viewModel()
@@ -321,4 +333,9 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
             )
         }
     }
+}
+
+@Composable
+fun NavBarRender(){
+    
 }
