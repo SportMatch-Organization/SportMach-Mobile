@@ -46,6 +46,7 @@ import com.example.sportmatch.ui.competicoes.CadastroCompeticao2
 import com.example.sportmatch.ui.competicoes.CadastroCompeticao3
 import com.example.sportmatch.ui.screens.Login.Login
 import com.example.sportmatch.ui.screens.Noticacoes
+import com.example.sportmatch.ui.screens.Perfil.PerfilUsuario
 import com.example.sportmatch.ui.screens.cadastroUsuario.Cadastro4
 import com.example.sportmatch.ui.screens.cadastro.Cadastro5
 import com.example.sportmatch.ui.screens.cadastro.Cadastro6
@@ -118,8 +119,6 @@ fun AppBottomNavigation(navController: NavHostController, currentRoute: String?)
             BottomNavItem("notificacoes", Icons.Default.Notifications, "Notificações"),
             BottomNavItem("PerfilOrganizador", Icons.Default.Person, "Perfil")
         )
-
-        NavBarRender()
 
         itemsOrganizador.forEach { item ->
             NavigationBarItem(
@@ -236,7 +235,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
             )
         }
 
-        /*composable("perfil_usuario") {
+        composable("perfil_usuario") {
             PerfilUsuario(
                 onNavigateBack = {
                     navController.navigate("login") {
@@ -249,7 +248,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
                     }
                 }
             )
-        }*/
+        }
 
         composable("PerfilOrganizador") {
             PerfilOrganizador(navController = navController)
@@ -335,9 +334,4 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
             )
         }
     }
-}
-
-@Composable
-fun NavBarRender(){
-    
 }
