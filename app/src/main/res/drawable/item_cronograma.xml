@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:gravity="top">
+
+    <!-- COLUNA 1: ÍCONE DE CALENDÁRIO LARANJA (32dp x 32dp) -->
+    <!-- O ícone é o ic_calendar_time, mas com a cor laranja holo_orange_dark -->
+    <ImageView
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/ic_calendar_time"
+        android:contentDescription="Ícone de data"
+        android:tint="@android:color/holo_orange_dark" />
+
+    <!-- COLUNA 2: TEXTO DA DESCRIÇÃO (preto) e DATA (negrito) -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="16dp"
+        android:orientation="vertical">
+
+        <!-- DESCRIÇÃO (Início das inscrições) -->
+        <TextView
+            android:id="@+id/text_descricao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            tools:text="Início das inscrições" />
+
+        <!-- DATA (10/11/2025) -->
+        <TextView
+            android:id="@+id/text_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            tools:text="10/11/2025" />
+    </LinearLayout>
+
+</LinearLayout>

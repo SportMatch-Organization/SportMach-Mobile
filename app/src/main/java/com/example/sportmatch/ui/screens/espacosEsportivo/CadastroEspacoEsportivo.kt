@@ -1,0 +1,190 @@
+package com.example.sportmatch.ui.screens.espacosEsportivo
+
+import android.os.Build
+import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.sportmatch.model.CampeonatoViewModel
+import com.example.sportmatch.ui.components.CustomButton
+import com.example.sportmatch.ui.components.CustomImagePicker
+import com.example.sportmatch.ui.components.CustomMultiSelectField
+import com.example.sportmatch.ui.components.CustomSelectField
+import com.example.sportmatch.ui.components.CustomText
+import com.example.sportmatch.ui.components.CustomTextField
+import com.example.sportmatch.ui.components.Loading
+import com.example.sportmatch.ui.components.ReviseSeusDados
+import com.example.sportmatch.ui.components.TextType
+import com.example.sportmatch.ui.theme.StrokeBt
+import com.example.sportmatch.ui.viewModel.EspacoEsportivoViewModel
+import kotlinx.coroutines.launch
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun CadastroEspacoEsportivo(
+    viewModel: EspacoEsportivoViewModel = viewModel(),
+    onBefore: () -> Unit
+) {
+    val scrollState = rememberScrollState()
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+    var carregando by remember { mutableStateOf(false) }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White)
+                .verticalScroll(scrollState)
+        ) {
+            IconButton(onClick = { onBefore() }) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    tint = Color.Red,
+                    contentDescription = "Voltar"
+                )
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = Color.White)
+                    .padding(horizontal = 16.dp)
+            ) {
+                Spacer(modifier = Modifier.height(24.dp))
+                CustomText("Informações do espaço esportivo", TextType.HEADLINE, fontSize = 24.sp)
+                Spacer(modifier = Modifier.height(60.dp))
+                CustomTextField(
+                    value = viewModel.nome,
+                    onValueChange = { viewModel.nome = it },
+                    label = "Nome do espaço esportivo",
+                    space = false
+                )
+                CustomTextField(
+                    value = viewModel.descricao,
+                    onValueChange = { viewModel.descricao = it },
+                    label = "Descrição",
+                    singleLine = false,
+                    maxLines = 3
+                )
+                CustomSelectField(
+                    label = "Tipo de espaço",
+                    options = viewModel.tiposEspaco,
+                    selectedValue = viewModel.tipoSelecionado,
+                    onValueChange = { viewModel.tipoSelecionado = it },
+                )
+                CustomTextField(
+                    value = viewModel.endereco,
+                    onValueChange = { viewModel.endereco = it },
+                    label = "Endereço completo",
+                    singleLine = false,
+                    maxLines = 3
+                )
+                CustomTextField(
+                    value = viewModel.telefone,
+                    onValueChange = { newValue ->
+                        if (newValue.all { it.isDigit() } || newValue.isEmpty()) {
+                            viewModel.telefone = newValue
+                        }
+                    },
+                    label = "Telefone",
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                )
+                CustomTextField(
+                    value = viewModel.maximoAtletas,
+                    onValueChange = { newValue ->
+                        if (newValue.all { it.isDigit() } || newValue.isEmpty()) {
+                            viewModel.maximoAtletas = newValue
+                        }
+                    },
+                    label = "Capacidade máxima de atletas",
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                )
+                CustomMultiSelectField(
+                    label = "Esportes suportados",
+                    options = viewModel.esportesSuportados,
+                    selectedValues = viewModel.esportesSuportadosSelecionados,
+                    onValueChange = { viewModel.esportesSuportadosSelecionados = it }
+                )
+                CustomMultiSelectField(
+                    label = "Nível de acessibidade",
+                    options = viewModel.niveisAcessibildade,
+                    selectedValues = viewModel.nivelAcessibilidadeSelecionadas,
+                    onValueChange = { viewModel.nivelAcessibilidadeSelecionadas = it }
+                )
+                CustomMultiSelectField(
+                    label = "Recursos do espaço",
+                    options = viewModel.recursos,
+                    selectedValues = viewModel.recursosSelecionados,
+                    onValueChange = { viewModel.recursosSelecionados = it }
+                )
+                CustomImagePicker(
+                    "Escolha abaixo a imagem do espaço esportivo: ",
+                    viewModel.imagemUri, { uri ->
+                        viewModel.setImagem(uri)
+                    })
+                Spacer(modifier = Modifier.height(34.dp))
+                CustomButton(
+                    text = "Cadastrar",
+                    onClick = {
+                        carregando = true
+                        scope.launch {
+                            try {
+                                viewModel.acionadorDeSalvarEspacoEsportivo()
+                                Toast.makeText(
+                                    context,
+                                    "Espaço esportivo cadastrado com sucesso!",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            } catch (e: Exception) {
+                                Toast.makeText(
+                                    context,
+                                    "Falha no Cadastro: ${e.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }finally {
+                                carregando = false
+                            }
+                        }
+
+                    },
+                    enabled = viewModel.camposObrigatorios || carregando
+                )
+                Spacer(modifier = Modifier.height(40.dp))
+
+            }
+        }
+        Loading(visible = carregando)
+    }
+}
